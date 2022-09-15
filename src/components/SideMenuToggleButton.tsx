@@ -55,7 +55,6 @@ const Wrapper = styled(Button)`
   height: 50px;
   border-radius: 50%;
   z-index: ${({ theme }) => theme.zIndex.header};
-  background-color: ${({ theme }) => theme.palette.gray50};
 
   display: flex;
   flex-direction: column;
