@@ -11,7 +11,7 @@
     },
     "ecmaVersion": "latest",
     "sourceType": "module",
-    "project": ["./tsconfig.json"]
+    "project": ["./tsconfig.json", "./vite.config.ts"]
   },
   "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier"],
   "rules": {
@@ -23,5 +23,6 @@
     "import/extensions": "off",
     "import/no-extraneous-dependencies": "off",
     "@typescript-eslint/no-use-before-define": "off"
-  }
+  },
+  "ignorePatterns": ["vite.config.ts"]
 }
