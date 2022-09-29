@@ -6,7 +6,16 @@ import { theme } from '../../styles';
 import { PalleteValueType } from '../../styles/theme/colors';
 import { FontKeyType } from '../../styles/theme/fonts';
 
-type SemanticTag = 'div' | 'section' | 'span' | 'p' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5';
+type SemanticTag =
+  | 'div'
+  | 'section'
+  | 'span'
+  | 'p'
+  | 'h1'
+  | 'h2'
+  | 'h3'
+  | 'h4'
+  | 'h5';
 
 interface Props extends ComponentProps<'div'> {
   type: FontKeyType;
@@ -21,10 +30,17 @@ function Typography({
   color = theme.colors.text.general,
   ...restProps
 }: PropsWithChildren<Props>) {
-  const semanticTag: SemanticTag = type.indexOf('body') === -1 ? (type as SemanticTag) : 'div';
+  const semanticTag: SemanticTag =
+    type.indexOf('body') === -1 ? (type as SemanticTag) : 'div';
 
   return (
-    <Wrapper type={type} textAlign={textAlign} color={color} {...restProps} as={semanticTag}>
+    <Wrapper
+      type={type}
+      textAlign={textAlign}
+      color={color}
+      {...restProps}
+      as={semanticTag}
+    >
       {children}
     </Wrapper>
   );
