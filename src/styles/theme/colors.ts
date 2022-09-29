@@ -1,6 +1,6 @@
 export const palette = {
   // Gray Scale
-  background: '#202124',
+  background: '#292929',
   white: '#F8FAF9',
   gray50: '#EEEEEE',
   gray100: '#AFAFAF',
