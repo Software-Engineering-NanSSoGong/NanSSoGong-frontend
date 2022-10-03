@@ -4,8 +4,12 @@ import { theme, globalStyle } from './styles';
 import Router from './routes';
 import { BrowserRouter } from 'react-router-dom';
 import SideMenuWithToggleButton from './components/SideMenuWithToggleButton';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { RecoilRoot } from 'recoil';
 
 function App() {
+  const [queryClient] = React.useState(() => new QueryClient());
+
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
       const handleResizeWindow = () => {
@@ -21,13 +25,17 @@ function App() {
   }, []);
 
   return (
-    <ThemeProvider theme={theme}>
-      <Global styles={globalStyle} />
-      <BrowserRouter>
-        <Router />
-        <SideMenuWithToggleButton />
-      </BrowserRouter>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <Global styles={globalStyle} />
+        <RecoilRoot>
+          <BrowserRouter>
+            <Router />
+            <SideMenuWithToggleButton />
+          </BrowserRouter>
+        </RecoilRoot>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 
