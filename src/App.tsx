@@ -4,6 +4,7 @@ import { theme, globalStyle } from './styles';
 import Router from './routes';
 import { BrowserRouter } from 'react-router-dom';
 import SideMenuWithToggleButton from './components/SideMenuWithToggleButton';
+import { RecoilRoot } from 'recoil';
 
 function App() {
   React.useEffect(() => {
@@ -23,10 +24,12 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Global styles={globalStyle} />
-      <BrowserRouter>
-        <Router />
-        <SideMenuWithToggleButton />
-      </BrowserRouter>
+      <RecoilRoot>
+        <BrowserRouter>
+          <Router />
+          <SideMenuWithToggleButton />
+        </BrowserRouter>
+      </RecoilRoot>
     </ThemeProvider>
   );
 }
