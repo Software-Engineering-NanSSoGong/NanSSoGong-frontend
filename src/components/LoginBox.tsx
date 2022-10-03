@@ -1,10 +1,16 @@
 import styled from '@emotion/styled';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { theme } from '../styles';
 import { Button, Typography } from './common';
 import IconInputLine from './IconInputLine';
 import TitleWithLine from './TitleWithLine';
 
 function LoginBox() {
+  const [email, setEmail] = React.useState<string>('');
+  const [password, setPassword] = React.useState<string>('');
+  const navigate = useNavigate();
+
   return (
     <Wrapper>
       <BoxLayout>
@@ -15,20 +21,12 @@ function LoginBox() {
           borderColor={theme.palette.black}
         />
         <Lines>
-          <IconInputLine icon='user' />
-          <IconInputLine icon='lock' type='password' />
+          <IconInputLine icon='user' value={email} setValue={setEmail} />
+          <IconInputLine icon='lock' type='password' value={password} setValue={setPassword} />
         </Lines>
         <Lines>
-          <Button
-            fullWidth
-            backgroundColor={theme.palette.blue600}
-            style={{ padding: '12px' }}
-          >
-            <Typography
-              type='h4'
-              color={theme.palette.gray50}
-              textAlign='center'
-            >
+          <Button fullWidth backgroundColor={theme.palette.blue600} style={{ padding: '12px' }}>
+            <Typography type='h4' color={theme.palette.gray50} textAlign='center'>
               로그인
             </Typography>
           </Button>
@@ -36,12 +34,9 @@ function LoginBox() {
             fullWidth
             backgroundColor={theme.palette.gray300}
             style={{ padding: '12px' }}
+            onClick={() => navigate('/main')}
           >
-            <Typography
-              type='h4'
-              color={theme.palette.gray50}
-              textAlign='center'
-            >
+            <Typography type='h4' color={theme.palette.gray50} textAlign='center'>
               비회원으로 주문하기
             </Typography>
           </Button>

@@ -1,23 +1,19 @@
 import styled from '@emotion/styled';
-import react from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import Icon, { IconKeyType } from './common/Icon';
 
 interface Props {
   icon: IconKeyType;
+  value: string;
   type?: 'text' | 'password';
+  setValue: Dispatch<SetStateAction<string>>;
 }
 
-function IconInputLine({ icon, type = 'text' }: Props) {
-  const [value, setValue] = react.useState<string>('');
-
+function IconInputLine({ icon, value, type = 'text', setValue }: Props) {
   return (
     <Wrapper>
       <IconWrapper type={icon} color={'FFFFFF'} />
-      <Input
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        type={type}
-      />
+      <Input value={value} onChange={(e) => setValue(e.target.value)} type={type} />
     </Wrapper>
   );
 }
