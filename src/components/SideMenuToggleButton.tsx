@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from './common';
+import { theme } from '../styles';
 
 interface Props {
   isShowContent: boolean;
@@ -20,7 +21,7 @@ const MotionPath = (props: any) => (
 
 function SideMenuToggleButton({ onClick }: Props) {
   return (
-    <Wrapper onClick={onClick}>
+    <Wrapper onClick={onClick} backgroundColor={'transparent'}>
       <Lines width='23' height='23' viewBox='0 0 23 23'>
         <MotionPath
           variants={{
@@ -54,7 +55,7 @@ const Wrapper = styled(Button)`
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  z-index: ${({ theme }) => theme.zIndex.header};
+  z-index: ${theme.zIndex.header};
 
   display: flex;
   flex-direction: column;

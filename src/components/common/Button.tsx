@@ -7,7 +7,7 @@ import { PalleteValueType } from '../../styles/theme/colors';
 interface Props extends ComponentProps<'button'> {
   width?: CSSProperties['width'];
   fullWidth?: boolean;
-  backgroundColor?: PalleteValueType;
+  backgroundColor?: PalleteValueType | 'transparent';
   borderRadius?: number;
   disabled?: boolean;
 }

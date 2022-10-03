@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Menu } from '../../@types';
+import { theme } from '../../styles';
 import { PalleteValueType } from '../../styles/theme/colors';
 import Button from './Button';
 import Typography from './Typography';
@@ -44,7 +45,10 @@ function SideMenuItem({ color, menu, showOffMenuContent }: Props) {
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
     >
-      <ButtonWrapper onClick={() => handleClickMenuItem(menu.href)}>
+      <ButtonWrapper
+        onClick={() => handleClickMenuItem(menu.href)}
+        backgroundColor={theme.palette.gray50}
+      >
         <CircleBullet color={color} />
         <ItemTitle type='body3' color={color} textAlign='center'>
           {menu.title}
@@ -58,14 +62,14 @@ const Wrapper = styled(motion.li)`
   display: flex;
   align-items: center;
   cursor: pointer;
-  z-index: ${({ theme }) => theme.zIndex.headerItem};
+  z-index: ${theme.zIndex.headerItem};
 `;
 
 const ButtonWrapper = styled(Button)`
   display: flex;
   align-items: center;
 
-  @media (max-width: ${({ theme }) => theme.size.mobile}px) {
+  @media (max-width: ${theme.size.mobile}px) {
     width: 95%;
   }
 `;

@@ -30,7 +30,7 @@ const sideAnimation = {
 const MENUS: Menu[] = [
   { title: 'Home', href: '/' },
   { title: 'Carousel', href: '/carousel' },
-  { title: 'Home3', href: '/3' },
+  { title: 'modal', href: '/modal' },
   { title: 'Home4', href: '/4 ' },
 ];
 const COLORS = [
@@ -61,10 +61,7 @@ function SideMenuWithToggleButton() {
       ref={sideMenuRef}
     >
       <AnimationBackground variants={sideAnimation} />
-      <SideMenuToggleButton
-        isShowContent={isShowContent}
-        onClick={handleClickToggleButton}
-      />
+      <SideMenuToggleButton isShowContent={isShowContent} onClick={handleClickToggleButton} />
       <SideMenuList isShowContent={isShowContent}>
         {MENUS.map((menu, idx) => (
           <SideMenuItem
