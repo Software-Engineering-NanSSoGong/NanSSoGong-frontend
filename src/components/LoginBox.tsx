@@ -3,6 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { theme } from '../styles';
 import { Button, Typography } from './common';
+import { ButtonHierarchy } from './common/Button';
 import IconInputLine from './IconInputLine';
 import TitleWithLine from './TitleWithLine';
 
@@ -35,6 +36,7 @@ function LoginBox() {
             backgroundColor={theme.palette.gray300}
             style={{ padding: '12px' }}
             onClick={() => navigate('/main')}
+            hierarchy={ButtonHierarchy.DarkGray}
           >
             <Typography type='h4' color={theme.palette.gray50} textAlign='center'>
               비회원으로 주문하기
