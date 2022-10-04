@@ -1,9 +1,10 @@
 import React from 'react';
-import { Lock, User } from '../../asset/svg';
+import { Lock, Mic, User } from '../../asset/svg';
 
 const ICONS = {
   user: User,
   lock: Lock,
+  mic: Mic,
 } as const;
 
 type IconValueType = typeof ICONS;
