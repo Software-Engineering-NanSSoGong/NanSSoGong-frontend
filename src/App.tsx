@@ -3,7 +3,6 @@ import React from 'react';
 import { theme, globalStyle } from './styles';
 import Router from './routes';
 import { BrowserRouter } from 'react-router-dom';
-import SideMenuWithToggleButton from './components/SideMenuWithToggleButton';
 import { RecoilRoot } from 'recoil';
 
 function App() {
@@ -27,7 +26,6 @@ function App() {
       <RecoilRoot>
         <BrowserRouter>
           <Router />
-          <SideMenuWithToggleButton />
         </BrowserRouter>
       </RecoilRoot>
     </ThemeProvider>
