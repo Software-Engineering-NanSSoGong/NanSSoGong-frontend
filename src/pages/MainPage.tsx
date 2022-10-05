@@ -18,7 +18,7 @@ function MainPage() {
         />
         <DinnerList>
           <ClickableDinnerCard title={'프렌치 디너'} src={'/Dinner.png'} href={'/'} />
-          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/main'} />
+          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/history'} />
           <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/main'} />
           <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/main'} />
           <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/main'} />
@@ -30,16 +30,10 @@ function MainPage() {
   );
 }
 
-const Wrapper = styled.main`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
+const Wrapper = styled.main``;
 
 const Spacer = styled.div`
-  margin-left: 404px;
-  margin-right: 104px;
-  margin-block: 120px;
+  margin: 120px 104px 120px 424px;
 `;
 
 const DinnerList = styled.section`
@@ -49,7 +43,7 @@ const DinnerList = styled.section`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   justify-content: space-between;
-  gap: 88px;
+  gap: 80px;
 `;
 
 export default MainPage;
