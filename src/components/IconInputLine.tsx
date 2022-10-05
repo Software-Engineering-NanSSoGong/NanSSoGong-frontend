@@ -39,7 +39,7 @@ const Input = styled.input`
   height: 50px;
   background-color: ${({ theme }) => theme.palette.gray200};
   padding-left: 56px;
-  color: ${({ theme }) => theme.colors.primary.white};
+  color: ${({ theme }) => theme.colors.text.bold};
   font-size: 16px;
 
   &:focus {

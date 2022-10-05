@@ -14,36 +14,36 @@ function SideMenuList() {
       <Spacer>
         <ButtonList>
           <ButtonWrapper fullWidth borderRadius={10}>
-            <Typography type='body5' color={theme.palette.white} textAlign='center'>
+            <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
               메인
             </Typography>
           </ButtonWrapper>
           <ButtonWrapper fullWidth borderRadius={10} hierarchy={ButtonHierarchy.Gray}>
-            <Typography type='body5' color={theme.palette.white} textAlign='center'>
+            <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
               주문 내역
             </Typography>
           </ButtonWrapper>
           <ButtonWrapper fullWidth borderRadius={10} hierarchy={ButtonHierarchy.Gray}>
-            <Typography type='body5' color={theme.palette.white} textAlign='center'>
+            <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
               내정보
             </Typography>
           </ButtonWrapper>
         </ButtonList>
         <ButtonList>
           <ButtonWrapper fullWidth borderRadius={10} hierarchy={ButtonHierarchy.Success}>
-            <Typography type='body5' color={theme.palette.white} textAlign='center'>
+            <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
               결제 하기
             </Typography>
           </ButtonWrapper>
           {isAuth ? (
             <ButtonWrapper fullWidth borderRadius={10} hierarchy={ButtonHierarchy.Success}>
-              <Typography type='body5' color={theme.palette.white} textAlign='center'>
+              <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
                 로그인
               </Typography>
             </ButtonWrapper>
           ) : (
             <ButtonWrapper fullWidth borderRadius={10} hierarchy={ButtonHierarchy.Danger}>
-              <Typography type='body5' color={theme.palette.white} textAlign='center'>
+              <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
                 로그아웃
               </Typography>
             </ButtonWrapper>
