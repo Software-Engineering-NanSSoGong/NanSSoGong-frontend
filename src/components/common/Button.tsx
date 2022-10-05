@@ -1,4 +1,3 @@
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { ComponentProps, CSSProperties, PropsWithChildren } from 'react';
 import { theme } from '../../styles';
@@ -50,23 +49,26 @@ type StyleProps = Pick<
 >;
 
 const Wrapper = styled.button<StyleProps>`
-  ${({ disabled, width, backgroundColor, borderRadius, fullWidth, hierarchy }) => css`
-    width: ${fullWidth ? '100%' : typeof width === 'number' ? `${width}px` : width};
+  width: ${({ fullWidth, width }) =>
+    fullWidth ? '100%' : typeof width === 'number' ? `${width}px` : width};
+  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
+  background-color: ${({ backgroundColor }) => backgroundColor};
+  border-radius: ${({ borderRadius }) => borderRadius}px;
 
-    cursor: ${disabled ? 'default' : 'pointer'};
-    background-color: ${backgroundColor};
-    border-radius: ${borderRadius}px;
-
-    background-color: ${hierarchy === ButtonHierarchy.Primary
-      ? theme.colors.primary.blue
-      : hierarchy === ButtonHierarchy.Danger
-      ? theme.colors.primary.red
-      : hierarchy === ButtonHierarchy.Success
-      ? theme.colors.primary.green
-      : hierarchy === ButtonHierarchy.DarkGray
-      ? theme.palette.gray300
-      : theme.palette.gray100};
-  `}
+  background-color: ${({ hierarchy }) => {
+    switch (hierarchy) {
+      case ButtonHierarchy.Primary:
+        return theme.colors.primary.blue;
+      case ButtonHierarchy.Danger:
+        return theme.colors.primary.red;
+      case ButtonHierarchy.Success:
+        return theme.colors.primary.green;
+      case ButtonHierarchy.DarkGray:
+        return theme.palette.gray300;
+      default:
+        return theme.palette.gray100;
+    }
+  }};
 `;
 
 export default Button;
