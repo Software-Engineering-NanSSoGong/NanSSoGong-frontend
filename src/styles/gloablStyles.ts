@@ -40,12 +40,6 @@ const globalStyle = css`
     width: 100%;
     height: 100%;
   }
-
-  button {
-    border: none;
-    outline: none;
-    background: transparent;
-  }
 `;
 
 export default globalStyle;

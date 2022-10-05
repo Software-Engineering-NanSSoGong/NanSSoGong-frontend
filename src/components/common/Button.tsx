@@ -23,6 +23,7 @@ interface Props extends ComponentProps<'button'> {
 function Button({
   width,
   children,
+  disabled = false,
   hierarchy = ButtonHierarchy.Primary,
   fullWidth = false,
   backgroundColor = theme.palette.blue600,
@@ -36,6 +37,7 @@ function Button({
       borderRadius={borderRadius}
       fullWidth={fullWidth}
       hierarchy={hierarchy}
+      disabled={disabled}
       {...restProps}
     >
       {children}
@@ -69,6 +71,8 @@ const Wrapper = styled.button<StyleProps>`
         return theme.palette.gray100;
     }
   }};
+  border: none;
+  outline: none;
 `;
 
 export default Button;
