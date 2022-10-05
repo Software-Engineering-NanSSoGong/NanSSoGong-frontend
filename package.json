@@ -54,5 +54,8 @@
     "node": "^18.0.0",
     "npm": "please-use-yarn",
     "yarn": "^1.22.17"
-  }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/Software-Engineering-NanSSoGong/NanSSoGong-frontend.git",
+  "license": "MIT"
 }
