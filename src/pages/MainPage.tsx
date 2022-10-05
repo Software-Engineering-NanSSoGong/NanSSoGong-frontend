@@ -1,7 +1,5 @@
 import styled from '@emotion/styled';
-import ClickableDinnerCard from '../components/ClickableDinnerCard';
-import SideMenuList from '../components/SideMenuList';
-import TitleWithLine from '../components/TitleWithLine';
+import { ClickableDinnerCard, SideMenuList, TitleWithLine } from '../components';
 import { theme } from '../styles';
 
 function MainPage() {

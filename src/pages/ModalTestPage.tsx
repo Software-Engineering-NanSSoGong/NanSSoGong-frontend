@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Modal } from '../components/modal';
+import { Modal } from '../components';
+
 function ModalTestPage() {
   return (
     <Layout>

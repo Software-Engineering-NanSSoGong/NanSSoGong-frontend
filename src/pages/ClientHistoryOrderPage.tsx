@@ -1,7 +1,5 @@
 import styled from '@emotion/styled';
-import { Typography } from '../components';
-import HistoryOrderCard from '../components/HistoryOrderCard';
-import SideMenuList from '../components/SideMenuList';
+import { HistoryOrderCard, SideMenuList, Typography } from '../components';
 import { theme } from '../styles';
 
 const tempHistory = {
