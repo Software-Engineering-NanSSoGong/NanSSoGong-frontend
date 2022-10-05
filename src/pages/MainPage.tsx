@@ -13,7 +13,7 @@ function MainPage() {
           type='icon'
           title='메뉴'
           titleFontType='h1'
-          titleColor={theme.colors.primary.white}
+          titleColor={theme.colors.text.bold}
           borderColor={theme.palette.gray50}
         />
         <DinnerList>

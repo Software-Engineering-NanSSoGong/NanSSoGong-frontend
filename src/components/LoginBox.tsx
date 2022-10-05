@@ -18,6 +18,7 @@ function LoginBox() {
         <Title
           title='로그인'
           titleFontType='h1'
+          titleColor={theme.colors.text.dark}
           textAlign='center'
           borderColor={theme.palette.black}
         />
@@ -27,7 +28,7 @@ function LoginBox() {
         </Lines>
         <Lines>
           <Button fullWidth backgroundColor={theme.palette.blue600} style={{ padding: '12px' }}>
-            <Typography type='h4' color={theme.palette.gray50} textAlign='center'>
+            <Typography type='h4' textAlign='center'>
               로그인
             </Typography>
           </Button>
@@ -38,7 +39,7 @@ function LoginBox() {
             onClick={() => navigate('/main')}
             hierarchy={ButtonHierarchy.DarkGray}
           >
-            <Typography type='h4' color={theme.palette.gray50} textAlign='center'>
+            <Typography type='h4' textAlign='center'>
               비회원으로 주문하기
             </Typography>
           </Button>

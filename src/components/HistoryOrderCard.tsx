@@ -46,7 +46,7 @@ function HistoryOrderCard({
   return (
     <Wrapper>
       <BetweenAlignLine>
-        <Typography type='h3' color={theme.palette.white}>
+        <Typography type='h3' color={theme.colors.text.bold}>
           {dinnerSets.map((dinner) => dinner)}
         </Typography>
         <Chip
