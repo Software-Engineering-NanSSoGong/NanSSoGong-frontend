@@ -41,24 +41,23 @@ const Wrapper = styled.div<StyleProps>`
     }
     return 'transparent';
   }};
-  border: 1px solid
-    ${({ variants, type, theme }) => {
-      if (variants === 'outlined') {
-        switch (type) {
-          case 'danger':
-            return theme.palette.red500;
-          case 'success':
-            return theme.palette.green500;
-          case 'primary':
-            return theme.palette.blue500;
-          case 'warning':
-            return theme.palette.yellow500;
-          default:
-            return theme.palette.blue500;
-        }
+  border: ${({ variants, type, theme }) => {
+    if (variants === 'outlined') {
+      switch (type) {
+        case 'danger':
+          return `1px solid ${theme.palette.red500}`;
+        case 'success':
+          return `1px solid ${theme.palette.green500}`;
+        case 'primary':
+          return `1px solid ${theme.palette.blue500}`;
+        case 'warning':
+          return `1px solid ${theme.palette.yellow500}`;
+        default:
+          return `1px solid ${theme.palette.blue500}`;
       }
-      return 'none';
-    }};
+    }
+    return 'none';
+  }};
   padding: 4px 20px;
   border-radius: 16px;
   & > div {
