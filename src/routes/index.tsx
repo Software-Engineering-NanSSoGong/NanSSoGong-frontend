@@ -1,12 +1,11 @@
 import { Route, Routes } from 'react-router-dom';
-import { CarouselPage, LoginPage, MainPage, ModalTestPage } from '../pages';
+import { LoginPage, MainPage, ModalTestPage } from '../pages';
 import RequiredAuthGuard from './RequiredAuthGuard';
 
 function Router() {
   return (
     <Routes>
       <Route path='/' element={<LoginPage />} />
-      <Route path='/carousel' element={<CarouselPage />} />
       <Route path='/modal' element={<ModalTestPage />} />
       <Route path='/main' element={<MainPage />} />
       {/* 유저만 갈 수 있는 페이지 example: 내정보페이지 */}
