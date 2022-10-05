@@ -10,6 +10,10 @@ function LoginPage() {
   const [password, setPassword] = React.useState<string>('');
   const navigate = useNavigate();
 
+  const handleClickLoginButton = () => {
+    console.log(email, password);
+  };
+
   return (
     <Wrapper>
       <LoginBox>
@@ -22,11 +26,21 @@ function LoginPage() {
             borderColor={theme.palette.black}
           />
           <Lines>
-            <IconInputLine icon='user' value={email} setValue={setEmail} />
-            <IconInputLine icon='lock' type='password' value={password} setValue={setPassword} />
+            <IconInputLine icon='user' value={email} onChange={(e) => setEmail(e.target.value)} />
+            <IconInputLine
+              icon='lock'
+              type='password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </Lines>
           <Lines>
-            <Button fullWidth backgroundColor={theme.palette.blue600} style={{ padding: '12px' }}>
+            <Button
+              fullWidth
+              backgroundColor={theme.palette.blue600}
+              style={{ padding: '12px' }}
+              onClick={handleClickLoginButton}
+            >
               <Typography type='h4' textAlign='center'>
                 로그인
               </Typography>
