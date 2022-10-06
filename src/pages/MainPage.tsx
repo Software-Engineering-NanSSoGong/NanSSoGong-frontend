@@ -16,6 +16,8 @@ function MainPage() {
         />
         <DinnerList>
           <ClickableDinnerCard title={'프렌치 디너'} src={'/Dinner.png'} href={'/'} />
+          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/main'} />
+          <ClickableDinnerCard title={'발렌타인 디너'} src={'/Dinner.png'} href={'/main'} />
           <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/history'} />
           <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/main'} />
           <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/main'} />

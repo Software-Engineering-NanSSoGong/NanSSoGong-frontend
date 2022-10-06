@@ -12,7 +12,8 @@ function SideMenuList() {
     <SideMenu>
       <LogoImg src='/logo.png' alt='mr-daebak logo' />
       <Spacer>
-        <ButtonList>
+        {/* 상단 버튼 리스트 */}
+        <ButtonList> 
           <ButtonWrapper fullWidth borderRadius={10}>
             <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
               메인
@@ -29,6 +30,7 @@ function SideMenuList() {
             </Typography>
           </ButtonWrapper>
         </ButtonList>
+        {/* 하단 버튼 리스트 */}
         <ButtonList>
           <ButtonWrapper fullWidth borderRadius={10} hierarchy={ButtonHierarchy.Success}>
             <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
