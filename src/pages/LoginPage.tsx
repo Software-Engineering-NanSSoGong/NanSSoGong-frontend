@@ -35,19 +35,13 @@ function LoginPage() {
             />
           </Lines>
           <Lines>
-            <Button
-              fullWidth
-              backgroundColor={theme.palette.blue600}
-              style={{ padding: '12px' }}
-              onClick={handleClickLoginButton}
-            >
+            <Button fullWidth style={{ padding: '12px' }} onClick={handleClickLoginButton}>
               <Typography type='h4' textAlign='center'>
                 로그인
               </Typography>
             </Button>
             <Button
               fullWidth
-              backgroundColor={theme.palette.gray300}
               style={{ padding: '12px' }}
               onClick={() => navigate('/main')}
               hierarchy={ButtonHierarchy.DarkGray}
