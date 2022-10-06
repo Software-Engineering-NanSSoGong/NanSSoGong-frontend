@@ -1,19 +1,19 @@
 import styled from '@emotion/styled';
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import Icon, { IconKeyType } from './common/Icon';
 
 interface Props {
   icon: IconKeyType;
   value: string;
-  type?: 'text' | 'password';
-  setValue: Dispatch<SetStateAction<string>>;
+  type?: React.HTMLInputTypeAttribute;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-function IconInputLine({ icon, value, type = 'text', setValue }: Props) {
+function IconInputLine({ icon, value, type = 'text', onChange }: Props) {
   return (
     <Wrapper>
       <IconWrapper type={icon} color={'FFFFFF'} />
-      <Input value={value} onChange={(e) => setValue(e.target.value)} type={type} />
+      <Input value={value} onChange={onChange} type={type} />
     </Wrapper>
   );
 }
@@ -39,7 +39,7 @@ const Input = styled.input`
   height: 50px;
   background-color: ${({ theme }) => theme.palette.gray200};
   padding-left: 56px;
-  color: ${({ theme }) => theme.colors.primary.white};
+  color: ${({ theme }) => theme.colors.text.bold};
   font-size: 16px;
 
   &:focus {

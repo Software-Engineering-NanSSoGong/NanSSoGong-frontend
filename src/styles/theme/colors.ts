@@ -65,8 +65,9 @@ export const colors = {
   },
   background: palette.background,
   text: {
-    general: palette.gray400,
-    bold: palette.black,
+    general: palette.gray50,
+    bold: palette.white,
+    dark: palette.black,
   },
   ui: {
     divider: palette.gray100,

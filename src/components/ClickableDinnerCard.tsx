@@ -15,7 +15,7 @@ function ClickableDinnerCard({ title, src, href }: Props) {
   return (
     <Wrapper onClick={() => navigate(href)}>
       <Image src={src} alt={title + 'img'} />
-      <Name type='h4' color={theme.palette.gray50} textAlign='center'>
+      <Name type='h4' textAlign='center'>
         {title}
       </Name>
     </Wrapper>
