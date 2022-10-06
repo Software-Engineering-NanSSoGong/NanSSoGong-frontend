@@ -6,8 +6,7 @@ import { ButtonHierarchy } from './common/Button';
 import TitleWithLine from './TitleWithLine';
 
 function SignupBox() {
-
-    return (
+  return (
     <Wrapper>
       <BoxLayout>
         <Title
@@ -17,36 +16,33 @@ function SignupBox() {
           borderColor={theme.palette.black}
         />
         <Lines>
-            <Button fullWidth backgroundColor={theme.palette.green600} style = {{padding : '20px'}} 
-            hierarchy = {ButtonHierarchy.Success}>
-              <Line>
-                <Typography type = 'h3' color ={theme.palette.gray50} textAlign ='left'>
-                  고객으로 가입하기
-                </Typography>
-                <Icon type='people'/>
-              </Line>
-            </Button>
-            <Button fullWidth backgroundColor={theme.palette.gray300} style = {{padding : '20px'} } 
-            hierarchy = {ButtonHierarchy.DarkGray}>
-              <Line>
-                <Typography type = 'h3' color ={theme.palette.gray50} textAlign ='left'>
-                  직원으로 가입하기
-                </Typography>
-                <Icon type='employee'/>
-              </Line>
-            </Button>
-            <Button fullWidth backgroundColor={theme.palette.gray300} style = {{padding : '20px'}} 
-            hierarchy ={ButtonHierarchy.DarkGray}>
-               <Line>
-                  <Typography type = 'h3' color ={theme.palette.gray50} textAlign ='left'>
-                    라이더로 가입하기
-                  </Typography>
-                  <Icon type='rider'/>
-              </Line>
-            </Button>
+          <Button fullWidth style={{ padding: '20px' }} hierarchy={ButtonHierarchy.Success}>
+            <Line>
+              <Typography type='h3' color={theme.palette.gray50} textAlign='left'>
+                고객으로 가입하기
+              </Typography>
+              <Icon type='people' />
+            </Line>
+          </Button>
+          <Button fullWidth style={{ padding: '20px' }} hierarchy={ButtonHierarchy.DarkGray}>
+            <Line>
+              <Typography type='h3' color={theme.palette.gray50} textAlign='left'>
+                직원으로 가입하기
+              </Typography>
+              <Icon type='employee' />
+            </Line>
+          </Button>
+          <Button fullWidth style={{ padding: '20px' }} hierarchy={ButtonHierarchy.DarkGray}>
+            <Line>
+              <Typography type='h3' color={theme.palette.gray50} textAlign='left'>
+                라이더로 가입하기
+              </Typography>
+              <Icon type='rider' />
+            </Line>
+          </Button>
         </Lines>
         <Lines>
-          <Button fullWidth backgroundColor={theme.palette.blue600} style={{ padding: '12px' }}>
+          <Button fullWidth style={{ padding: '12px' }}>
             <Typography type='h4' color={theme.palette.gray50} textAlign='center'>
               계속하기
             </Typography>
@@ -85,7 +81,7 @@ const Line = styled.span`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`
+`;
 
 const LogoImg = styled.img`
   width: 150px;
