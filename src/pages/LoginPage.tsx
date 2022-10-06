@@ -43,6 +43,16 @@ function LoginPage() {
             <Button
               fullWidth
               style={{ padding: '12px' }}
+              onClick={() => navigate('/signup')}
+              hierarchy={ButtonHierarchy.DarkGray}
+            >
+              <Typography type='h4' textAlign='center'>
+                회원가입
+              </Typography>
+            </Button>
+            <Button
+              fullWidth
+              style={{ padding: '12px' }}
               onClick={() => navigate('/main')}
               hierarchy={ButtonHierarchy.DarkGray}
             >
