@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import React from 'react';
 import { theme } from '../styles';
-import { Button, Typography } from './common';
+import { Button, Icon, Typography } from './common';
 import { ButtonHierarchy } from './common/Button';
 import TitleWithLine from './TitleWithLine';
 
@@ -19,21 +19,30 @@ function SignupBox() {
         <Lines>
             <Button fullWidth backgroundColor={theme.palette.green600} style = {{padding : '20px'}} 
             hierarchy = {ButtonHierarchy.Success}>
+              <Line>
                 <Typography type = 'h3' color ={theme.palette.gray50} textAlign ='left'>
-                    고객으로 가입하기
+                  고객으로 가입하기
                 </Typography>
+                <Icon type='people'/>
+              </Line>
             </Button>
             <Button fullWidth backgroundColor={theme.palette.gray300} style = {{padding : '20px'} } 
             hierarchy = {ButtonHierarchy.DarkGray}>
+              <Line>
                 <Typography type = 'h3' color ={theme.palette.gray50} textAlign ='left'>
-                    직원으로 가입하기
+                  직원으로 가입하기
                 </Typography>
+                <Icon type='employee'/>
+              </Line>
             </Button>
             <Button fullWidth backgroundColor={theme.palette.gray300} style = {{padding : '20px'}} 
             hierarchy ={ButtonHierarchy.DarkGray}>
-                <Typography type = 'h3' color ={theme.palette.gray50} textAlign ='left'>
+               <Line>
+                  <Typography type = 'h3' color ={theme.palette.gray50} textAlign ='left'>
                     라이더로 가입하기
-                </Typography>
+                  </Typography>
+                  <Icon type='rider'/>
+              </Line>
             </Button>
         </Lines>
         <Lines>
@@ -71,6 +80,12 @@ const Lines = styled.section`
   flex-direction: column;
   gap: 30px;
 `;
+
+const Line = styled.span`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
 
 const LogoImg = styled.img`
   width: 150px;
