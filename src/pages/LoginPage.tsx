@@ -11,7 +11,7 @@ function LoginPage() {
   const navigate = useNavigate();
 
   const handleClickLoginButton = () => {
-    console.log(email, password);
+    // console.log(email, password);
   };
 
   return (
