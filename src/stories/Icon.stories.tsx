@@ -1,11 +1,11 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta } from '@storybook/react';
 import { Icon } from '../components';
 
 export default {
   component: Icon,
 } as ComponentMeta<typeof Icon>;
 
-const Template: ComponentStory<typeof Icon> = (args) => <Icon {...args} />;
+const Template: any = (args: any) => <Icon {...args} />;
 
 export const SizeUp = Template.bind({});
 SizeUp.args = {
