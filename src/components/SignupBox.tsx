@@ -1,11 +1,18 @@
 import styled from '@emotion/styled';
-import React from 'react';
+import { useState } from 'react';
 import { theme } from '../styles';
+import { User } from '../@types';
 import { Button, Icon, Typography } from './common';
 import { ButtonHierarchy } from './common/Button';
 import TitleWithLine from './TitleWithLine';
 
 function SignupBox() {
+  const [userType, setUserType] = useState<User | null>(null);
+
+  const handleClickUserTypeButton = (type: User) => {
+    setUserType(type);
+  };
+
   return (
     <Wrapper>
       <BoxLayout>
@@ -13,33 +20,49 @@ function SignupBox() {
           title='회원가입'
           titleFontType='h1'
           textAlign='center'
+          titleColor={theme.colors.text.dark}
           borderColor={theme.palette.black}
         />
         <Lines>
-          <Button fullWidth style={{ padding: '20px' }} hierarchy={ButtonHierarchy.Success}>
+          <UserTypeButton
+            fullWidth
+            hierarchy={ButtonHierarchy.DarkGray}
+            className={userType === 'client' ? 'active' : ''}
+            onClick={() => handleClickUserTypeButton('client')}
+          >
             <Line>
               <Typography type='h3' color={theme.palette.gray50} textAlign='left'>
                 고객으로 가입하기
               </Typography>
               <Icon type='people' />
             </Line>
-          </Button>
-          <Button fullWidth style={{ padding: '20px' }} hierarchy={ButtonHierarchy.DarkGray}>
+          </UserTypeButton>
+          <UserTypeButton
+            fullWidth
+            hierarchy={ButtonHierarchy.DarkGray}
+            className={userType === 'employee' ? 'active' : ''}
+            onClick={() => handleClickUserTypeButton('employee')}
+          >
             <Line>
               <Typography type='h3' color={theme.palette.gray50} textAlign='left'>
                 직원으로 가입하기
               </Typography>
               <Icon type='employee' />
             </Line>
-          </Button>
-          <Button fullWidth style={{ padding: '20px' }} hierarchy={ButtonHierarchy.DarkGray}>
+          </UserTypeButton>
+          <UserTypeButton
+            fullWidth
+            hierarchy={ButtonHierarchy.DarkGray}
+            className={userType === 'rider' ? 'active' : ''}
+            onClick={() => handleClickUserTypeButton('rider')}
+          >
             <Line>
               <Typography type='h3' color={theme.palette.gray50} textAlign='left'>
                 라이더로 가입하기
               </Typography>
               <Icon type='rider' />
             </Line>
-          </Button>
+          </UserTypeButton>
         </Lines>
         <Lines>
           <Button fullWidth style={{ padding: '12px' }}>
@@ -87,6 +110,18 @@ const LogoImg = styled.img`
   width: 150px;
   margin: 64px auto;
   display: flex;
+`;
+
+const UserTypeButton = styled(Button)`
+  padding: 20px;
+  transition: all 0.2s ease-in;
+  &:hover {
+    background-color: ${theme.palette.gray400};
+  }
+
+  &.active {
+    background-color: ${theme.colors.primary.green};
+  }
 `;
 
 export default SignupBox;
