@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta } from '@storybook/react';
 import { Typography } from '../components';
 import { theme } from '../styles';
 
@@ -6,9 +6,7 @@ export default {
   component: Typography,
 } as ComponentMeta<typeof Typography>;
 
-const Template: ComponentStory<typeof Typography> = (args) => (
-  <Typography {...args}>{args.children}</Typography>
-);
+const Template: any = (args: any) => <Typography {...args}>{args.children}</Typography>;
 
 export const h1 = Template.bind({});
 h1.args = {

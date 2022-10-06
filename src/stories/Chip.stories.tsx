@@ -1,11 +1,11 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta } from '@storybook/react';
 import { Chip } from '../components';
 
 export default {
   component: Chip,
 } as ComponentMeta<typeof Chip>;
 
-const Template: ComponentStory<typeof Chip> = (args) => <Chip {...args}>{args.children}</Chip>;
+const Template: any = (args: any) => <Chip {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {

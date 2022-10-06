@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta } from '@storybook/react';
 import { Button } from '../components';
 import { ButtonHierarchy } from '../components/common/Button';
 
@@ -8,7 +8,7 @@ export default {
   component: Button,
 } as ComponentMeta<ButtonType>;
 
-const Template: ComponentStory<ButtonType> = (args) => <Button {...args}>{args.children}</Button>;
+const Template: any = (args: any) => <Button {...args}>{args.children}</Button>;
 
 export const Primary = Template.bind({});
 Primary.args = {
