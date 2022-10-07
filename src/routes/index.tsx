@@ -5,7 +5,8 @@ import {
   MainPage,
   ModalTestPage,
   ItemDetailPage,
-  SignupPage,
+  SignUpSelectUserTypePage,
+  SignUpEmailPage,
 } from '../pages';
 import RequiredAuthGuard from './RequiredAuthGuard';
 
@@ -15,7 +16,8 @@ function Router() {
       <Route path='/' element={<LoginPage />} />
       <Route path='/modal' element={<ModalTestPage />} />
       <Route path='/main' element={<MainPage />} />
-      <Route path='/signup' element={<SignupPage/>}/>
+      <Route path='/signup-type' element={<SignUpSelectUserTypePage />} />
+      <Route path='/signup-email' element={<SignUpEmailPage />} />
       <Route path='/item/:id' element={<ItemDetailPage />} />
       <Route path='/history' element={<ClientHistoryOrderPage />} />
       {/* 유저만 갈 수 있는 페이지 example: 내정보페이지 */}

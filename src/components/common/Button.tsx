@@ -49,6 +49,7 @@ const Wrapper = styled.button<StyleProps>`
     fullWidth ? '100%' : typeof width === 'number' ? `${width}px` : width};
   cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
   border-radius: ${({ borderRadius }) => borderRadius}px;
+  transition: all 0.2s ease-in;
 
   background-color: ${({ hierarchy }) => {
     switch (hierarchy) {
@@ -69,6 +70,10 @@ const Wrapper = styled.button<StyleProps>`
   }};
   border: none;
   outline: none;
+
+  &:disabled {
+    background-color: ${theme.palette.gray200};
+  }
 `;
 
 export default Button;
