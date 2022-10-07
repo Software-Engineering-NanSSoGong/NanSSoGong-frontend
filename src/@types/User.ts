@@ -1,1 +1,1 @@
-export type User = 'client' | 'employee' | 'rider';
+export type UserType = 'client' | 'employee' | 'rider';
