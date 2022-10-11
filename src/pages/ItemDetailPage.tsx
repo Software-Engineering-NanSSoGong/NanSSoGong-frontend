@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { Dinner, Food, Style } from '../@types';
 import {
-  FoodQuantityBox,
+  FoodQuantityBoxList,
   NumberInput,
   SideMenuList,
   StyleSelectBoxList,
@@ -28,30 +28,6 @@ function ItemDetailPage() {
     } else {
       setSelectedStyle(style);
     }
-  };
-
-  const handleClickFoodPlusIcon = (foodName: keyof Record<string, Food>) => {
-    setFoodState((prev) => ({
-      ...prev,
-      [foodName]: { ...prev[foodName], quantity: Number(prev[foodName].quantity) + 1 },
-    }));
-  };
-
-  const handleChangeFoodNumberInput = (
-    foodName: keyof Record<string, Food>,
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setFoodState((prev) => ({
-      ...prev,
-      [foodName]: { ...prev[foodName], quantity: Number(e.target.value) },
-    }));
-  };
-
-  const handleClickFoodMinusIcon = (foodName: keyof Record<string, Food>) => {
-    setFoodState((prev) => ({
-      ...prev,
-      [foodName]: { ...prev[foodName], quantity: Number(prev[foodName].quantity) - 1 },
-    }));
   };
 
   useEffect(() => {
@@ -113,66 +89,21 @@ function ItemDetailPage() {
             </QuantitySelectBox>
           </FoodDescription>
         </FoodSection>
-        <TitleWithLine
+        <FoodQuantityBoxList
           title='밥 추가'
-          titleFontType='h3'
-          style={{ marginBottom: 24, marginTop: 80 }}
+          foods={Object.values(foodState).filter((item) => item.type === 'rice')}
+          setFoodState={setFoodState}
         />
-        <List>
-          {Object.values(foodState)
-            .filter((item) => item.type === 'rice')
-            .map((item) => (
-              <FoodQuantityBox
-                key={item.name}
-                name={item.name}
-                price={item.price}
-                quantity={Number(foodState[item.name].quantity)}
-                onChangeQuantity={handleChangeFoodNumberInput}
-                onClickPlusIcon={handleClickFoodPlusIcon}
-                onClickMinusIcon={handleClickFoodMinusIcon}
-              />
-            ))}
-        </List>
-        <TitleWithLine
+        <FoodQuantityBoxList
           title='고기 추가'
-          titleFontType='h3'
-          style={{ marginBottom: 24, marginTop: 60 }}
+          foods={Object.values(foodState).filter((item) => item.type === 'meat')}
+          setFoodState={setFoodState}
         />
-        <List>
-          {Object.values(foodState)
-            .filter((item) => item.type === 'meat')
-            .map((item) => (
-              <FoodQuantityBox
-                key={item.name}
-                name={item.name}
-                price={item.price}
-                quantity={Number(foodState[item.name].quantity)}
-                onChangeQuantity={handleChangeFoodNumberInput}
-                onClickPlusIcon={handleClickFoodPlusIcon}
-                onClickMinusIcon={handleClickFoodMinusIcon}
-              />
-            ))}
-        </List>
-        <TitleWithLine
+        <FoodQuantityBoxList
           title='음료 추가'
-          titleFontType='h3'
-          style={{ marginBottom: 24, marginTop: 60 }}
+          foods={Object.values(foodState).filter((item) => item.type === 'drink')}
+          setFoodState={setFoodState}
         />
-        <List>
-          {Object.values(foodState)
-            .filter((item) => item.type === 'drink')
-            .map((item) => (
-              <FoodQuantityBox
-                key={item.name}
-                name={item.name}
-                price={item.price}
-                quantity={Number(foodState[item.name].quantity)}
-                onChangeQuantity={handleChangeFoodNumberInput}
-                onClickPlusIcon={handleClickFoodPlusIcon}
-                onClickMinusIcon={handleClickFoodMinusIcon}
-              />
-            ))}
-        </List>
       </Spacer>
     </Wrapper>
   );
@@ -214,12 +145,6 @@ const QuantitySelectBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
-`;
-
-const List = styled.ul`
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 40px;
 `;
 
 export default ItemDetailPage;
