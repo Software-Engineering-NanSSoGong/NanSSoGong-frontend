@@ -1,21 +1,28 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Dinner, Food, Style } from '../@types';
 import {
-  FoodQuantityBox,
+  FoodQuantityBoxList,
   NumberInput,
   SideMenuList,
   StyleSelectBoxList,
   TitleWithLine,
   Typography,
 } from '../components';
+import { Foods, FrenchDinner } from '../dummy/dinner';
 import { theme } from '../styles';
 
+const initialDummyFoodState = (food: Food[]) => {
+  return food.reduce((acc, item) => ({ ...acc, [item.name]: { ...item, quantity: 0 } }), {});
+};
+
 function ItemDetailPage() {
-  const [value, setValue] = useState<number>(0);
-  const [selectedStyle, setSelectedStyle] = useState<string | null>(null);
+  const [dinner, setDinner] = useState<Dinner>({} as Dinner);
+  const [foodState, setFoodState] = useState<Record<string, Food>>(initialDummyFoodState(Foods));
+  const [selectedStyle, setSelectedStyle] = useState<Style | null>(null);
   const isShampain = true;
 
-  const handleClickStyleBox = (style: string) => {
+  const handleClickStyleBox = (style: Style) => {
     if (style === selectedStyle) {
       setSelectedStyle(null);
     } else {
@@ -23,23 +30,26 @@ function ItemDetailPage() {
     }
   };
 
+  useEffect(() => {
+    // TODO: 백엔드로부터 디너 받기 with 리코일 상태관리
+    setDinner({ ...FrenchDinner, quantity: 1 });
+  }, []);
+
   return (
     <Wrapper>
       <SideMenuList />
       <Spacer>
         <FoodSection>
-          <FoodImage src={'/Dinner.png'} alt='dinner-set image' />
+          <FoodImage src={dinner?.image} alt='dinner-set image' />
           <FoodDescription>
             <TitleWithLine
-              title='프렌치 디너'
+              title={dinner?.name as string}
               titleFontType='h1'
               titleColor={theme.colors.text.bold}
               borderColor={theme.palette.gray50}
             />
             <Typography type='body5' color={theme.palette.gray50}>
-              {
-                '프렌치 디너는 커피 한잔, 와인 한잔, 샐러드, 스테이크가 제공되며 미스터 대박 디너 서비스의 인기 세트 중 하나로 프랑스식의 근사한 저녁 식사를 드실 수 있습니다'
-              }
+              {dinner?.description}
             </Typography>
             <TextLine>
               <Typography type='h4' color={theme.colors.text.bold}>
@@ -52,7 +62,7 @@ function ItemDetailPage() {
               )}
             </TextLine>
             <StyleSelectBoxList
-              styleList={['심플', '그랜드', '디럭스']}
+              styleList={dinner.styles}
               selectedStyle={selectedStyle}
               handleClickStyle={handleClickStyleBox}
             />
@@ -61,53 +71,39 @@ function ItemDetailPage() {
                 수량 선택
               </Typography>
               <NumberInput
-                value={value}
+                value={dinner.quantity ?? 0}
                 type={'large'}
-                onChange={(e) => setValue(Number(e.target.value))}
-                onClickPlusIcon={() => setValue((prev) => prev + 1)}
-                onClickMinusIcon={() => setValue((prev) => (prev - 1 < 0 ? 0 : prev - 1))}
+                onChange={(e) =>
+                  setDinner((prev) => ({ ...prev, quantity: Number(e.target.value) }))
+                }
+                onClickPlusIcon={() =>
+                  setDinner((prev) => ({ ...prev, quantity: Number(prev.quantity) + 1 }))
+                }
+                onClickMinusIcon={() =>
+                  setDinner((prev) => ({
+                    ...prev,
+                    quantity: Number(prev.quantity) - 1 < 0 ? 0 : Number(prev.quantity) - 1,
+                  }))
+                }
               />
             </QuantitySelectBox>
           </FoodDescription>
         </FoodSection>
-        <TitleWithLine
-          title='음식 추가'
-          titleFontType='h3'
-          style={{ marginBottom: 24, marginTop: 104 }}
+        <FoodQuantityBoxList
+          title='밥 추가'
+          foods={Object.values(foodState).filter((item) => item.type === 'rice')}
+          setFoodState={setFoodState}
         />
-        <List>
-          <FoodQuantityBox quantity={value} setQuantity={setValue} name={'감자'} />
-          <FoodQuantityBox quantity={value} setQuantity={setValue} name={'감자'} />
-          <FoodQuantityBox quantity={value} setQuantity={setValue} name={'감자'} />
-          <FoodQuantityBox quantity={value} setQuantity={setValue} name={'감자'} />
-          <FoodQuantityBox quantity={value} setQuantity={setValue} name={'감자'} />
-        </List>
-        <TitleWithLine
+        <FoodQuantityBoxList
+          title='고기 추가'
+          foods={Object.values(foodState).filter((item) => item.type === 'meat')}
+          setFoodState={setFoodState}
+        />
+        <FoodQuantityBoxList
           title='음료 추가'
-          titleFontType='h3'
-          style={{ marginBottom: 24, marginTop: 60 }}
+          foods={Object.values(foodState).filter((item) => item.type === 'drink')}
+          setFoodState={setFoodState}
         />
-        <List>
-          <FoodQuantityBox quantity={value} setQuantity={setValue} name={'감자'} />
-          <FoodQuantityBox quantity={value} setQuantity={setValue} name={'감자'} />
-          <FoodQuantityBox quantity={value} setQuantity={setValue} name={'감자'} />
-          <FoodQuantityBox quantity={value} setQuantity={setValue} name={'감자'} />
-          <FoodQuantityBox quantity={value} setQuantity={setValue} name={'감자'} />
-        </List>
-        <TitleWithLine
-          title='재료 제외'
-          titleFontType='h3'
-          style={{ marginBottom: 24, marginTop: 60 }}
-        />
-        <List>
-          <Food className='active'>치즈 제외</Food>
-          <Food>치즈 제외</Food>
-          <Food>치즈 제외</Food>
-          <Food>치즈 제외</Food>
-          <Food>치즈 제외</Food>
-          <Food>치즈 제외</Food>
-          <Food>치즈 제외</Food>
-        </List>
       </Spacer>
     </Wrapper>
   );
@@ -116,7 +112,7 @@ function ItemDetailPage() {
 const Wrapper = styled.main``;
 
 const Spacer = styled.div`
-  margin: 80px 80px 0 380px;
+  margin: 80px 80px 80px 380px;
 `;
 
 const FoodSection = styled.section`
@@ -149,37 +145,6 @@ const QuantitySelectBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
-`;
-
-const List = styled.ul`
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-`;
-
-const Food = styled.div`
-  box-sizing: border-box;
-  padding: 32px;
-  background-color: ${theme.palette.gray300};
-  border-radius: 16px;
-  transition: all 0.1s ease-in;
-  cursor: pointer;
-  color: ${theme.palette.gray100};
-  margin-bottom: 80px;
-
-  &.active {
-    background-color: ${theme.palette.red600};
-    color: ${theme.colors.text.bold};
-  }
-
-  &:not(.active):hover {
-    background-color: ${theme.palette.gray400};
-    color: ${theme.palette.gray200};
-  }
-
-  &.active:hover {
-    background-color: ${theme.colors.primary.red};
-  }
 `;
 
 export default ItemDetailPage;
