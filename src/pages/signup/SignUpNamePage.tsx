@@ -6,7 +6,7 @@ import { Button, IconInputLine, TitleWithLine, Typography } from '../../componen
 import { signUpState as RecoilSignUpState } from '../../stores/SignUp';
 import { theme } from '../../styles';
 
-function SignUpEmailPage() {
+function SignUpNamePage() {
   const navigate = useNavigate();
   const [email, setEmail] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
@@ -27,11 +27,11 @@ function SignUpEmailPage() {
           />
           <Lines>
             <Typography type='h5' color={theme.palette.gray400} textAlign='left'>
-              아이디
+              성명
             </Typography>
             <IconInputLine icon='user' value={email} onChange={(e) => setEmail(e.target.value)} />
             <Typography type='h5' color={theme.palette.gray400} textAlign='left'>
-              비밀번호
+              주소
             </Typography>
             <IconInputLine
               icon='lock'
@@ -57,7 +57,7 @@ function SignUpEmailPage() {
             <Button
               fullWidth
               style={{ padding: '12px' }}
-              onClick={() => navigate('/signup-name')}
+              onClick={() => navigate('/signup-email')}
               disabled={
                 email === '' ||
                 password === '' ||
@@ -110,4 +110,4 @@ const Lines = styled.section`
   gap: 30px;
 `;
 
-export default SignUpEmailPage;
+export default SignUpNamePage;

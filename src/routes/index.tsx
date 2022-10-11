@@ -7,6 +7,7 @@ import {
   ItemDetailPage,
   SignUpSelectUserTypePage,
   SignUpEmailPage,
+  SignUpNamePage,
 } from '../pages';
 import RequiredAuthGuard from './RequiredAuthGuard';
 
@@ -18,6 +19,7 @@ function Router() {
       <Route path='/main' element={<MainPage />} />
       <Route path='/signup-type' element={<SignUpSelectUserTypePage />} />
       <Route path='/signup-email' element={<SignUpEmailPage />} />
+      <Route path='/signup-name' element={<SignUpNamePage />} />
       <Route path='/item/:id' element={<ItemDetailPage />} />
       <Route path='/history' element={<ClientHistoryOrderPage />} />
       {/* 유저만 갈 수 있는 페이지 example: 내정보페이지 */}

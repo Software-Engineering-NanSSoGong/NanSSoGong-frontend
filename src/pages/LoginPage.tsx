@@ -43,7 +43,7 @@ function LoginPage() {
             <Button
               fullWidth
               style={{ padding: '12px' }}
-              onClick={() => navigate('/signup')}
+              onClick={() => navigate('/signup-type')}
               hierarchy={ButtonHierarchy.DarkGray}
             >
               <Typography type='h4' textAlign='center'>
