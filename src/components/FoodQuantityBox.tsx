@@ -47,6 +47,7 @@ const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.palette.gray300};
   border-radius: 16px;
   transition: all 0.1s ease-in;
+  white-space: pre;
 
   &.active {
     background-color: ${({ theme }) => theme.colors.primary.blue};

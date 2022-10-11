@@ -43,6 +43,7 @@ const ItemStyle = styled.div`
   flex-basis: 140px;
   cursor: pointer;
   transition: all 0.1s linear;
+  white-space: pre;
 
   &.active {
     background-color: ${theme.colors.primary.green};
