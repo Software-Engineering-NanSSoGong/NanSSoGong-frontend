@@ -7,3 +7,4 @@ export { default as SideMenuList } from './SideMenuList';
 export { default as TitleWithLine } from './TitleWithLine';
 export { default as StyleSelectBoxList } from './StyleSelectBoxList';
 export { default as FoodQuantityBox } from './FoodQuantityBox';
+export { default as FoodQuantityBoxList } from './FoodQuantityBoxList';

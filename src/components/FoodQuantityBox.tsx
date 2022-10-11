@@ -1,14 +1,27 @@
 import styled from '@emotion/styled';
-import { Dispatch, SetStateAction } from 'react';
+import { Food } from '../@types';
 import { NumberInput, Typography } from './common';
 
 interface Props {
   name: string;
+  price: number;
   quantity: number;
-  setQuantity: Dispatch<SetStateAction<number>>;
+  onChangeQuantity: (
+    foodName: keyof Record<string, Food>,
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => void;
+  onClickPlusIcon: (foodName: keyof Record<string, Food>) => void;
+  onClickMinusIcon: (foodName: keyof Record<string, Food>) => void;
 }
 
-function FoodQuantityBox({ name, quantity, setQuantity }: Props) {
+function FoodQuantityBox({
+  name,
+  price,
+  quantity,
+  onChangeQuantity,
+  onClickPlusIcon,
+  onClickMinusIcon,
+}: Props) {
   return (
     <Wrapper className={quantity > 0 ? 'active' : ''}>
       <NameBox>
@@ -16,15 +29,15 @@ function FoodQuantityBox({ name, quantity, setQuantity }: Props) {
           {name}
         </Typography>
         <Typography type='body5' textAlign='center'>
-          (+ 5,000원)
+          (+ {price.toLocaleString()}원)
         </Typography>
       </NameBox>
       <NumberInput
         type='small'
         value={quantity}
-        onChange={(e) => setQuantity(Number(e.target.value))}
-        onClickPlusIcon={() => setQuantity((prev) => prev + 1)}
-        onClickMinusIcon={() => setQuantity((prev) => (prev - 1 < 0 ? 0 : prev - 1))}
+        onChange={(e) => onChangeQuantity(name, e)}
+        onClickPlusIcon={() => onClickPlusIcon(name)}
+        onClickMinusIcon={() => onClickMinusIcon(name)}
       />
     </Wrapper>
   );
@@ -34,7 +47,7 @@ const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.palette.gray300};
   border-radius: 16px;
   transition: all 0.1s ease-in;
-  flex-basis: 170px;
+  white-space: pre;
 
   &.active {
     background-color: ${({ theme }) => theme.colors.primary.blue};
