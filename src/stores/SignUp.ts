@@ -12,7 +12,7 @@ interface SignUpState {
 }
 
 export const signUpState = atom<SignUpState>({
-  key: 'user',
+  key: 'signup',
   default: {
     userType: null,
     email: '',
