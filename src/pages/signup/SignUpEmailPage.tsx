@@ -30,6 +30,16 @@ function SignUpEmailPage() {
               아이디
             </Typography>
             <IconInputLine icon='user' value={email} onChange={(e) => setEmail(e.target.value)} />
+            <CheckButton>
+              <Typography
+                type='h5'
+                color={theme.palette.white}
+                textAlign='center'
+                style={{ padding: '12px' }}
+              >
+                중복확인
+              </Typography>
+            </CheckButton>
             <Typography type='h5' color={theme.palette.gray400} textAlign='left'>
               비밀번호
             </Typography>
@@ -108,6 +118,9 @@ const Lines = styled.section`
   display: flex;
   flex-direction: column;
   gap: 30px;
+`;
+const CheckButton = styled(Button)`
+  width: 20%;
 `;
 
 export default SignUpEmailPage;

@@ -3,15 +3,16 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { Button, IconInputLine, TitleWithLine, Typography } from '../../components';
+import { ButtonHierarchy } from '../../components/common/Button';
 import { signUpState as RecoilSignUpState } from '../../stores/SignUp';
 import { theme } from '../../styles';
 
 function SignUpNamePage() {
   const navigate = useNavigate();
-  const [email, setEmail] = React.useState<string>('');
-  const [password, setPassword] = React.useState<string>('');
-  const [passwordAgain, setPasswordAgain] = React.useState<string>('');
+  const [name, setName] = React.useState<string>('');
+  const [address, setAddress] = React.useState<string>('');
   const [signUpState] = useRecoilState(RecoilSignUpState);
+  const [accept, setAccept] = React.useState<boolean>(false);
 
   return (
     <Wrapper>
@@ -29,41 +30,37 @@ function SignUpNamePage() {
             <Typography type='h5' color={theme.palette.gray400} textAlign='left'>
               성명
             </Typography>
-            <IconInputLine icon='user' value={email} onChange={(e) => setEmail(e.target.value)} />
+            <IconInputLine icon='user' value={name} onChange={(e) => setName(e.target.value)} />
             <Typography type='h5' color={theme.palette.gray400} textAlign='left'>
               주소
             </Typography>
             <IconInputLine
               icon='lock'
-              type='password'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
             />
             <Typography type='h5' color={theme.palette.gray400} textAlign='left'>
-              비밀번호 확인
+              개인정보 이용 동의
             </Typography>
-            <IconInputLine
-              icon='lock'
-              type='password'
-              value={passwordAgain}
-              onChange={(e) => setPasswordAgain(e.target.value)}
-            />
+            <AcceptButton
+              fullWidth
+              style={{ padding: '12px' }}
+              onClick={() => setAccept(true)}
+              hierarchy={ButtonHierarchy.DarkGray}
+              className={accept === true ? 'active' : ''}
+            >
+              <Typography type='h4' color={theme.palette.white} textAlign='center'>
+                동의합니다
+              </Typography>
+            </AcceptButton>
           </Lines>
 
-          <Typography type='h5' color={theme.palette.coreRed} textAlign='left'>
-            {password !== passwordAgain ? '비밀번호가 다릅니다' : ' '}
-          </Typography>
           <Lines>
             <Button
               fullWidth
               style={{ padding: '12px' }}
-              onClick={() => navigate('/signup-email')}
-              disabled={
-                email === '' ||
-                password === '' ||
-                passwordAgain === '' ||
-                passwordAgain !== password
-              }
+              onClick={() => navigate('/main')}
+              disabled={name === '' || address === ''}
             >
               <Typography type='h4' color={theme.palette.gray50} textAlign='center'>
                 계속하기
@@ -108,6 +105,18 @@ const Lines = styled.section`
   display: flex;
   flex-direction: column;
   gap: 30px;
+`;
+
+const AcceptButton = styled(Button)`
+  padding: 20px;
+  transition: all 0.2s ease-in;
+  &:hover {
+    background-color: ${theme.palette.gray400};
+  }
+
+  &.active {
+    background-color: ${theme.colors.primary.green};
+  }
 `;
 
 export default SignUpNamePage;
