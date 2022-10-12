@@ -9,6 +9,7 @@ import {
   TitleWithLine,
   Typography,
 } from '../components';
+import BottomButton from '../components/BottomButton';
 import { Foods, FrenchDinner } from '../dummy/dinner';
 import { theme } from '../styles';
 
@@ -20,6 +21,7 @@ function ItemDetailPage() {
   const [dinner, setDinner] = useState<Dinner>({} as Dinner);
   const [foodState, setFoodState] = useState<Record<string, Food>>(initialDummyFoodState(Foods));
   const [selectedStyle, setSelectedStyle] = useState<Style | null>(null);
+  console.log(selectedStyle);
   const isShampain = true;
 
   const handleClickStyleBox = (style: Style) => {
@@ -40,16 +42,16 @@ function ItemDetailPage() {
       <SideMenuList />
       <Spacer>
         <FoodSection>
-          <FoodImage src={dinner?.image} alt='dinner-set image' />
+          <FoodImage src={dinner.image} alt='dinner-set image' />
           <FoodDescription>
             <TitleWithLine
-              title={dinner?.name as string}
+              title={dinner.name as string}
               titleFontType='h1'
               titleColor={theme.colors.text.bold}
               borderColor={theme.palette.gray50}
             />
             <Typography type='body5' color={theme.palette.gray50}>
-              {dinner?.description}
+              {dinner.description}
             </Typography>
             <TextLine>
               <Typography type='h4' color={theme.colors.text.bold}>
@@ -105,14 +107,27 @@ function ItemDetailPage() {
           setFoodState={setFoodState}
         />
       </Spacer>
+      <BottomButton
+        buttonProps={{ disabled: dinner.quantity === 0 || selectedStyle === null }}
+        style={{
+          marginLeft: '300px',
+          width: 'calc(100% - 300px)',
+        }}
+      >
+        <Typography type='h3' textAlign='center'>
+          주문하기
+        </Typography>
+      </BottomButton>
     </Wrapper>
   );
 }
 
-const Wrapper = styled.main``;
+const Wrapper = styled.main`
+  width: 100%;
+`;
 
 const Spacer = styled.div`
-  margin: 80px 80px 80px 380px;
+  padding: 80px 80px 120px 380px;
 `;
 
 const FoodSection = styled.section`

@@ -15,7 +15,7 @@ interface Props extends ComponentProps<'button'> {
   hierarchy?: ButtonHierarchy;
   width?: CSSProperties['width'];
   fullWidth?: boolean;
-  borderRadius?: number;
+  borderRadius?: number | string;
   disabled?: boolean;
 }
 
@@ -48,7 +48,8 @@ const Wrapper = styled.button<StyleProps>`
   width: ${({ fullWidth, width }) =>
     fullWidth ? '100%' : typeof width === 'number' ? `${width}px` : width};
   cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
-  border-radius: ${({ borderRadius }) => borderRadius}px;
+  border-radius: ${({ borderRadius }) =>
+    typeof borderRadius === 'string' ? borderRadius : `${borderRadius}px`};
   transition: all 0.2s ease-in;
 
   background-color: ${({ hierarchy }) => {
