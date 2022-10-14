@@ -9,9 +9,9 @@ import TitleWithLine from './TitleWithLine';
 interface Props {
   type: 'beforeOrder' | 'order';
   dinner: Dinner;
-  setDinner: Dispatch<SetStateAction<Dinner>>;
+  setDinner?: Dispatch<SetStateAction<Dinner>>;
   selectedStyle: Style | null;
-  setSelectedStyle: Dispatch<SetStateAction<Style | null>>;
+  setSelectedStyle?: Dispatch<SetStateAction<Style | null>>;
 }
 
 const dummyFoodInfo = [
@@ -25,9 +25,9 @@ function FoodBox({ type, dinner, selectedStyle, setDinner, setSelectedStyle }: P
 
   const handleClickStyleBox = (style: Style) => {
     if (style === selectedStyle) {
-      setSelectedStyle(null);
+      setSelectedStyle?.(null);
     } else {
-      setSelectedStyle(style);
+      setSelectedStyle?.(style);
     }
   };
 
@@ -91,13 +91,13 @@ function FoodBox({ type, dinner, selectedStyle, setDinner, setSelectedStyle }: P
                   value={dinner.quantity ?? 0}
                   type={'large'}
                   onChange={(e) =>
-                    setDinner((prev) => ({ ...prev, quantity: Number(e.target.value) }))
+                    setDinner?.((prev) => ({ ...prev, quantity: Number(e.target.value) }))
                   }
                   onClickPlusIcon={() =>
-                    setDinner((prev) => ({ ...prev, quantity: Number(prev.quantity) + 1 }))
+                    setDinner?.((prev) => ({ ...prev, quantity: Number(prev.quantity) + 1 }))
                   }
                   onClickMinusIcon={() =>
-                    setDinner((prev) => ({
+                    setDinner?.((prev) => ({
                       ...prev,
                       quantity: Number(prev.quantity) - 1 < 0 ? 0 : Number(prev.quantity) - 1,
                     }))
