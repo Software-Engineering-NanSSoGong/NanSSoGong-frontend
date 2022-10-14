@@ -24,7 +24,7 @@ function ItemDetailPage() {
       <SideMenuList />
       <Spacer>
         <FoodBox
-          type='order'
+          type='beforeOrder'
           dinner={dinner}
           setDinner={setDinner}
           selectedStyle={selectedStyle}
