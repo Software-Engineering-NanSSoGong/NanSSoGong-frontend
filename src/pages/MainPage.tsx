@@ -33,7 +33,7 @@ function MainPage() {
 const Wrapper = styled.main``;
 
 const Spacer = styled.div`
-  margin: 120px 104px 120px 424px;
+  padding: 120px 104px 120px 424px;
 `;
 
 const DinnerList = styled.section`
