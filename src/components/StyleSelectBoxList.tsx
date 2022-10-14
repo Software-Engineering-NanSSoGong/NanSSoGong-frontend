@@ -20,7 +20,7 @@ function StyleSelectBoxList({
     <Wrapper>
       {styleList?.map((style) => (
         <ItemStyle
-          className={selectedStyle === style ? 'active' : ''}
+          className={selectedStyle?.name === style.name ? 'active' : ''}
           key={style.name}
           onClick={() => handleClickStyle?.(style)}
           disabled={disabled}
