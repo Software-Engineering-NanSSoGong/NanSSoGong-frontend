@@ -17,3 +17,7 @@ export interface Dinner extends BaseFood<string> {
 export interface Food extends BaseFood<string> {
   type: 'meat' | 'rice' | 'drink';
 }
+
+export interface AddedDinner extends Dinner {
+  selectedStyle: Style;
+}
