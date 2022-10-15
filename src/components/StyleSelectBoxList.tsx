@@ -65,6 +65,7 @@ const ItemStyle = styled(Button)<StyleProps>`
 
   &:disabled {
     transition: none;
+    cursor: default;
   }
 `;
 
