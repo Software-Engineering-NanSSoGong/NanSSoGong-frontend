@@ -12,7 +12,7 @@ interface Props {
 function ConfirmModal({ confirmMsg = '확인', children, onClickConfirm }: PropsWithChildren<Props>) {
   return (
     <Wrapper>
-      {children}
+      <Spacer>{children}</Spacer>
       <ModalBottomButtonSection>
         <ModalTriggerBottomButton
           modalType='close'
@@ -43,6 +43,10 @@ const ModalTriggerBottomButton = styled(ModalTriggerButton)`
   width: 100%;
   box-sizing: border-box;
   padding: 16px;
+`;
+
+const Spacer = styled.section`
+  padding-bottom: 80px;
 `;
 
 export default ConfirmModal;

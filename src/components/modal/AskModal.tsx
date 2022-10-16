@@ -21,7 +21,7 @@ function AskModal({
 }: PropsWithChildren<Props>) {
   return (
     <Wrapper>
-      {children}
+      <Spacer>{children}</Spacer>
       <ModalBottomButtonSection>
         <ModalTriggerBottomButton
           modalType='close'
@@ -50,6 +50,10 @@ function AskModal({
 
 const Wrapper = styled.article`
   position: relative;
+`;
+
+const Spacer = styled.section`
+  padding-bottom: 80px;
 `;
 
 const ModalBottomButtonSection = styled.section`
