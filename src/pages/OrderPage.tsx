@@ -99,6 +99,7 @@ function OrderPage() {
         </OrderInfomationBox>
       </Spacer>
       <BottomButton
+        position='fixed'
         buttonProps={{ hierarchy: ButtonHierarchy.Danger }}
         style={{
           marginLeft: '300px',

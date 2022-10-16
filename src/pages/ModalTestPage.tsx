@@ -1,6 +1,6 @@
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { BottomButton, Modal } from '../components';
+import { BottomButton, Modal, Typography } from '../components';
+import { theme } from '../styles';
 
 function ModalTestPage() {
   return (
@@ -12,25 +12,43 @@ function ModalTestPage() {
             onClick={() => console.log('모달 열기')}
             as={BottomButton}
           >
-            <div style={{ backgroundColor: '#fff' }}>모달 열기</div>
+            <div>모달 열기</div>
           </Modal.triggerButton>
         }
         modalNode={
-          <ModalBody>
-            <ModalSpacer style={{ position: 'relative' }}>
-              모달 내용
-              <Modal.triggerButton
-                modalType='close'
-                onClick={() => console.log('모달 닫기')}
-                style={{
-                  borderRadius: '0 0 16px 16px',
-                }}
-                as={BottomButton}
-              >
-                닫기 버튼
-              </Modal.triggerButton>
-            </ModalSpacer>
-          </ModalBody>
+          <Modal.askModal>
+            <ModalBody>
+              <Typography type='h3' color={theme.colors.text.dark} textAlign='center'>
+                모달 정보
+              </Typography>
+              <Typography type='body4' color={theme.colors.text.dark} style={{ marginTop: 32 }}>
+                정말로 구매하시겠습니까?
+              </Typography>
+            </ModalBody>
+          </Modal.askModal>
+        }
+      />
+      <Modal
+        triggerNode={
+          <Modal.triggerButton
+            modalType='open'
+            onClick={() => console.log('모달 열기')}
+            as={BottomButton}
+          >
+            <div>모달 열기</div>
+          </Modal.triggerButton>
+        }
+        modalNode={
+          <Modal.askModal>
+            <ModalBody>
+              <Typography type='h3' color={theme.colors.text.dark} textAlign='center'>
+                모달 정보
+              </Typography>
+              <Typography type='body4' color={theme.colors.text.dark} style={{ marginTop: 32 }}>
+                정말로 구매하시겠습니까?
+              </Typography>
+            </ModalBody>
+          </Modal.askModal>
         }
       />
     </Layout>
@@ -38,27 +56,20 @@ function ModalTestPage() {
 }
 
 const Layout = styled.main`
-  ${({ theme }) => css`
-    width: 100%;
-    height: 100%;
-    background-color: ${theme.colors.background};
+  width: 100%;
+  height: 100%;
+  background-color: ${theme.colors.background};
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  `}
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const ModalBody = styled.div`
   width: 500px;
   height: 500px;
-`;
-
-const ModalSpacer = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  padding: 16px;
+  box-sizing: border-box;
 `;
 
 export default ModalTestPage;

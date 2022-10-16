@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import React from 'react';
 import { useDisclosure } from '../../hooks';
 import { theme } from '../../styles';
+import AskModal from './AskModal';
 import Context from './Context';
 import ModalTriggerButton from './ModalTriggerButton';
 import Portal from './Portal';
@@ -75,5 +76,6 @@ const ModalNode = styled.section`
 `;
 
 Modal.triggerButton = ModalTriggerButton;
+Modal.askModal = AskModal;
 
 export default Modal;

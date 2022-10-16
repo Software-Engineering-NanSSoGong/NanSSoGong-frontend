@@ -5,11 +5,13 @@ import { useModal } from './Context';
 interface Props extends ComponentPropsWithoutRef<'button'> {
   modalType: 'open' | 'close';
   as?: ElementType;
+  buttonProps?: ComponentPropsWithoutRef<typeof Button>;
 }
 
 function ModalTriggerButton({
   modalType,
   as,
+  buttonProps,
   onClick,
   children,
   ...props
@@ -29,7 +31,7 @@ function ModalTriggerButton({
   };
 
   return (
-    <WillRenderComponent as={as} {...props} onClick={handleClick}>
+    <WillRenderComponent {...buttonProps} as={as} {...props} onClick={handleClick}>
       {children}
     </WillRenderComponent>
   );
