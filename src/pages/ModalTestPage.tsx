@@ -39,7 +39,7 @@ function ModalTestPage() {
           </Modal.triggerButton>
         }
         modalNode={
-          <Modal.askModal>
+          <Modal.confirmModal>
             <ModalBody>
               <Typography type='h3' color={theme.colors.text.dark} textAlign='center'>
                 모달 정보
@@ -48,7 +48,7 @@ function ModalTestPage() {
                 정말로 구매하시겠습니까?
               </Typography>
             </ModalBody>
-          </Modal.askModal>
+          </Modal.confirmModal>
         }
       />
     </Layout>

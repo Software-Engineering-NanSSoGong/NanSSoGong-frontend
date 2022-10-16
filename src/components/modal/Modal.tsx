@@ -3,6 +3,7 @@ import React from 'react';
 import { useDisclosure } from '../../hooks';
 import { theme } from '../../styles';
 import AskModal from './AskModal';
+import ConfirmModal from './ConfirmModal';
 import Context from './Context';
 import ModalTriggerButton from './ModalTriggerButton';
 import Portal from './Portal';
@@ -77,5 +78,6 @@ const ModalNode = styled.section`
 
 Modal.triggerButton = ModalTriggerButton;
 Modal.askModal = AskModal;
+Modal.confirmModal = ConfirmModal;
 
 export default Modal;
