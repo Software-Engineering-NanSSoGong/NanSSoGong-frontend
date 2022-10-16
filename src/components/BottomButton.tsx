@@ -3,22 +3,25 @@ import { ComponentPropsWithoutRef, CSSProperties, PropsWithChildren } from 'reac
 import { Button } from './common';
 
 interface Props {
+  position: CSSProperties['position'];
   buttonProps?: ComponentPropsWithoutRef<typeof Button>;
   style?: CSSProperties;
 }
 
-function BottomButton({ buttonProps, children, ...restProps }: PropsWithChildren<Props>) {
+function BottomButton({ position, buttonProps, children, ...restProps }: PropsWithChildren<Props>) {
   return (
-    <Wrapper fullWidth borderRadius={'0px'} {...buttonProps} {...restProps}>
+    <Wrapper fullWidth position={position} borderRadius={'0px'} {...buttonProps} {...restProps}>
       {children}
     </Wrapper>
   );
 }
 
-const Wrapper = styled(Button)`
+type StyleProps = Pick<Props, 'position'>;
+
+const Wrapper = styled(Button)<StyleProps>`
   padding: 16px;
   box-sizing: border-box;
-  position: fixed;
+  position: ${({ position }) => position};
   bottom: 0;
   left: 0;
 `;

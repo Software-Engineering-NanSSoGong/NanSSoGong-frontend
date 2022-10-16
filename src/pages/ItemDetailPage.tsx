@@ -1,14 +1,8 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Dinner, Food, Style } from '../@types';
-import {
-  FoodQuantityBoxList,
-  NumberInput,
-  SideMenuList,
-  StyleSelectBoxList,
-  TitleWithLine,
-  Typography,
-} from '../components';
+import { FoodBox, FoodQuantityBoxList, Modal, SideMenuList, Typography } from '../components';
 import BottomButton from '../components/BottomButton';
 import { Foods, FrenchDinner } from '../dummy/dinner';
 import { theme } from '../styles';
@@ -18,19 +12,10 @@ const initialDummyFoodState = (food: Food[]) => {
 };
 
 function ItemDetailPage() {
+  const navigate = useNavigate();
   const [dinner, setDinner] = useState<Dinner>({} as Dinner);
-  const [foodState, setFoodState] = useState<Record<string, Food>>(initialDummyFoodState(Foods));
   const [selectedStyle, setSelectedStyle] = useState<Style | null>(null);
-  console.log(selectedStyle);
-  const isShampain = true;
-
-  const handleClickStyleBox = (style: Style) => {
-    if (style === selectedStyle) {
-      setSelectedStyle(null);
-    } else {
-      setSelectedStyle(style);
-    }
-  };
+  const [foodState, setFoodState] = useState<Record<string, Food>>(initialDummyFoodState(Foods));
 
   useEffect(() => {
     // TODO: 백엔드로부터 디너 받기 with 리코일 상태관리
@@ -41,56 +26,13 @@ function ItemDetailPage() {
     <Wrapper>
       <SideMenuList />
       <Spacer>
-        <FoodSection>
-          <FoodImage src={dinner.image} alt='dinner-set image' />
-          <FoodDescription>
-            <TitleWithLine
-              title={dinner.name as string}
-              titleFontType='h1'
-              titleColor={theme.colors.text.bold}
-              borderColor={theme.palette.gray50}
-            />
-            <Typography type='body5' color={theme.palette.gray50}>
-              {dinner.description}
-            </Typography>
-            <TextLine>
-              <Typography type='h4' color={theme.colors.text.bold}>
-                스타일 선택
-              </Typography>
-              {isShampain && (
-                <Typography type='body6' color={theme.colors.primary.red}>
-                  ※ 샴페인 축제 디너는 심플 스타일 선택이 불가합니다
-                </Typography>
-              )}
-            </TextLine>
-            <StyleSelectBoxList
-              styleList={dinner.styles}
-              selectedStyle={selectedStyle}
-              handleClickStyle={handleClickStyleBox}
-            />
-            <QuantitySelectBox>
-              <Typography type='h4' color={theme.colors.text.bold}>
-                수량 선택
-              </Typography>
-              <NumberInput
-                value={dinner.quantity ?? 0}
-                type={'large'}
-                onChange={(e) =>
-                  setDinner((prev) => ({ ...prev, quantity: Number(e.target.value) }))
-                }
-                onClickPlusIcon={() =>
-                  setDinner((prev) => ({ ...prev, quantity: Number(prev.quantity) + 1 }))
-                }
-                onClickMinusIcon={() =>
-                  setDinner((prev) => ({
-                    ...prev,
-                    quantity: Number(prev.quantity) - 1 < 0 ? 0 : Number(prev.quantity) - 1,
-                  }))
-                }
-              />
-            </QuantitySelectBox>
-          </FoodDescription>
-        </FoodSection>
+        <FoodBox
+          type='beforeOrder'
+          dinner={dinner}
+          setDinner={setDinner}
+          selectedStyle={selectedStyle}
+          setSelectedStyle={setSelectedStyle}
+        />
         <FoodQuantityBoxList
           title='밥 추가'
           foods={Object.values(foodState).filter((item) => item.type === 'rice')}
@@ -107,17 +49,84 @@ function ItemDetailPage() {
           setFoodState={setFoodState}
         />
       </Spacer>
-      <BottomButton
-        buttonProps={{ disabled: dinner.quantity === 0 || selectedStyle === null }}
-        style={{
-          marginLeft: '300px',
-          width: 'calc(100% - 300px)',
-        }}
-      >
-        <Typography type='h3' textAlign='center'>
-          주문하기
-        </Typography>
-      </BottomButton>
+      <Modal
+        triggerNode={
+          <Modal.triggerButton
+            modalType='open'
+            as={BottomButton}
+            buttonProps={{ disabled: dinner.quantity === 0 || selectedStyle === null }}
+            style={{
+              position: 'fixed',
+              marginLeft: '300px',
+              width: 'calc(100% - 300px)',
+            }}
+          >
+            <Typography type='h3' textAlign='center'>
+              주문하기
+            </Typography>
+          </Modal.triggerButton>
+        }
+        modalNode={
+          <Modal.askModal onClickConfirm={() => navigate('/order')}>
+            <ModalSpacer>
+              <Typography type='h3' textAlign='center' color={theme.colors.text.dark}>
+                주문 정보
+              </Typography>
+              <Line>
+                <Typography type='h6' color={theme.colors.text.dark}>
+                  프렌치 디너 세트
+                </Typography>
+                <Typography type='body5' color={theme.colors.text.dark}>
+                  1개
+                </Typography>
+              </Line>
+              <Line>
+                <Typography type='h6' color={theme.colors.text.dark}>
+                  감자 추가
+                </Typography>
+                <Typography type='body5' color={theme.colors.primary.green}>
+                  1개
+                </Typography>
+              </Line>
+              <Line>
+                <Typography type='h6' color={theme.colors.text.dark}>
+                  감자 제외
+                </Typography>
+                <Typography type='body5' color={theme.colors.primary.red}>
+                  1개
+                </Typography>
+              </Line>
+              <Line>
+                <Typography type='h6' color={theme.colors.text.dark}>
+                  감자 제외
+                </Typography>
+                <Typography type='body5' color={theme.colors.primary.red}>
+                  1개
+                </Typography>
+              </Line>
+              <Line>
+                <Typography type='h6' color={theme.colors.text.dark} textAlign='end'>
+                  총 금액
+                </Typography>
+                <Typography type='body5' color={theme.colors.text.dark} textAlign='end'>
+                  150,000원
+                </Typography>
+              </Line>
+            </ModalSpacer>
+            <Typography
+              type='body4'
+              color={theme.colors.text.dark}
+              style={{
+                borderTop: `1px solid ${theme.palette.gray300}`,
+                paddingTop: 16,
+                paddingLeft: 16,
+              }}
+            >
+              다음 프렌치 디너 세트를 정말로 주문하시겠습니까?
+            </Typography>
+          </Modal.askModal>
+        }
+      ></Modal>
     </Wrapper>
   );
 }
@@ -130,36 +139,17 @@ const Spacer = styled.div`
   padding: 80px 80px 120px 380px;
 `;
 
-const FoodSection = styled.section`
-  display: flex;
-  justify-content: space-between;
-  gap: 60px;
-`;
-
-const FoodImage = styled.img`
-  max-width: 40%;
-  border-radius: 16px;
-  object-fit: cover;
-`;
-
-const FoodDescription = styled.section`
+const ModalSpacer = styled.div`
+  padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 24px;
-  flex-shrink: 1;
 `;
 
-const TextLine = styled.span`
+const Line = styled.span`
+  width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-`;
-
-const QuantitySelectBox = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
 `;
 
 export default ItemDetailPage;

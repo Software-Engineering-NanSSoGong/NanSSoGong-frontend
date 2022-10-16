@@ -15,15 +15,15 @@ function MainPage() {
           borderColor={theme.palette.gray50}
         />
         <DinnerList>
-          <ClickableDinnerCard title={'프렌치 디너'} src={'/Dinner.png'} href={'/'} />
-          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/main'} />
-          <ClickableDinnerCard title={'발렌타인 디너'} src={'/Dinner.png'} href={'/main'} />
-          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/history'} />
-          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/main'} />
-          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/main'} />
-          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/main'} />
-          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/main'} />
-          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/main'} />
+          <ClickableDinnerCard title={'프렌치 디너'} src={'/Dinner.png'} href={'/item/1'} />
+          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/item/1'} />
+          <ClickableDinnerCard title={'발렌타인 디너'} src={'/Dinner.png'} href={'/item/1'} />
+          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/item/1'} />
+          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/item/1'} />
+          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/item/1'} />
+          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/item/1'} />
+          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/item/1'} />
+          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/item/1'} />
         </DinnerList>
       </Spacer>
     </Wrapper>
@@ -33,7 +33,7 @@ function MainPage() {
 const Wrapper = styled.main``;
 
 const Spacer = styled.div`
-  margin: 120px 104px 120px 424px;
+  padding: 120px 104px 120px 424px;
 `;
 
 const DinnerList = styled.section`
