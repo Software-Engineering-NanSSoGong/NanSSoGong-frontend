@@ -47,6 +47,7 @@ function ItemDetailPage() {
         />
       </Spacer>
       <BottomButton
+        position='fixed'
         buttonProps={{ disabled: dinner.quantity === 0 || selectedStyle === null }}
         style={{
           marginLeft: '300px',

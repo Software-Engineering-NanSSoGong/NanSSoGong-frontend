@@ -1,23 +1,34 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Modal } from '../components';
+import { BottomButton, Modal } from '../components';
 
 function ModalTestPage() {
   return (
     <Layout>
       <Modal
         triggerNode={
-          <Modal.triggerButton modalType='open' onClick={() => console.log('모달 열기')}>
-            <div style={{ width: 500, height: 500, backgroundColor: '#fff' }}>모달 열기</div>
+          <Modal.triggerButton
+            modalType='open'
+            onClick={() => console.log('모달 열기')}
+            as={BottomButton}
+          >
+            <div style={{ backgroundColor: '#fff' }}>모달 열기</div>
           </Modal.triggerButton>
         }
         modalNode={
           <ModalBody>
-            <ModalSpacer>
+            <ModalSpacer style={{ position: 'relative' }}>
               모달 내용
-              <ModalCloseButton modalType='close' onClick={() => console.log('모달 닫기')}>
+              <Modal.triggerButton
+                modalType='close'
+                onClick={() => console.log('모달 닫기')}
+                style={{
+                  borderRadius: '0 0 16px 16px',
+                }}
+                as={BottomButton}
+              >
                 닫기 버튼
-              </ModalCloseButton>
+              </Modal.triggerButton>
             </ModalSpacer>
           </ModalBody>
         }
@@ -45,14 +56,9 @@ const ModalBody = styled.div`
 
 const ModalSpacer = styled.div`
   height: 100%;
-  margin: 16px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-`;
-
-const ModalCloseButton = styled(Modal.triggerButton)`
-  width: 100%;
 `;
 
 export default ModalTestPage;
