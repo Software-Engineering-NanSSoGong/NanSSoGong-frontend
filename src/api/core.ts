@@ -12,7 +12,7 @@ class APIBase {
       process.env.NODE_ENV === 'production' ? process.env.BASE_SERVER_URL : 'http://localhost:8080';
 
     this.baseHTTP = axios.create({
-      baseURL: `${baseServerURL}/${url ?? ''}`,
+      baseURL: `${baseServerURL}/api/${url ?? ''}`,
       timeout: 1000,
       headers: {
         'Content-Type': 'application/json',
