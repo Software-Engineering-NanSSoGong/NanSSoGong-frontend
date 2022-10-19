@@ -4,3 +4,7 @@ export { default as Mic } from './Mic';
 export { default as People } from './People';
 export { default as Rider } from './Rider';
 export { default as Employee } from './Employee';
+export { default as Left } from './Left';
+export { default as Right } from './Right';
+export { default as DoubleLeft } from './DoubleLeft';
+export { default as DoubleRight } from './DoubleRight';
