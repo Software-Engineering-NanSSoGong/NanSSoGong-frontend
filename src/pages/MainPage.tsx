@@ -1,8 +1,26 @@
 import styled from '@emotion/styled';
-import { ClickableDinnerCard, SideMenuList, TitleWithLine } from '../components';
+import { useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { DinnerService } from '../api';
+import { ClickableDinnerCard, PageNavigation, SideMenuList, TitleWithLine } from '../components';
+import usePagination from '../hooks/usePagination';
 import { theme } from '../styles';
 
 function MainPage() {
+  const [searchParams] = useSearchParams();
+  const page = searchParams.get('page') || '1';
+  const size = searchParams.get('size') || '10';
+  const { pageOptions, handleChangePage } = usePagination({
+    totalCount: 150,
+  });
+
+  useEffect(() => {
+    (async () => {
+      const res = await DinnerService.getDinnerList({ page, size });
+      console.log(res);
+    })();
+  }, [page, size]);
+
   return (
     <Wrapper>
       <SideMenuList />
@@ -25,6 +43,7 @@ function MainPage() {
           <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/item/1'} />
           <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/item/1'} />
         </DinnerList>
+        <PageNavigation pageOptions={pageOptions} handleChangePage={handleChangePage} />
       </Spacer>
     </Wrapper>
   );
