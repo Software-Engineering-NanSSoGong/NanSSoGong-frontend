@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { PageOptions } from '../../hooks/usePagination';
+import ClickableIcon from '../ClickableIcon';
 import Button from './Button';
-import Icon from './Icon';
 import Typography from './Typography';
 
 export interface Props {
@@ -17,8 +17,16 @@ function PageNavigation({ pageOptions, handleChangePage }: Props) {
 
   return (
     <Wrapper>
-      <Icon type='doubleLeft' onClick={() => handleChangePage(1)} />
-      <Icon type='left' onClick={() => handleChangePage(prevPage)} />
+      <ClickableIcon
+        iconProps={{ type: 'doubleLeft' }}
+        onClick={() => handleChangePage(1)}
+        disabled={currentPage === 1}
+      />
+      <ClickableIcon
+        iconProps={{ type: 'left' }}
+        onClick={() => handleChangePage(prevPage)}
+        disabled={currentPage === 1}
+      />
       <NavigationList>
         {pages.map((page) => (
           <li key={String(page)}>
@@ -32,8 +40,16 @@ function PageNavigation({ pageOptions, handleChangePage }: Props) {
           </li>
         ))}
       </NavigationList>
-      <Icon type='right' onClick={() => handleChangePage(nextPage)} />
-      <Icon type='doubleRight' onClick={() => handleChangePage(totalPages)} />
+      <ClickableIcon
+        iconProps={{ type: 'right' }}
+        onClick={() => handleChangePage(nextPage)}
+        disabled={currentPage === totalPages}
+      />
+      <ClickableIcon
+        iconProps={{ type: 'doubleRight' }}
+        onClick={() => handleChangePage(totalPages)}
+        disabled={currentPage === totalPages}
+      />
     </Wrapper>
   );
 }

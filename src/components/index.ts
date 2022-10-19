@@ -10,3 +10,4 @@ export { default as FoodQuantityBox } from './FoodQuantityBox';
 export { default as FoodQuantityBoxList } from './FoodQuantityBoxList';
 export { default as BottomButton } from './BottomButton';
 export { default as FoodBox } from './FoodBox';
+export { default as ClickableIcon } from './ClickableIcon';
