@@ -1,4 +1,4 @@
-import { ResponseFoodList } from '../@types';
+import { BasePageRequest, ResponseFoodList } from '../@types';
 import APIBase from './core';
 
 class FoodService extends APIBase {
@@ -6,8 +6,11 @@ class FoodService extends APIBase {
     super('food');
   }
 
-  public getList(): Promise<ResponseFoodList> {
-    return this.baseHTTP.get('list').then(APIBase._handleResponse).catch(APIBase._handleError);
+  public getList({ page, size }: BasePageRequest): Promise<ResponseFoodList> {
+    return this.baseHTTP
+      .get(`list?page=${page}&size=${size}`)
+      .then(APIBase._handleResponse)
+      .catch(APIBase._handleError);
   }
 }
 
