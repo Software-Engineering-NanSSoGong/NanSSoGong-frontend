@@ -33,16 +33,16 @@ function FoodBox({ type, dinner, selectedStyle, setDinner, setSelectedStyle }: P
 
   return (
     <FoodSection>
-      <FoodImage src={dinner.dinnerImage} alt='dinner-set image' />
+      <FoodImage src={dinner.dinnerImage || '/Dinner.png'} alt='dinner-set image' />
       <FoodDescription>
         <TitleWithLine
-          title={dinner.dinnerName as string}
+          title={dinner.dinnerName}
           titleFontType='h1'
           titleColor={theme.colors.text.bold}
           borderColor={theme.palette.gray50}
         />
         <Typography type='body5' color={theme.palette.gray50}>
-          {dinner.dinnerDescription}
+          {dinner.dinnerDescription || '프렌치 디너는 어쩌구저쩌구 입니다.'}
         </Typography>
         <SwitchCase
           value={type}
@@ -91,22 +91,24 @@ function FoodBox({ type, dinner, selectedStyle, setDinner, setSelectedStyle }: P
                   value={dinner.dinnerQuantity ?? 0}
                   type={'large'}
                   onChange={(e) =>
-                    setDinner?.((prev) => ({ ...prev, quantity: Number(e.target.value) }))
+                    setDinner?.((prev) => ({ ...prev, dinnerQuantity: Number(e.target.value) }))
                   }
                   onClickPlusIcon={() =>
-                    setDinner?.((prev) => ({ ...prev, quantity: Number(prev.dinnerQuantity) + 1 }))
+                    setDinner?.((prev) => ({
+                      ...prev,
+                      dinnerQuantity: Number(prev.dinnerQuantity || 0) + 1,
+                    }))
                   }
                   onClickMinusIcon={() =>
                     setDinner?.((prev) => ({
                       ...prev,
-                      quantity:
+                      dinnerQuantity:
                         Number(prev.dinnerQuantity) - 1 < 0 ? 0 : Number(prev.dinnerQuantity) - 1,
                     }))
                   }
                 />
               </QuantitySelectBox>
             ),
-            // 1시 30분 어때 딱 1시간
             order: (
               <ExtraInfomationSection>
                 <TitleWithLine title='메뉴 추가 및 삭제 정보' titleFontType='h4' />

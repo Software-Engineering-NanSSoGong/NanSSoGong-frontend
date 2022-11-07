@@ -22,7 +22,6 @@ function MainPage() {
       const res = await DinnerService.getDinnerList({ page, size });
       setTotalCount(res.totalElements);
       setDinnerList(res.content);
-      console.log(res.content);
     })();
   }, [page, size]);
 

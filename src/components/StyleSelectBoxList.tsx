@@ -21,14 +21,14 @@ function StyleSelectBoxList({
   const styleList = useRecoilValue(styleState);
   const filterdStyleList = styleList.filter(
     (style) =>
-      excludedStyleList.findIndex(
-        (excludedStyle) => excludedStyle.excludedStyleName === style.styleName,
+      excludedStyleList?.findIndex(
+        (excludedStyle) => excludedStyle.excludedStyleId === style.styleId,
       ) === -1,
   );
 
   return (
     <Wrapper>
-      {filterdStyleList?.map((style) => (
+      {filterdStyleList?.slice(0, 3).map((style) => (
         <ItemStyle
           className={selectedStyle?.styleName === style.styleName ? 'active' : ''}
           key={style.styleName}
@@ -39,7 +39,7 @@ function StyleSelectBoxList({
             {style.styleName}
           </Typography>
           <Typography textAlign='center' type='h5' color={theme.palette.gray50}>
-            (+{style.styleSellPrice.toLocaleString()}원)
+            (+{style.styleSellPrice?.toLocaleString()}원)
           </Typography>
         </ItemStyle>
       ))}
@@ -53,6 +53,7 @@ const Wrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  gap: 12px;
 `;
 
 const ItemStyle = styled(Button)<StyleProps>`
