@@ -28,7 +28,7 @@ function Router() {
     (async () => {
       const styles = await StyleService.getList();
       setStyleList(styles.content);
-      const foods = await FoodService.getList({ page: '0', size: '200' });
+      const foods = await FoodService.getList({ page: 0, size: 200 });
       const foodList = foods.content.map((food) => ({ ...food, foodQuantity: 0 }));
       setFoodState(foodList);
     })();
