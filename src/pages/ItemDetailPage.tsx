@@ -1,26 +1,32 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Dinner, Food, Style } from '../@types';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Dinner, FoodWithQuantity, Style } from '../@types';
+import { DinnerService } from '../api';
 import { FoodBox, FoodQuantityBoxList, Modal, SideMenuList, Typography } from '../components';
 import BottomButton from '../components/BottomButton';
-import { Foods, FrenchDinner } from '../dummy/dinner';
+import { Foods } from '../dummy/dinner';
 import { theme } from '../styles';
 
-const initialDummyFoodState = (food: Food[]) => {
-  return food.reduce((acc, item) => ({ ...acc, [item.name]: { ...item, quantity: 0 } }), {});
+const initialDummyFoodState = (food: FoodWithQuantity[]) => {
+  return food.reduce((acc, item) => ({ ...acc, [item.foodName]: { ...item, quantity: 0 } }), {});
 };
 
 function ItemDetailPage() {
   const navigate = useNavigate();
+  const params = useParams();
   const [dinner, setDinner] = useState<Dinner>({} as Dinner);
   const [selectedStyle, setSelectedStyle] = useState<Style | null>(null);
-  const [foodState, setFoodState] = useState<Record<string, Food>>(initialDummyFoodState(Foods));
+  const [foodState, setFoodState] = useState<Record<string, FoodWithQuantity>>(
+    initialDummyFoodState(Foods),
+  );
 
   useEffect(() => {
-    // TODO: 백엔드로부터 디너 받기 with 리코일 상태관리
-    setDinner({ ...FrenchDinner, quantity: 1 });
-  }, []);
+    (async () => {
+      const dinnerItem = await DinnerService.getDinnerItem({ id: Number(params?.id) });
+      setDinner({ ...dinnerItem, dinnerQuantity: 1 });
+    })();
+  }, [params?.id]);
 
   return (
     <Wrapper>
@@ -35,17 +41,17 @@ function ItemDetailPage() {
         />
         <FoodQuantityBoxList
           title='밥 추가'
-          foods={Object.values(foodState).filter((item) => item.type === 'rice')}
+          foods={Object.values(foodState).filter((item) => item.foodCategory === 'rice')}
           setFoodState={setFoodState}
         />
         <FoodQuantityBoxList
           title='고기 추가'
-          foods={Object.values(foodState).filter((item) => item.type === 'meat')}
+          foods={Object.values(foodState).filter((item) => item.foodCategory === 'meat')}
           setFoodState={setFoodState}
         />
         <FoodQuantityBoxList
           title='음료 추가'
-          foods={Object.values(foodState).filter((item) => item.type === 'drink')}
+          foods={Object.values(foodState).filter((item) => item.foodCategory === 'drink')}
           setFoodState={setFoodState}
         />
       </Spacer>
@@ -54,7 +60,7 @@ function ItemDetailPage() {
           <Modal.triggerButton
             modalType='open'
             as={BottomButton}
-            buttonProps={{ disabled: dinner.quantity === 0 || selectedStyle === null }}
+            buttonProps={{ disabled: dinner.dinnerQuantity === 0 || selectedStyle === null }}
             style={{
               position: 'fixed',
               marginLeft: '300px',

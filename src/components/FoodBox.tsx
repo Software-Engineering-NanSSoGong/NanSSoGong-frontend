@@ -33,16 +33,16 @@ function FoodBox({ type, dinner, selectedStyle, setDinner, setSelectedStyle }: P
 
   return (
     <FoodSection>
-      <FoodImage src={dinner.image} alt='dinner-set image' />
+      <FoodImage src={dinner.dinnerImage || '/Dinner.png'} alt='dinner-set image' />
       <FoodDescription>
         <TitleWithLine
-          title={dinner.name as string}
+          title={dinner.dinnerName}
           titleFontType='h1'
           titleColor={theme.colors.text.bold}
           borderColor={theme.palette.gray50}
         />
         <Typography type='body5' color={theme.palette.gray50}>
-          {dinner.description}
+          {dinner.dinnerDescription || '프렌치 디너는 어쩌구저쩌구 입니다.'}
         </Typography>
         <SwitchCase
           value={type}
@@ -60,7 +60,7 @@ function FoodBox({ type, dinner, selectedStyle, setDinner, setSelectedStyle }: P
                   )}
                 </TextLine>
                 <StyleSelectBoxList
-                  styleList={dinner.styles}
+                  excludedStyleList={dinner.excludedStyleInfoResponseList}
                   selectedStyle={selectedStyle}
                   handleClickStyle={handleClickStyleBox}
                 />
@@ -70,7 +70,7 @@ function FoodBox({ type, dinner, selectedStyle, setDinner, setSelectedStyle }: P
               <>
                 <TitleWithLine title='선택된 스타일' titleFontType='h4' />
                 <StyleSelectBoxList
-                  styleList={dinner.styles}
+                  excludedStyleList={dinner.excludedStyleInfoResponseList}
                   selectedStyle={selectedStyle}
                   handleClickStyle={handleClickStyleBox}
                   disabled
@@ -88,24 +88,27 @@ function FoodBox({ type, dinner, selectedStyle, setDinner, setSelectedStyle }: P
                   수량 선택
                 </Typography>
                 <NumberInput
-                  value={dinner.quantity ?? 0}
+                  value={dinner.dinnerQuantity ?? 0}
                   type={'large'}
                   onChange={(e) =>
-                    setDinner?.((prev) => ({ ...prev, quantity: Number(e.target.value) }))
+                    setDinner?.((prev) => ({ ...prev, dinnerQuantity: Number(e.target.value) }))
                   }
                   onClickPlusIcon={() =>
-                    setDinner?.((prev) => ({ ...prev, quantity: Number(prev.quantity) + 1 }))
+                    setDinner?.((prev) => ({
+                      ...prev,
+                      dinnerQuantity: Number(prev.dinnerQuantity || 0) + 1,
+                    }))
                   }
                   onClickMinusIcon={() =>
                     setDinner?.((prev) => ({
                       ...prev,
-                      quantity: Number(prev.quantity) - 1 < 0 ? 0 : Number(prev.quantity) - 1,
+                      dinnerQuantity:
+                        Number(prev.dinnerQuantity) - 1 < 0 ? 0 : Number(prev.dinnerQuantity) - 1,
                     }))
                   }
                 />
               </QuantitySelectBox>
             ),
-            // 1시 30분 어때 딱 1시간
             order: (
               <ExtraInfomationSection>
                 <TitleWithLine title='메뉴 추가 및 삭제 정보' titleFontType='h4' />

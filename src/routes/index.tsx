@@ -1,4 +1,8 @@
+import React from 'react';
 import { Route, Routes } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import FoodService from '../api/FoodService';
+import StyleService from '../api/StyleService';
 import {
   ClientHistoryOrderPage,
   LoginPage,
@@ -11,9 +15,25 @@ import {
   ProfilePage,
   OrderPage,
 } from '../pages';
+import { foodState } from '../stores/Food';
+import { styleState } from '../stores/Style';
 import RequiredAuthGuard from './RequiredAuthGuard';
 
 function Router() {
+  const setStyleList = useSetRecoilState(styleState);
+  const setFoodState = useSetRecoilState(foodState);
+
+  React.useEffect(() => {
+    // style, food initial
+    (async () => {
+      const styles = await StyleService.getList();
+      setStyleList(styles.content);
+      const foods = await FoodService.getList();
+      const foodList = foods.content.map((food) => ({ ...food, foodQuantity: 0 }));
+      setFoodState(foodList);
+    })();
+  });
+
   return (
     <Routes>
       <Route path='/' element={<LoginPage />} />
