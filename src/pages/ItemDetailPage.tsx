@@ -1,14 +1,14 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Dinner, FoodWithQuantity, Style } from '../@types';
+import { Dinner, Food, FoodWithQuantity, Style } from '../@types';
 import { DinnerService } from '../api';
 import { FoodBox, FoodQuantityBoxList, Modal, SideMenuList, Typography } from '../components';
 import BottomButton from '../components/BottomButton';
 import { Foods } from '../dummy/dinner';
 import { theme } from '../styles';
 
-const initialDummyFoodState = (food: FoodWithQuantity[]) => {
+const initialDummyFoodState = (food: Food[]) => {
   return food.reduce((acc, item) => ({ ...acc, [item.foodName]: { ...item, quantity: 0 } }), {});
 };
 
