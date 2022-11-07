@@ -1,4 +1,4 @@
-import { Dinner } from './common';
+import { Dinner, Style } from './common';
 
 export interface BaseAPIResponse<T> {
   status: number;
@@ -15,6 +15,7 @@ export interface BasePageResponse<T> {
   pageable: {
     pageSize: number;
   };
+  totalElements: number;
   totalPages: number;
   last: boolean;
 }
@@ -23,3 +24,5 @@ export interface BasePageResponse<T> {
 
 export interface RequestDinnerList extends BasePageRequest {}
 export interface ResponseDinnerList extends BasePageResponse<Dinner> {}
+
+export interface ResponseStyleList extends BasePageResponse<Style> {}

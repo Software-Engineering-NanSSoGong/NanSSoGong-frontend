@@ -1,18 +1,30 @@
 import styled from '@emotion/styled';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import StyleService from '../api/StyleService';
 import { Button, IconInputLine, TitleWithLine, Typography } from '../components';
 import { ButtonHierarchy } from '../components/common/Button';
+import { styleState } from '../stores/Style';
 import { theme } from '../styles';
 
 function LoginPage() {
   const [email, setEmail] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
   const navigate = useNavigate();
+  const setStyleList = useSetRecoilState(styleState);
 
   const handleClickLoginButton = () => {
     // console.log(email, password);
   };
+
+  React.useEffect(() => {
+    // style initial
+    (async () => {
+      const res = await StyleService.getList();
+      setStyleList(res.content);
+    })();
+  });
 
   return (
     <Wrapper>

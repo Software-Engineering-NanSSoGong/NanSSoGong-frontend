@@ -33,16 +33,16 @@ function FoodBox({ type, dinner, selectedStyle, setDinner, setSelectedStyle }: P
 
   return (
     <FoodSection>
-      <FoodImage src={dinner.image} alt='dinner-set image' />
+      <FoodImage src={dinner.dinnerImage} alt='dinner-set image' />
       <FoodDescription>
         <TitleWithLine
-          title={dinner.name as string}
+          title={dinner.dinnerName as string}
           titleFontType='h1'
           titleColor={theme.colors.text.bold}
           borderColor={theme.palette.gray50}
         />
         <Typography type='body5' color={theme.palette.gray50}>
-          {dinner.description}
+          {dinner.dinnerDescription}
         </Typography>
         <SwitchCase
           value={type}
@@ -60,7 +60,7 @@ function FoodBox({ type, dinner, selectedStyle, setDinner, setSelectedStyle }: P
                   )}
                 </TextLine>
                 <StyleSelectBoxList
-                  styleList={dinner.styles}
+                  excludedStyleList={dinner.excludedStyleInfoResponseList}
                   selectedStyle={selectedStyle}
                   handleClickStyle={handleClickStyleBox}
                 />
@@ -70,7 +70,7 @@ function FoodBox({ type, dinner, selectedStyle, setDinner, setSelectedStyle }: P
               <>
                 <TitleWithLine title='선택된 스타일' titleFontType='h4' />
                 <StyleSelectBoxList
-                  styleList={dinner.styles}
+                  excludedStyleList={dinner.excludedStyleInfoResponseList}
                   selectedStyle={selectedStyle}
                   handleClickStyle={handleClickStyleBox}
                   disabled
@@ -88,18 +88,19 @@ function FoodBox({ type, dinner, selectedStyle, setDinner, setSelectedStyle }: P
                   수량 선택
                 </Typography>
                 <NumberInput
-                  value={dinner.quantity ?? 0}
+                  value={dinner.dinnerQuantity ?? 0}
                   type={'large'}
                   onChange={(e) =>
                     setDinner?.((prev) => ({ ...prev, quantity: Number(e.target.value) }))
                   }
                   onClickPlusIcon={() =>
-                    setDinner?.((prev) => ({ ...prev, quantity: Number(prev.quantity) + 1 }))
+                    setDinner?.((prev) => ({ ...prev, quantity: Number(prev.dinnerQuantity) + 1 }))
                   }
                   onClickMinusIcon={() =>
                     setDinner?.((prev) => ({
                       ...prev,
-                      quantity: Number(prev.quantity) - 1 < 0 ? 0 : Number(prev.quantity) - 1,
+                      quantity:
+                        Number(prev.dinnerQuantity) - 1 < 0 ? 0 : Number(prev.dinnerQuantity) - 1,
                     }))
                   }
                 />

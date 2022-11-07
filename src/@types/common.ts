@@ -15,7 +15,7 @@ export interface Dinner {
   dinnerOrderable: boolean;
   dinnerFoodInfoResponseList: Pick<Food, 'foodId' | 'foodName'> & { foodQuantity: number }[];
   dinnerImage?: string;
-  dinnerQuantity?: string;
+  dinnerQuantity?: number;
   excludedStyleInfoResponseList: {
     excludedStyleId: number;
     excludedStyleName: string;

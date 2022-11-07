@@ -1,35 +1,45 @@
 import styled from '@emotion/styled';
-import { Style } from '../@types';
+import { useRecoilValue } from 'recoil';
+import { Dinner, Style } from '../@types';
+import { styleState } from '../stores/Style';
 import { theme } from '../styles';
 import { Button, Typography } from './common';
 
 interface Props {
-  styleList: Style[];
+  excludedStyleList: Dinner['excludedStyleInfoResponseList'];
   selectedStyle: Style | null;
   handleClickStyle?: (s: Style) => void;
   disabled?: boolean;
 }
 
 function StyleSelectBoxList({
-  styleList,
+  excludedStyleList,
   selectedStyle,
   disabled = false,
   handleClickStyle,
 }: Props) {
+  const styleList = useRecoilValue(styleState);
+  const filterdStyleList = styleList.filter(
+    (style) =>
+      excludedStyleList.findIndex(
+        (excludedStyle) => excludedStyle.excludedStyleName === style.styleName,
+      ) === -1,
+  );
+
   return (
     <Wrapper>
-      {styleList?.map((style) => (
+      {filterdStyleList?.map((style) => (
         <ItemStyle
-          className={selectedStyle?.name === style.name ? 'active' : ''}
-          key={style.name}
+          className={selectedStyle?.styleName === style.styleName ? 'active' : ''}
+          key={style.styleName}
           onClick={() => handleClickStyle?.(style)}
           disabled={disabled}
         >
           <Typography textAlign='center' type='h5' color={theme.palette.gray50}>
-            {style.name}
+            {style.styleName}
           </Typography>
           <Typography textAlign='center' type='h5' color={theme.palette.gray50}>
-            (+{style.price.toLocaleString()}원)
+            (+{style.styleSellPrice.toLocaleString()}원)
           </Typography>
         </ItemStyle>
       ))}
