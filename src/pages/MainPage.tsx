@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { DinnerService } from '../api';
 import { ClickableDinnerCard, PageNavigation, SideMenuList, TitleWithLine } from '../components';
@@ -7,17 +7,19 @@ import usePagination from '../hooks/usePagination';
 import { theme } from '../styles';
 
 function MainPage() {
+  const [totalCount, setTotalCount] = useState<number>(0);
   const [searchParams] = useSearchParams();
   const page = searchParams.get('page') || '1';
   const size = searchParams.get('size') || '10';
   const { pageOptions, handleChangePage } = usePagination({
-    totalCount: 150,
+    totalCount,
   });
 
   useEffect(() => {
     (async () => {
       const res = await DinnerService.getDinnerList({ page, size });
       console.log(res);
+      setTotalCount(res.totalElements);
     })();
   }, [page, size]);
 

@@ -1,4 +1,4 @@
-import { RequestDinnerList } from '../@types';
+import { RequestDinnerList, ResponseDinnerList } from '../@types';
 import APIBase from './core';
 
 class DinnerService extends APIBase {
@@ -6,7 +6,7 @@ class DinnerService extends APIBase {
     super('dinner');
   }
 
-  getDinnerList({ page, size }: RequestDinnerList): Promise<any> {
+  getDinnerList({ page, size }: RequestDinnerList): Promise<ResponseDinnerList> {
     return this.baseHTTP
       .get(`list?page=${page}&size=${size}`)
       .then(APIBase._handleResponse)
