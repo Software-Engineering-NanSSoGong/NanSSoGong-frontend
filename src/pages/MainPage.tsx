@@ -1,30 +1,42 @@
 import styled from '@emotion/styled';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { Dinner } from '../@types';
 import { DinnerService } from '../api';
 import { ClickableDinnerCard, PageNavigation, SideMenuList, TitleWithLine } from '../components';
 import usePagination from '../hooks/usePagination';
 import { theme } from '../styles';
 
 function MainPage() {
+  const [totalCount, setTotalCount] = useState<number>(0);
+  const [dinnerList, setDinnerList] = useState<Dinner[]>([]);
   const [searchParams] = useSearchParams();
+  const topContainer = useRef<HTMLDivElement>(null);
   const page = searchParams.get('page') || '1';
   const size = searchParams.get('size') || '10';
   const { pageOptions, handleChangePage } = usePagination({
-    totalCount: 150,
+    totalCount,
   });
 
   useEffect(() => {
+    // 디너 정보 페이지별로 가져오기
     (async () => {
       const res = await DinnerService.getDinnerList({ page, size });
-      console.log(res);
+      setTotalCount(res.totalElements);
+      setDinnerList(res.content);
     })();
   }, [page, size]);
+
+  useEffect(() => {
+    // 디너 정보가 바뀌면 스크롤은 최상단
+    topContainer.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  }, [dinnerList]);
 
   return (
     <Wrapper>
       <SideMenuList />
       <Spacer>
+        <div ref={topContainer} />
         <TitleWithLine
           type='icon'
           title='메뉴'
@@ -33,15 +45,14 @@ function MainPage() {
           borderColor={theme.palette.gray50}
         />
         <DinnerList>
-          <ClickableDinnerCard title={'프렌치 디너'} src={'/Dinner.png'} href={'/item/1'} />
-          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/item/1'} />
-          <ClickableDinnerCard title={'발렌타인 디너'} src={'/Dinner.png'} href={'/item/1'} />
-          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/item/1'} />
-          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/item/1'} />
-          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/item/1'} />
-          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/item/1'} />
-          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/item/1'} />
-          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/item/1'} />
+          {dinnerList?.map((dinner) => (
+            <ClickableDinnerCard
+              key={dinner.dinnerId}
+              title={dinner.dinnerName}
+              src={dinner.dinnerImage || '/Dinner.png'}
+              href={`/item/${dinner.dinnerId}`}
+            />
+          ))}
         </DinnerList>
         <PageNavigation pageOptions={pageOptions} handleChangePage={handleChangePage} />
       </Spacer>

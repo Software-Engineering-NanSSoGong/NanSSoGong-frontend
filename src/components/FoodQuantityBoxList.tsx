@@ -1,20 +1,20 @@
 import styled from '@emotion/styled';
 import { Dispatch, SetStateAction } from 'react';
-import { Food } from '../@types';
+import { Food, FoodWithQuantity } from '../@types';
 import FoodQuantityBox from './FoodQuantityBox';
 import TitleWithLine from './TitleWithLine';
 
 interface Props {
-  foods: Food[];
+  foods: FoodWithQuantity[];
   title: string;
-  setFoodState: Dispatch<SetStateAction<Record<string, Food>>>;
+  setFoodState: Dispatch<SetStateAction<Record<string, FoodWithQuantity>>>;
 }
 
 function FoodQuantityBoxList({ foods, title, setFoodState }: Props) {
-  const handleClickFoodPlusIcon = (foodName: keyof Record<string, Food>) => {
+  const handleClickFoodPlusIcon = (foodName: keyof Record<string, FoodWithQuantity>) => {
     setFoodState((prev) => ({
       ...prev,
-      [foodName]: { ...prev[foodName], quantity: Number(prev[foodName].quantity) + 1 },
+      [foodName]: { ...prev[foodName], foodQuantity: Number(prev[foodName].foodQuantity) + 1 },
     }));
   };
 
@@ -24,14 +24,14 @@ function FoodQuantityBoxList({ foods, title, setFoodState }: Props) {
   ) => {
     setFoodState((prev) => ({
       ...prev,
-      [foodName]: { ...prev[foodName], quantity: Number(e.target.value) },
+      [foodName]: { ...prev[foodName], foodQuantity: Number(e.target.value) },
     }));
   };
 
   const handleClickFoodMinusIcon = (foodName: keyof Record<string, Food>) => {
     setFoodState((prev) => ({
       ...prev,
-      [foodName]: { ...prev[foodName], quantity: Number(prev[foodName].quantity) - 1 },
+      [foodName]: { ...prev[foodName], foodQuantity: Number(prev[foodName].foodQuantity) - 1 },
     }));
   };
 
@@ -41,10 +41,10 @@ function FoodQuantityBoxList({ foods, title, setFoodState }: Props) {
       <List>
         {foods.map((item) => (
           <FoodQuantityBox
-            key={item.name}
-            name={item.name}
-            price={item.price}
-            quantity={Number(item.quantity)}
+            key={item.foodName}
+            name={item.foodName}
+            price={item.foodSellPrice}
+            quantity={Number(item.foodQuantity)}
             onChangeQuantity={handleChangeFoodNumberInput}
             onClickPlusIcon={handleClickFoodPlusIcon}
             onClickMinusIcon={handleClickFoodMinusIcon}

@@ -1,4 +1,4 @@
-import { Dinner } from './common';
+import { Dinner, Food, Style } from './common';
 
 export interface BaseAPIResponse<T> {
   status: number;
@@ -15,11 +15,21 @@ export interface BasePageResponse<T> {
   pageable: {
     pageSize: number;
   };
+  totalElements: number;
   totalPages: number;
   last: boolean;
 }
 
-/** Dinner Service */
+export interface BaseRequsetId {
+  id: number;
+}
 
-export interface RequestDinnerList extends BasePageRequest {}
+/** Dinner Service */
 export interface ResponseDinnerList extends BasePageResponse<Dinner> {}
+export interface ResponseDinnerItem extends Dinner {}
+
+// Style Service
+export interface ResponseStyleList extends BasePageResponse<Style> {}
+
+// Food Service
+export interface ResponseFoodList extends BasePageResponse<Food> {}
