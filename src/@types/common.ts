@@ -26,6 +26,10 @@ export interface Dinner {
   }[];
 }
 
+export interface AddedDinner extends Dinner {
+  selectedStyle: Style;
+}
+
 export interface Style {
   styleId: number;
   styleName: string;

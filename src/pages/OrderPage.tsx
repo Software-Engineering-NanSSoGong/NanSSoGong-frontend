@@ -9,7 +9,7 @@ import { theme } from '../styles';
 function OrderPage() {
   const [addedDinner] = useState<AddedDinner>({
     ...FrenchDinner,
-    selectedStyle: { name: 'simple', price: 0 },
+    selectedStyle: { styleName: 'simple', styleSellPrice: 0 },
   } as AddedDinner);
 
   return (
