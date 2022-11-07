@@ -1,13 +1,28 @@
 import React from 'react';
-import { Lock, Mic, People, User, Employee, Rider } from '../../asset/svg';
+import {
+  Lock,
+  Mic,
+  People,
+  User,
+  Employee,
+  Rider,
+  Left,
+  Right,
+  DoubleLeft,
+  DoubleRight,
+} from '../../asset/svg';
 
 const ICONS = {
   user: User,
   lock: Lock,
   mic: Mic,
   people: People,
-  employee : Employee,
+  employee: Employee,
   rider: Rider,
+  left: Left,
+  right: Right,
+  doubleLeft: DoubleLeft,
+  doubleRight: DoubleRight,
 } as const;
 
 type IconValueType = typeof ICONS;

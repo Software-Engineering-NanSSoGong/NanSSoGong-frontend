@@ -40,7 +40,7 @@ export const fonts = {
   body1: css`
     letter-spacing: -0.018em;
     line-height: 1.3;
-    font-size: 32x;
+    font-size: 32px;
   `,
   body2: css`
     letter-spacing: -0.018em;

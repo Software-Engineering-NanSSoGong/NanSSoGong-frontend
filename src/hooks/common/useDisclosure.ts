@@ -6,20 +6,20 @@ interface Props {
   onClose?: () => void;
 }
 
-const useDisclosure = ({ initialState, onOpen = undefined, onClose = undefined }: Props) => {
+const useDisclosure = ({ initialState, onOpen, onClose }: Props) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(initialState);
 
-  const open = async () => {
+  const open = () => {
     setIsOpen(true);
     if (typeof onOpen !== 'undefined') {
-      await onOpen();
+      onOpen();
     }
   };
 
-  const close = async () => {
+  const close = () => {
     setIsOpen(false);
     if (typeof onClose !== 'undefined') {
-      await onClose();
+      onClose();
     }
   };
 

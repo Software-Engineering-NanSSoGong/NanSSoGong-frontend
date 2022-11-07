@@ -1,8 +1,26 @@
 import styled from '@emotion/styled';
-import { ClickableDinnerCard, SideMenuList, TitleWithLine } from '../components';
+import { useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { DinnerService } from '../api';
+import { ClickableDinnerCard, PageNavigation, SideMenuList, TitleWithLine } from '../components';
+import usePagination from '../hooks/usePagination';
 import { theme } from '../styles';
 
 function MainPage() {
+  const [searchParams] = useSearchParams();
+  const page = searchParams.get('page') || '1';
+  const size = searchParams.get('size') || '10';
+  const { pageOptions, handleChangePage } = usePagination({
+    totalCount: 150,
+  });
+
+  useEffect(() => {
+    (async () => {
+      const res = await DinnerService.getDinnerList({ page, size });
+      console.log(res);
+    })();
+  }, [page, size]);
+
   return (
     <Wrapper>
       <SideMenuList />
@@ -15,16 +33,17 @@ function MainPage() {
           borderColor={theme.palette.gray50}
         />
         <DinnerList>
-          <ClickableDinnerCard title={'프렌치 디너'} src={'/Dinner.png'} href={'/'} />
-          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/main'} />
-          <ClickableDinnerCard title={'발렌타인 디너'} src={'/Dinner.png'} href={'/main'} />
-          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/history'} />
-          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/main'} />
-          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/main'} />
-          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/main'} />
-          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/main'} />
-          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/main'} />
+          <ClickableDinnerCard title={'프렌치 디너'} src={'/Dinner.png'} href={'/item/1'} />
+          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/item/1'} />
+          <ClickableDinnerCard title={'발렌타인 디너'} src={'/Dinner.png'} href={'/item/1'} />
+          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/item/1'} />
+          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/item/1'} />
+          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/item/1'} />
+          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/item/1'} />
+          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/item/1'} />
+          <ClickableDinnerCard title={'잉글리시 디너'} src={'/Dinner.png'} href={'/item/1'} />
         </DinnerList>
+        <PageNavigation pageOptions={pageOptions} handleChangePage={handleChangePage} />
       </Spacer>
     </Wrapper>
   );
@@ -33,7 +52,7 @@ function MainPage() {
 const Wrapper = styled.main``;
 
 const Spacer = styled.div`
-  margin: 120px 104px 120px 424px;
+  padding: 120px 104px 120px 424px;
 `;
 
 const DinnerList = styled.section`
