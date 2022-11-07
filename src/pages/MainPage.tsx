@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Dinner } from '../@types';
 import { DinnerService } from '../api';
@@ -11,6 +11,7 @@ function MainPage() {
   const [totalCount, setTotalCount] = useState<number>(0);
   const [dinnerList, setDinnerList] = useState<Dinner[]>([]);
   const [searchParams] = useSearchParams();
+  const topContainer = useRef<HTMLDivElement>(null);
   const page = searchParams.get('page') || '1';
   const size = searchParams.get('size') || '10';
   const { pageOptions, handleChangePage } = usePagination({
@@ -18,6 +19,7 @@ function MainPage() {
   });
 
   useEffect(() => {
+    // 디너 정보 페이지별로 가져오기
     (async () => {
       const res = await DinnerService.getDinnerList({ page, size });
       setTotalCount(res.totalElements);
@@ -25,10 +27,16 @@ function MainPage() {
     })();
   }, [page, size]);
 
+  useEffect(() => {
+    // 디너 정보가 바뀌면 스크롤은 최상단
+    topContainer.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  }, [dinnerList]);
+
   return (
     <Wrapper>
       <SideMenuList />
       <Spacer>
+        <div ref={topContainer} />
         <TitleWithLine
           type='icon'
           title='메뉴'
