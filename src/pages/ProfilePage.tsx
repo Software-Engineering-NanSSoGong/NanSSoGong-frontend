@@ -40,8 +40,8 @@ function ProfilePage() {
             </Typography>
             <AcceptButton
               fullWidth
-              style={{ padding: '12px' }}
-              onClick={() => setAccept(true)}
+              style={{ padding: '12px' }  }
+              onClick={() => setAccept((prev) => !prev)}
               hierarchy={ButtonHierarchy.DarkGray}
               className={accept === true ? 'active' : ''}
             >
@@ -59,14 +59,14 @@ function ProfilePage() {
               disabled={name === '' || address === ''}
             >
               <Typography type='h4' color={theme.palette.gray50} textAlign='center'>
-                저장하기
+                수정하기
               </Typography>
             </Button>
           </Lines>
           <LogoImg src='/logo.png' alt='mr-daebak logo' />
         </BoxLayout>
       </SignupBoxLayout>
-    </Wrapper>  
+    </Wrapper>
   );
 }
 const Wrapper = styled.main`

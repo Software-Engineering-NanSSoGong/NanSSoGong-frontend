@@ -1,9 +1,7 @@
 import styled from '@emotion/styled';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
 import { Button, IconInputLine, TitleWithLine, Typography } from '../../components';
-import { signUpState as RecoilSignUpState } from '../../stores/SignUp';
 import { theme } from '../../styles';
 
 function SignUpEmailPage() {
@@ -11,11 +9,9 @@ function SignUpEmailPage() {
   const [email, setEmail] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
   const [passwordAgain, setPasswordAgain] = React.useState<string>('');
-  const [signUpState] = useRecoilState(RecoilSignUpState);
 
   return (
     <Wrapper>
-      {signUpState.userType}
       <SignupBoxLayout>
         <BoxLayout>
           <Title
