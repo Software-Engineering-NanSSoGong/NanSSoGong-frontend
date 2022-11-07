@@ -18,21 +18,15 @@ interface Props {
   onClose?: Parameters<UseDisclosure>[0]['onClose'];
 }
 
-function Modal({
-  modalNode,
-  triggerNode,
-  initialIsOpen = false,
-  onOpen = undefined,
-  onClose = undefined,
-}: Props) {
+function Modal({ modalNode, triggerNode, initialIsOpen = false, onOpen, onClose }: Props) {
   const portalId = React.useMemo(() => `portal-${new Date().getTime()}`, []);
 
   const { isOpen, close, open } = useDisclosure({
     initialState: initialIsOpen,
     onOpen,
-    onClose: async () => {
+    onClose: () => {
       if (typeof onClose !== 'undefined') {
-        await onClose();
+        onClose();
       }
       document.getElementById(portalId)?.remove();
     },

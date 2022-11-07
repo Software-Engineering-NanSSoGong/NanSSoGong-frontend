@@ -1,8 +1,8 @@
 import { useContext, createContext } from 'react';
 
 interface InitialState {
-  open: () => Promise<void>;
-  close: () => Promise<void>;
+  open: () => void;
+  close: () => void;
 }
 
 const Context = createContext({} as InitialState);
