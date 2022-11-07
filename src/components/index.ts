@@ -11,3 +11,4 @@ export { default as FoodQuantityBoxList } from './FoodQuantityBoxList';
 export { default as BottomButton } from './BottomButton';
 export { default as FoodBox } from './FoodBox';
 export { default as ClickableIcon } from './ClickableIcon';
+export { default as OrderConfirmBox } from './OrderConfirmBox';
