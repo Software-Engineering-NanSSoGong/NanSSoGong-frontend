@@ -12,8 +12,8 @@ function MainPage() {
   const [dinnerList, setDinnerList] = useState<Dinner[]>([]);
   const [searchParams] = useSearchParams();
   const topContainer = useRef<HTMLDivElement>(null);
-  const page = searchParams.get('page') || '1';
-  const size = searchParams.get('size') || '10';
+  const page = searchParams.get('page') || 0;
+  const size = searchParams.get('size') || 10;
   const { pageOptions, handleChangePage } = usePagination({
     totalCount,
   });
@@ -21,7 +21,7 @@ function MainPage() {
   useEffect(() => {
     // 디너 정보 페이지별로 가져오기
     (async () => {
-      const res = await DinnerService.getDinnerList({ page, size });
+      const res = await DinnerService.getDinnerList({ page: Number(page) - 1, size: Number(size) });
       setTotalCount(res.totalElements);
       setDinnerList(res.content);
     })();

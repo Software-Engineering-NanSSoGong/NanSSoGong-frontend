@@ -9,7 +9,7 @@ import TitleWithLine from './TitleWithLine';
 interface Props {
   type: 'beforeOrder' | 'order';
   dinner: Dinner;
-  setDinner?: Dispatch<SetStateAction<Dinner>>;
+  handleChangeDinnerQuantity?: (quantity: number) => void;
   selectedStyle: Style | null;
   setSelectedStyle?: Dispatch<SetStateAction<Style | null>>;
 }
@@ -20,7 +20,13 @@ const dummyFoodInfo = [
   { name: '감자3', quantity: 1 },
 ];
 
-function FoodBox({ type, dinner, selectedStyle, setDinner, setSelectedStyle }: Props) {
+function FoodBox({
+  type,
+  dinner,
+  selectedStyle,
+  setSelectedStyle,
+  handleChangeDinnerQuantity,
+}: Props) {
   const isShampain = true;
 
   const handleClickStyleBox = (style: Style) => {
@@ -90,21 +96,14 @@ function FoodBox({ type, dinner, selectedStyle, setDinner, setSelectedStyle }: P
                 <NumberInput
                   value={dinner.dinnerQuantity ?? 0}
                   type={'large'}
-                  onChange={(e) =>
-                    setDinner?.((prev) => ({ ...prev, dinnerQuantity: Number(e.target.value) }))
-                  }
+                  onChange={(e) => handleChangeDinnerQuantity?.(Number(e.target.value))}
                   onClickPlusIcon={() =>
-                    setDinner?.((prev) => ({
-                      ...prev,
-                      dinnerQuantity: Number(prev.dinnerQuantity || 0) + 1,
-                    }))
+                    handleChangeDinnerQuantity?.(Number(dinner.dinnerQuantity || 0) + 1)
                   }
                   onClickMinusIcon={() =>
-                    setDinner?.((prev) => ({
-                      ...prev,
-                      dinnerQuantity:
-                        Number(prev.dinnerQuantity) - 1 < 0 ? 0 : Number(prev.dinnerQuantity) - 1,
-                    }))
+                    handleChangeDinnerQuantity?.(
+                      Number(dinner.dinnerQuantity) - 1 < 0 ? 0 : Number(dinner.dinnerQuantity) - 1,
+                    )
                   }
                 />
               </QuantitySelectBox>
