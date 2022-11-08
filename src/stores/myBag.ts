@@ -24,11 +24,11 @@ export const myBagAtom = atom<MyBag[]>({
 export const myBagSelector = selector<MyBag[]>({
   key: 'myBagSelector',
   get: ({ get }) => {
-    return get(myBagAtom);
+    const recoilStoredData = get(myBagAtom);
+    const storageData = storage.get('mybag');
+    return recoilStoredData.length === 0 ? storageData : recoilStoredData;
   },
   set: ({ set }, willUpdatedState) => {
-    console.log('hi');
-    console.log('update', willUpdatedState);
     set(myBagAtom, willUpdatedState);
     storage.set('mybag', willUpdatedState);
   },

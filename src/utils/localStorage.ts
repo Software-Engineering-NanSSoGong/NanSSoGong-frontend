@@ -1,6 +1,5 @@
 const setLocalStorage = (key: string, data: unknown) => {
   const storedData = JSON.stringify(data);
-  console.log(storedData);
   window?.localStorage.setItem(key, storedData);
 };
 

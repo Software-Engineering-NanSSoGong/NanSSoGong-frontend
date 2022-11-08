@@ -1,24 +1,48 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
-import { AddedDinner } from '../@types';
+import { useRecoilState } from 'recoil';
+import { useNavigate } from 'react-router-dom';
+
 import { ButtonHierarchy } from '../components/common/Button';
-import { BottomButton, FoodBox, SideMenuList, TitleWithLine, Typography } from '../components';
-import { FrenchDinner } from '../dummy/dinner';
+import {
+  BottomButton,
+  FoodBox,
+  Modal,
+  PriceBox,
+  SideMenuList,
+  TitleWithLine,
+  Typography,
+} from '../components';
 import { theme } from '../styles';
+import { myBagSelector } from '../stores';
+import { getTotalPrice, storage } from '../utils';
 
 function OrderPage() {
-  const [addedDinner] = useState<AddedDinner>({
-    ...FrenchDinner,
-    selectedStyle: { styleName: 'simple', styleSellPrice: 0 },
-  } as AddedDinner);
+  const navigate = useNavigate();
+  const [myBagState, setMyBagState] = useRecoilState(myBagSelector);
+  const totalPrice = getTotalPrice(myBagState);
+
+  const handleClickModalConfirmButton = () => {
+    // TODO: 백엔드로 정보 보내기
+    storage.removeAll();
+    setMyBagState([]);
+    navigate('/main');
+  };
 
   return (
     <Wrapper>
       <SideMenuList />
       <Spacer>
         <TitleWithLine title='주문하기' titleFontType='h1' />
-        <FoodBox type='order' dinner={addedDinner} selectedStyle={addedDinner.selectedStyle} />
-        <FoodBox type='order' dinner={addedDinner} selectedStyle={addedDinner.selectedStyle} />
+        {myBagState?.map((item, idx) => (
+          <FoodBox
+            key={idx}
+            type='order'
+            dinner={item.dinner}
+            selectedStyle={item.selectedStyle}
+            addedFoodInfos={item.addedFoodInfos}
+            reducedFoodInfos={item.reducedFoodInfos}
+          />
+        ))}
         <OrderInfomationBox>
           <Typography type='h3' color={theme.colors.text.bold}>
             배달 정보
@@ -67,49 +91,40 @@ function OrderPage() {
           </LabelWithInput>
         </OrderInfomationBox>
         <OrderInfomationBox>
-          <Typography type='h3' color={theme.colors.text.bold}>
-            결제 금액
-          </Typography>
-          {[
-            { name: '프렌치 디너 세트', price: 50000 },
-            { name: '잉글리시 디너 세트', price: 50000 },
-            { name: '감자 제외', price: -500 },
-            { name: '감자 제외2', price: -500 },
-          ].map((item) => (
-            <BetweenLine key={item.name}>
-              <Typography type='h4' color={theme.colors.text.bold}>
-                {item.name}
-              </Typography>
-              <Typography
-                type='body4'
-                color={item.price > 0 ? theme.colors.primary.yellow : theme.colors.primary.red}
-              >
-                {item.price > 0 ? '+' : ''}
-                {item.price.toLocaleString()} 원
-              </Typography>
-            </BetweenLine>
-          ))}
-          <Divider />
-          <BetweenLine>
-            <Typography type='h4' color={theme.colors.text.bold}>
-              총 금액
-            </Typography>
-            <Typography type='h4'>{Number(150000).toLocaleString()} 원</Typography>
-          </BetweenLine>
+          <PriceBox totalPrice={totalPrice} />
         </OrderInfomationBox>
       </Spacer>
-      <BottomButton
-        position='fixed'
-        buttonProps={{ hierarchy: ButtonHierarchy.Danger }}
-        style={{
-          marginLeft: '300px',
-          width: 'calc(100% - 300px)',
-        }}
-      >
-        <Typography type='h3' textAlign='center'>
-          주문하기
-        </Typography>
-      </BottomButton>
+      <Modal
+        triggerNode={
+          <Modal.triggerButton
+            modalType='open'
+            onClick={handleClickModalConfirmButton}
+            style={{
+              position: 'fixed',
+              marginLeft: '300px',
+              width: 'calc(100% - 300px)',
+            }}
+            buttonProps={{ hierarchy: ButtonHierarchy.Danger, disabled: myBagState.length === 0 }}
+            as={BottomButton}
+          >
+            <Typography type='h3' textAlign='center'>
+              주문하기
+            </Typography>
+          </Modal.triggerButton>
+        }
+        modalNode={
+          <Modal.askModal>
+            <ModalBody>
+              <Typography type='h3' color={theme.colors.text.dark} textAlign='center'>
+                구매 확정
+              </Typography>
+              <Typography type='body4' color={theme.colors.text.dark} style={{ marginTop: 32 }}>
+                총 {totalPrice.toLocaleString()} 원입니다.정말로 구매하시겠습니까?
+              </Typography>
+            </ModalBody>
+          </Modal.askModal>
+        }
+      />
     </Wrapper>
   );
 }
@@ -158,17 +173,11 @@ const Inputs = styled.section`
   gap: 40px;
 `;
 
-const BetweenLine = styled.span`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Divider = styled.div`
-  width: calc(100% + 46px);
-  margin-left: -24px;
-  content: '';
-  border: 1px solid ${theme.palette.gray50};
+const ModalBody = styled.div`
+  width: 500px;
+  height: 200px;
+  padding: 16px;
+  box-sizing: border-box;
 `;
 
 export default OrderPage;
