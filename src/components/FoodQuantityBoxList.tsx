@@ -31,7 +31,11 @@ function FoodQuantityBoxList({ foods, title, setFoodState }: Props) {
   const handleClickFoodMinusIcon = (foodName: keyof Record<string, Food>) => {
     setFoodState((prev) => ({
       ...prev,
-      [foodName]: { ...prev[foodName], foodQuantity: Number(prev[foodName].foodQuantity) - 1 },
+      [foodName]: {
+        ...prev[foodName],
+        foodQuantity:
+          Number(prev[foodName].foodQuantity) - 1 < 0 ? 0 : Number(prev[foodName].foodQuantity) - 1,
+      },
     }));
   };
 

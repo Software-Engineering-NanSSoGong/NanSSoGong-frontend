@@ -3,6 +3,7 @@ export { default as Lock } from './Lock';
 export { default as Mic } from './Mic';
 export { default as People } from './People';
 export { default as Rider } from './Rider';
+export { default as location } from './location';
 export { default as Employee } from './Employee';
 export { default as Left } from './Left';
 export { default as Right } from './Right';

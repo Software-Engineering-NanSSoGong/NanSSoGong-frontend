@@ -11,6 +11,8 @@ import {
   ItemDetailPage,
   SignUpSelectUserTypePage,
   SignUpEmailPage,
+  SignUpNamePage,
+  ProfilePage,
   OrderPage,
 } from '../pages';
 import { foodState } from '../stores/Food';
@@ -26,7 +28,7 @@ function Router() {
     (async () => {
       const styles = await StyleService.getList();
       setStyleList(styles.content);
-      const foods = await FoodService.getList();
+      const foods = await FoodService.getList({ page: 0, size: 200 });
       const foodList = foods.content.map((food) => ({ ...food, foodQuantity: 0 }));
       setFoodState(foodList);
     })();
@@ -39,8 +41,10 @@ function Router() {
       <Route path='/main' element={<MainPage />} />
       <Route path='/signup-type' element={<SignUpSelectUserTypePage />} />
       <Route path='/signup-email' element={<SignUpEmailPage />} />
+      <Route path='/signup-name' element={<SignUpNamePage />} />
       <Route path='/item/:id' element={<ItemDetailPage />} />
       <Route path='/history' element={<ClientHistoryOrderPage />} />
+      <Route path='/profile' element={<ProfilePage />} />
       <Route path='/order' element={<OrderPage />} />
       {/* 유저만 갈 수 있는 페이지 example: 내정보페이지 */}
       <Route element={<RequiredAuthGuard />}>

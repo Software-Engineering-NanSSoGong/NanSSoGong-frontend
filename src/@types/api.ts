@@ -6,8 +6,8 @@ export interface BaseAPIResponse<T> {
 }
 
 export interface BasePageRequest {
-  page?: string;
-  size?: string;
+  page?: number;
+  size?: number;
 }
 
 export interface BasePageResponse<T> {

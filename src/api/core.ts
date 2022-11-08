@@ -13,7 +13,7 @@ class APIBase {
 
     this.baseHTTP = axios.create({
       baseURL: `${baseServerURL}/api/${url ?? ''}`,
-      timeout: 1000,
+      timeout: 10000,
       headers: {
         'Content-Type': 'application/json',
       },
