@@ -1,14 +1,11 @@
 import styled from '@emotion/styled';
-import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-
 import { isAuth as RecoilIsAuth } from '../stores';
 import { theme } from '../styles';
 import { Button, Typography } from './common';
 import { ButtonHierarchy } from './common/Button';
 
 function SideMenuList() {
-  const navigate = useNavigate();
   const isAuth = useRecoilValue(RecoilIsAuth);
 
   return (
@@ -16,63 +13,40 @@ function SideMenuList() {
       <LogoImg src='/logo.png' alt='mr-daebak logo' />
       <Spacer>
         {/* 상단 버튼 리스트 */}
-        <ButtonList>
-          <ButtonWrapper fullWidth borderRadius={10} onClick={() => navigate('/main')}>
+        <ButtonList> 
+          <ButtonWrapper fullWidth borderRadius={10}>
             <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
               메인
             </Typography>
           </ButtonWrapper>
-          <ButtonWrapper
-            fullWidth
-            borderRadius={10}
-            hierarchy={ButtonHierarchy.Warning}
-            onClick={() => navigate('/history')}
-          >
+          <ButtonWrapper fullWidth borderRadius={10} hierarchy={ButtonHierarchy.Gray}>
             <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
               주문 내역
             </Typography>
           </ButtonWrapper>
-          {isAuth && (
-            <ButtonWrapper
-              fullWidth
-              borderRadius={10}
-              hierarchy={ButtonHierarchy.DarkGray}
-              onClick={() => navigate('/')}
-            >
-              <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
-                내 정보 수정하기
-              </Typography>
-            </ButtonWrapper>
-          )}
+          <ButtonWrapper fullWidth borderRadius={10} hierarchy={ButtonHierarchy.Gray}>
+            <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
+              내정보
+            </Typography>
+          </ButtonWrapper>
         </ButtonList>
         {/* 하단 버튼 리스트 */}
         <ButtonList>
-          <ButtonWrapper
-            fullWidth
-            borderRadius={10}
-            hierarchy={ButtonHierarchy.Danger}
-            onClick={() => navigate('/order')}
-          >
+          <ButtonWrapper fullWidth borderRadius={10} hierarchy={ButtonHierarchy.Success}>
             <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
               결제 하기
             </Typography>
           </ButtonWrapper>
-
           {isAuth ? (
-            <ButtonWrapper fullWidth borderRadius={10} hierarchy={ButtonHierarchy.Gray}>
+            <ButtonWrapper fullWidth borderRadius={10} hierarchy={ButtonHierarchy.Success}>
               <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
-                로그아웃
+                로그인
               </Typography>
             </ButtonWrapper>
           ) : (
-            <ButtonWrapper
-              fullWidth
-              borderRadius={10}
-              hierarchy={ButtonHierarchy.Success}
-              onClick={() => navigate('/')}
-            >
+            <ButtonWrapper fullWidth borderRadius={10} hierarchy={ButtonHierarchy.Danger}>
               <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
-                로그인
+                로그아웃
               </Typography>
             </ButtonWrapper>
           )}

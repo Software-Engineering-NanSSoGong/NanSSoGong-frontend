@@ -1,2 +1,1 @@
-export * from './helperFood';
-export { default as storage } from './localStorage';
+export * from './helper';
