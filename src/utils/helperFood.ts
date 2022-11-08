@@ -1,11 +1,5 @@
 import { Dinner, FoodWithQuantity } from '../@types';
-
-export interface ChangeFoodInfo {
-  foodId: number;
-  price: number;
-  foodName: string;
-  quantity: number;
-}
+import { ChangeFoodInfo } from '../stores';
 
 export function getDifferenceFoodInfoFromDinner(
   dinner: Dinner,
