@@ -1,11 +1,5 @@
 import { Dinner, FoodWithQuantity } from '../@types';
-
-export interface ChangeFoodInfo {
-  foodId: number;
-  price: number;
-  foodName: string;
-  quantity: number;
-}
+import { ChangeFoodInfo, MyBag } from '../stores';
 
 export function getDifferenceFoodInfoFromDinner(
   dinner: Dinner,
@@ -45,4 +39,18 @@ export function getDifferenceFoodInfoFromDinner(
     }
   });
   return { addedFoodInfos, reducedFoodInfos };
+}
+
+export function getTotalPrice(myBagState: MyBag[]) {
+  return myBagState.reduce(
+    (acc, item) =>
+      acc +
+      (item.dinner.dinnerQuantity || 1) * 50000 +
+      (item.selectedStyle.styleSellPrice || 5000) +
+      item.addedFoodInfos.reduce(
+        (acc2, food) => acc2 + food.price * (food.quantity - (item.dinner.dinnerQuantity || 1)),
+        0,
+      ),
+    0,
+  );
 }
