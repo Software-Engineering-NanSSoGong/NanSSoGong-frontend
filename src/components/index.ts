@@ -13,3 +13,4 @@ export { default as FoodBox } from './FoodBox';
 export { default as ClickableIcon } from './ClickableIcon';
 export { default as LabelWithMultipleInput } from './LabelWithMultipleInput';
 export { default as OrderConfirmBox } from './OrderConfirmBox';
+export { default as PriceBox } from './PriceBox';
