@@ -1,1 +1,2 @@
-export * from './helper';
+export * from './helperFood';
+export { default as storage } from './storage';
