@@ -27,7 +27,7 @@ function FoodBox({
   setSelectedStyle,
   handleChangeDinnerQuantity,
 }: Props) {
-  const isShampain = true;
+  const isShampain = dinner.dinnerName?.split(' ').join('') === '샴페인축제디너';
 
   const handleClickStyleBox = (style: Style) => {
     if (style === selectedStyle) {
