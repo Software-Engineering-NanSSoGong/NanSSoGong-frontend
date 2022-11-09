@@ -1,11 +1,24 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import ReactDOM from 'react-dom';
 
 interface Props {
   id: string;
+  position: CSSProperties['position'];
+  top?: CSSProperties['top'];
+  right?: CSSProperties['right'];
+  bottom?: CSSProperties['bottom'];
+  left?: CSSProperties['left'];
 }
 
-function Portal({ id, children }: React.PropsWithChildren<Props>) {
+function Portal({
+  id,
+  position,
+  top = 0,
+  right = 0,
+  bottom = 0,
+  left = 0,
+  children,
+}: React.PropsWithChildren<Props>) {
   const portal = React.useMemo(() => {
     const portalElement = document.getElementById(id);
 
@@ -16,11 +29,11 @@ function Portal({ id, children }: React.PropsWithChildren<Props>) {
     const newPortalElementInstance = document.createElement('div');
     newPortalElementInstance.id = id;
     newPortalElementInstance.style.cssText = `
-      position: fixed;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
+      position: ${position};
+      top: ${top};
+      right: ${right};
+      bottom: ${bottom};
+      left: ${left};
       z-index: 9999;
       display: flex;
       flex-direction: column;

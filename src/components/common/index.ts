@@ -5,3 +5,4 @@ export { default as Chip } from './Chip';
 export { default as NumberInput } from './NumberInput';
 export { default as SwitchCase } from './SwitchCase';
 export { default as PageNavigation } from './PageNavigation';
+export { default as Portal } from './Portal';
