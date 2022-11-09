@@ -1,13 +1,14 @@
-import React, { CSSProperties } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 
 interface Props {
   id: string;
-  position: CSSProperties['position'];
-  top?: CSSProperties['top'];
-  right?: CSSProperties['right'];
-  bottom?: CSSProperties['bottom'];
-  left?: CSSProperties['left'];
+  position: React.CSSProperties['position'];
+  top?: React.CSSProperties['top'];
+  right?: React.CSSProperties['right'];
+  bottom?: React.CSSProperties['bottom'];
+  left?: React.CSSProperties['left'];
+  align?: React.CSSProperties['justifyContent'];
 }
 
 function Portal({
@@ -17,6 +18,7 @@ function Portal({
   right = 0,
   bottom = 0,
   left = 0,
+  align = 'center',
   children,
 }: React.PropsWithChildren<Props>) {
   const portal = React.useMemo(() => {
@@ -37,13 +39,13 @@ function Portal({
       z-index: 9999;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: ${align};
       align-items: center;
     `;
     document.body.appendChild(newPortalElementInstance);
 
     return newPortalElementInstance;
-  }, [id]);
+  }, [align, bottom, id, left, position, right, top]);
 
   return ReactDOM.createPortal(children, portal);
 }
