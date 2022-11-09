@@ -27,7 +27,7 @@ function FoodBox({
   setSelectedStyle,
   handleChangeDinnerQuantity,
 }: Props) {
-  const isShampain = true;
+  const isShampain = dinner.dinnerName?.split(' ').join('') === '샴페인축제디너';
 
   const handleClickStyleBox = (style: Style) => {
     if (style === selectedStyle) {
@@ -70,6 +70,14 @@ function FoodBox({
                   selectedStyle={selectedStyle}
                   handleClickStyle={handleClickStyleBox}
                 />
+                <StyleDescription style={{ minHeight: '80px', content: '' }}>
+                  {selectedStyle?.styleTablewareInfoResponseList.map((tableware) => (
+                    <Typography type='body3' key={tableware.tablewareId}>
+                      {tableware.tablewareName}
+                    </Typography>
+                  ))}
+                </StyleDescription>
+
                 <QuantitySelectBox>
                   <Typography type='h4' color={theme.colors.text.bold}>
                     수량 선택
@@ -170,5 +178,7 @@ const InfomationLine = styled.span`
   display: flex;
   justify-content: space-between;
 `;
+
+const StyleDescription = styled.div``;
 
 export default FoodBox;

@@ -25,6 +25,7 @@ function OrderPage() {
     // TODO: 백엔드로 정보 보내기
     storage.removeAll();
     setMyBagState([]);
+    alert('성공적으로 구매했습니다.');
     navigate('/main');
   };
 
