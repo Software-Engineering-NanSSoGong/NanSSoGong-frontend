@@ -1,11 +1,11 @@
-import { useContext, createContext } from 'react';
+import { createGenericContext, createGenericUseFunction } from '../../utils';
 
-interface InitialState {
+interface ModalTriggerEvent {
   open: () => void;
   close: () => void;
 }
 
-const Context = createContext({} as InitialState);
-export default Context;
+const context = createGenericContext<ModalTriggerEvent>();
+export default context;
 
-export const useModal = () => useContext(Context);
+export const useModal = createGenericUseFunction<ModalTriggerEvent>(context);
