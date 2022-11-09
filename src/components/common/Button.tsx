@@ -9,6 +9,7 @@ export enum ButtonHierarchy {
   DarkGray = 'DarkGray',
   Gray = 'Gray',
   Parent = 'Parent',
+  Warning = 'Warning',
 }
 
 interface Props extends ComponentProps<'button'> {
@@ -64,6 +65,8 @@ const Wrapper = styled.button<StyleProps>`
         return theme.palette.gray300;
       case ButtonHierarchy.Gray:
         return theme.palette.gray100;
+      case ButtonHierarchy.Warning:
+        return theme.colors.primary.yellow;
       case ButtonHierarchy.Parent:
       default:
         return 'transparent';
