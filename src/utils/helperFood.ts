@@ -63,7 +63,7 @@ export function getDifferenceFoodInfoFromDinner(
     } else if (!isOriginFood && foodInfo[food.foodName].foodQuantity > 0) {
       addedFoodInfos.push({
         foodId: food.foodId,
-        price: food.foodSellPrice * foodInfo[food.foodName].foodQuantity,
+        price: food.foodSellPrice,
         quantity: foodInfo[food.foodName].foodQuantity,
         foodName: food.foodName,
       });
