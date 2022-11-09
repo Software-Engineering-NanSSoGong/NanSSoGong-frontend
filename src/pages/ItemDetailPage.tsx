@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { Dinner, FoodWithQuantity, Style } from '../@types';
 import { DinnerService } from '../api';
 import {
@@ -13,7 +13,9 @@ import {
   Typography,
 } from '../components';
 import BottomButton from '../components/BottomButton';
+import { myBagSelector } from '../stores';
 import { foodState as RecoilFoodState } from '../stores/Food';
+import { getDifferenceFoodInfoFromDinner } from '../utils';
 
 const transformToNameWithInfoObject = (foodList: FoodWithQuantity[], dinner: Dinner) => {
   return foodList.reduce(
@@ -35,6 +37,7 @@ function ItemDetailPage() {
   const navigate = useNavigate();
   const params = useParams();
   const foods = useRecoilValue(RecoilFoodState);
+  const setMyBagState = useSetRecoilState(myBagSelector);
   const [dinner, setDinner] = useState<Dinner>({} as Dinner);
   const [foodState, setFoodState] = useState<Record<string, FoodWithQuantity>>({});
   const [selectedStyle, setSelectedStyle] = useState<Style | null>(null);
@@ -45,11 +48,24 @@ function ItemDetailPage() {
     setFoodState(transformToNameWithInfoObject(foods, nextDinnerItem));
   };
 
+  const handleClickModalConfirmButton = () => {
+    const { addedFoodInfos, reducedFoodInfos } = getDifferenceFoodInfoFromDinner(
+      dinner,
+      foodState,
+      foods,
+    );
+    setMyBagState((prev) => [
+      ...prev,
+      { dinner, selectedStyle: selectedStyle as Style, addedFoodInfos, reducedFoodInfos },
+    ]);
+    navigate('/order');
+  };
+
   useEffect(() => {
     (async () => {
       const dinnerItem = await DinnerService.getDinnerItem({ id: Number(params?.id) });
-      setDinner({ ...dinnerItem, dinnerQuantity: 1 });
       setFoodState(transformToNameWithInfoObject(foods, dinnerItem));
+      setDinner({ ...dinnerItem, dinnerQuantity: 1 });
     })();
   }, [foods, params?.id]);
 
@@ -98,7 +114,7 @@ function ItemDetailPage() {
           </Modal.triggerButton>
         }
         modalNode={
-          <Modal.askModal onClickConfirm={() => navigate('/order')}>
+          <Modal.askModal onClickConfirm={handleClickModalConfirmButton}>
             <OrderConfirmBox
               dinner={dinner}
               orderedFoodInfo={foodState}

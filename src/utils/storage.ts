@@ -1,10 +1,10 @@
 const setLocalStorage = (key: string, data: unknown) => {
-  const storedData = JSON.stringify(data);
+  const storedData = JSON.stringify(data || '');
   window?.localStorage.setItem(key, storedData);
 };
 
 const getLocalStorage = (key: string) => {
-  return JSON.parse(window?.localStorage.getItem(key) ?? '');
+  return JSON.parse(window?.localStorage.getItem(key) ?? '[]');
 };
 
 const removeLocalStorage = (key: string) => {

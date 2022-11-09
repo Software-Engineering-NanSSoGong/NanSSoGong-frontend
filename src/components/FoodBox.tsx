@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { Dinner, Style } from '../@types';
 import { ChangeFoodInfo } from '../stores';
 import { theme } from '../styles';
+import { getBasicFoodCountInDinner } from '../utils';
 import { NumberInput, SwitchCase, Typography } from './common';
 import StyleSelectBoxList from './StyleSelectBoxList';
 import TitleWithLine from './TitleWithLine';
@@ -106,7 +107,7 @@ function FoodBox({
                     <InfomationLine key={item.foodId}>
                       <Typography type='body4'>• {item.foodName}</Typography>
                       <Typography type='body4' color={theme.colors.primary.blue}>
-                        {item.quantity - (dinner.dinnerQuantity || 1)}개 추가
+                        {item.quantity - getBasicFoodCountInDinner(dinner, item)}개 추가
                       </Typography>
                     </InfomationLine>
                   ))}
@@ -114,7 +115,7 @@ function FoodBox({
                     <InfomationLine key={item.foodId}>
                       <Typography type='body4'>• {item.foodName}</Typography>
                       <Typography type='body4' color={theme.colors.primary.red}>
-                        {(dinner.dinnerQuantity || 1) - item.quantity}개 삭제
+                        {getBasicFoodCountInDinner(dinner, item) - item.quantity}개 삭제
                       </Typography>
                     </InfomationLine>
                   ))}
