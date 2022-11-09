@@ -1,4 +1,4 @@
-import { createGenericContext, createGenericUseFunction } from '../../utils';
+import { createGenericContext, createGenericUseContext } from '../../utils';
 
 interface ToastEvent {
   show: () => void;
@@ -8,4 +8,4 @@ interface ToastEvent {
 const context = createGenericContext<ToastEvent>();
 export default context;
 
-export const useToast = createGenericUseFunction<ToastEvent>(context);
+export const useToast = createGenericUseContext<ToastEvent>(context);

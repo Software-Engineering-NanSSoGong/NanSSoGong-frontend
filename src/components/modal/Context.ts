@@ -1,4 +1,4 @@
-import { createGenericContext, createGenericUseFunction } from '../../utils';
+import { createGenericContext, createGenericUseContext } from '../../utils';
 
 interface ModalTriggerEvent {
   open: () => void;
@@ -8,4 +8,4 @@ interface ModalTriggerEvent {
 const context = createGenericContext<ModalTriggerEvent>();
 export default context;
 
-export const useModal = createGenericUseFunction<ModalTriggerEvent>(context);
+export const useModal = createGenericUseContext<ModalTriggerEvent>(context);
