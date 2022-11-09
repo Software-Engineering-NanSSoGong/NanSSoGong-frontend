@@ -58,7 +58,8 @@ function ItemDetailPage() {
       ...prev,
       { dinner, selectedStyle: selectedStyle as Style, addedFoodInfos, reducedFoodInfos },
     ]);
-    navigate('/order');
+    alert('장바구니에 성공적으로 담겼습니다.');
+    navigate('/main');
   };
 
   useEffect(() => {
