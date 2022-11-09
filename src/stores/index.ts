@@ -1,2 +1,2 @@
-export * from './MyBag';
+export * from './myBag';
 export * from './User';
