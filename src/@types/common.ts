@@ -60,7 +60,7 @@ export interface OrderSheet {
   })[];
 }
 
-export type OrderStatus = '';
+export type OrderStatus = 'ORDERED';
 
 export interface History {
   orderId: number;
