@@ -11,7 +11,7 @@ import {
   ItemDetailPage,
   SignUpSelectUserTypePage,
   SignUpEmailPage,
-  SignUpNamePage,
+  SignUpClientInfoPage,
   ProfilePage,
   OrderPage,
   EmployeePage,
@@ -44,7 +44,7 @@ function Router() {
       <Route path='/main' element={<MainPage />} />
       <Route path='/signup-type' element={<SignUpSelectUserTypePage />} />
       <Route path='/signup-email' element={<SignUpEmailPage />} />
-      <Route path='/signup-name' element={<SignUpNamePage />} />
+      <Route path='/signup-client-info' element={<SignUpClientInfoPage />} />
       <Route path='/item/:id' element={<ItemDetailPage />} />
       <Route path='/history' element={<ClientHistoryOrderPage />} />
       <Route path='/profile' element={<ProfilePage />} />

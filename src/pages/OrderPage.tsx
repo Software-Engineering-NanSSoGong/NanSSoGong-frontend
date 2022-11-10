@@ -9,13 +9,14 @@ import {
   LabelWithMultipleInput,
   Modal,
   PriceBox,
-  SideMenuList,
+  // SideMenuListEmp,
   TitleWithLine,
   Typography,
 } from '../components';
 import { theme } from '../styles';
 import { myBagSelector } from '../stores';
 import { getTotalPrice, storage } from '../utils';
+import SideMenuListEmp from '../components/SideMenuListWithEmployee';
 
 function OrderPage() {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ function OrderPage() {
 
   return (
     <Wrapper>
-      <SideMenuList />
+      <SideMenuListEmp />
       <Spacer>
         <TitleWithLine title='주문하기' titleFontType='h1' />
         {myBagState?.map((item, idx) => (
@@ -62,7 +63,7 @@ function OrderPage() {
 
           <LabelWithMultipleInput
             title='상세 주소'
-            placeholders={['예시) 동대문구', '서울시립대로 163', '국제학사']}
+            placeholders={['예시) 동대문구', '서울시립대로 163', '국제 학사']}
             labelColor={theme.palette.white}
             inputBackgroundColor={theme.palette.gray50}
             inputColor={theme.colors.text.dark}

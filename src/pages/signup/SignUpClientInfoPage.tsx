@@ -6,7 +6,7 @@ import { ButtonHierarchy } from '../../components/common/Button';
 import { signUpState as RecoilSignUpState } from '../../stores/SignUp';
 import { theme } from '../../styles';
 
-function SignUpNamePage() {
+function SignUpClientInfoPage() {
   const [address, setAddress] = React.useState<Record<string, string>>({
     address_1: '',
     address_2: '',
@@ -147,4 +147,4 @@ const AcceptButton = styled(Button)`
   }
 `;
 
-export default SignUpNamePage;
+export default SignUpClientInfoPage;

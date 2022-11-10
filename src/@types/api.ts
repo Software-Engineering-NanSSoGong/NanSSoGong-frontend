@@ -1,4 +1,4 @@
-import { Dinner, Food, History, Style } from './common';
+import { Address, Dinner, Food, History, Style } from './common';
 
 export interface BaseAPIResponse<T> {
   status: number;
@@ -36,3 +36,23 @@ export interface ResponseFoodList extends BasePageResponse<Food> {}
 
 // Order Service
 export interface ResponseOrderHistoryList extends BasePageResponse<History> {}
+
+// User Service
+export interface RequestSignUpInfo {
+  name: string;
+  email: string;
+  password: string;
+  personalInformationCollectionAgreement?: boolean;
+  cardNumber?: string;
+  address?: Address;
+}
+type SuccessResponseSignUpInfo = {
+  name: string;
+};
+type FailResponseSignUpInfo = {
+  exceptionName: string;
+  exceptionType: string;
+  message: string;
+};
+
+export type ResponseSignUpInfo = SuccessResponseSignUpInfo | FailResponseSignUpInfo;
