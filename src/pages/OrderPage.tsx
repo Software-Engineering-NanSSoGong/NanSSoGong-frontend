@@ -2,15 +2,37 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { AddedDinner } from '../@types';
 import { ButtonHierarchy } from '../components/common/Button';
-import { BottomButton, FoodBox, SideMenuList, TitleWithLine, Typography } from '../components';
+import {
+  BottomButton,
+  FoodBox,
+  // LabelWithMultipleInput,
+  SideMenuList,
+  TitleWithLine,
+  Typography,
+} from '../components';
 import { FrenchDinner } from '../dummy/dinner';
 import { theme } from '../styles';
+import React from 'react';
 
 function OrderPage() {
   const [addedDinner] = useState<AddedDinner>({
     ...FrenchDinner,
     selectedStyle: { styleName: 'simple', styleSellPrice: 0 },
   } as AddedDinner);
+  // const [address, setAddress] = React.useState<Record<string, string>>({
+  //   address_1: '',
+  //   address_2: '',
+  //   address_3: '',
+  // });
+
+  // const handleChangeMultipleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = e.target;
+  //   setAddress((prev) => ({ ...prev, [name]: value }));
+  // };
+
+  // const handleClickButton = () => {
+  //   console.log(address);
+  // };
 
   return (
     <Wrapper>
@@ -31,7 +53,7 @@ function OrderPage() {
               <Input style={{ width: '20%' }} />
             </Inputs>
           </LabelWithInput>
-          <LabelWithInput>
+          {/* <LabelWithInput>
             <Typography type='h4' color={theme.colors.text.bold}>
               상세 주소
             </Typography>
@@ -40,7 +62,15 @@ function OrderPage() {
               <Input />
               <Input />
             </Inputs>
-          </LabelWithInput>
+          </LabelWithInput> */}
+          {/* <LabelWithMultipleInput
+            title='상세 주소'
+            placeholders={['예시) 동대문구', '서울시립대로 163', '국제학사']}
+            labelColor={theme.palette.white}
+            inputBackgroundColor={theme.palette.gray50}
+            inputColor={theme.colors.text.dark}
+            handleChangeInput={handleChangeMultipleInput}
+          /> */}
         </OrderInfomationBox>
         <OrderInfomationBox>
           <Typography type='h3' color={theme.colors.text.bold}>
@@ -54,17 +84,15 @@ function OrderPage() {
               <Input style={{ width: '20%' }} />
             </Inputs>
           </LabelWithInput>
-          <LabelWithInput>
-            <Typography type='h4' color={theme.colors.text.bold}>
-              카드 번호
-            </Typography>
-            <Inputs>
-              <Input />
-              <Input />
-              <Input />
-              <Input />
-            </Inputs>
-          </LabelWithInput>
+
+          {/* <LabelWithMultipleInput
+            title='카드 번호'
+            placeholders={[' ', ' ', ' ', ' ']}
+            labelColor={theme.palette.white}
+            inputBackgroundColor={theme.palette.gray50}
+            inputColor={theme.colors.text.dark}
+            handleChangeInput={handleChangeMultipleInput}
+          /> */}
         </OrderInfomationBox>
         <OrderInfomationBox>
           <Typography type='h3' color={theme.colors.text.bold}>

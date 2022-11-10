@@ -14,6 +14,7 @@ import {
   SignUpNamePage,
   ProfilePage,
   OrderPage,
+  EmployeePage,
 } from '../pages';
 import { foodState } from '../stores/Food';
 import { styleState } from '../stores/Style';
@@ -46,6 +47,7 @@ function Router() {
       <Route path='/history' element={<ClientHistoryOrderPage />} />
       <Route path='/profile' element={<ProfilePage />} />
       <Route path='/order' element={<OrderPage />} />
+      <Route path='/employee' element={<EmployeePage />} />
       {/* 유저만 갈 수 있는 페이지 example: 내정보페이지 */}
       <Route element={<RequiredAuthGuard />}>
         <Route path='/user' element={<MainPage />} />

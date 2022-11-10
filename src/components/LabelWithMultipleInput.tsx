@@ -24,7 +24,7 @@ function LabelWithMultipleInput({
   return (
     <Wrapper>
       <Lines>
-        <Typography type='h5' color={labelColor}>
+        <Typography type='h4' color={labelColor}>
           {title}
         </Typography>
         <Inputs>
