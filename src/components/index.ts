@@ -2,7 +2,7 @@ export * from './common';
 export * from './modal';
 export * from './toast';
 export { default as ClickableDinnerCard } from './ClickableDinnerCard';
-export { default as HistoryOrderCard } from './HistoryOrderCard';
+export { default as ClickableHistoryOrderCard } from './ClickableHistoryOrderCard';
 export { default as IconInputLine } from './IconInputLine';
 export { default as SideMenuList } from './SideMenuList';
 export { default as TitleWithLine } from './TitleWithLine';
