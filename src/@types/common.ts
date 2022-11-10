@@ -1,4 +1,9 @@
 export type StyleName = 'simple' | 'deluxe' | 'grande';
+export interface Address {
+  city: string;
+  street: string;
+  zipcode: string;
+}
 
 export interface Food {
   foodId: number;
@@ -41,4 +46,32 @@ export interface Style {
       tablewareName: string;
     },
   ];
+}
+
+export interface OrderSheet {
+  orderSheetId: number;
+  styleId: number;
+  styleName: string;
+  dinnerId: number;
+  dinnerName: string;
+  foodDifferenceInfoResponseList: (Pick<Food, 'foodId' | 'foodName'> & {
+    foodQuantity: number;
+    orderSheetItemId: number;
+  })[];
+}
+
+export type OrderStatus = 'ORDERED';
+
+export interface History {
+  orderId: number;
+  riderId: number | null;
+  riderName: string;
+  address: Address;
+  orderTime: Date;
+  reservedTime: Date | null;
+  orderStatus: OrderStatus;
+  totalPriceAfterSale: number | null;
+  orderSheetResponseList: OrderSheet[];
+  clientId: number;
+  clientName: string;
 }
