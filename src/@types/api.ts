@@ -1,4 +1,4 @@
-import { Dinner, Food, Style } from './common';
+import { Dinner, Food, History, Style } from './common';
 
 export interface BaseAPIResponse<T> {
   status: number;
@@ -33,3 +33,6 @@ export interface ResponseStyleList extends BasePageResponse<Style> {}
 
 // Food Service
 export interface ResponseFoodList extends BasePageResponse<Food> {}
+
+// Order Service
+export interface ResponseOrderHistoryList extends BasePageResponse<History> {}
