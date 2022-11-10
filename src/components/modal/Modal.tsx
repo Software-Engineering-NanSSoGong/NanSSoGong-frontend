@@ -1,12 +1,13 @@
 import styled from '@emotion/styled';
 import React from 'react';
+
 import { useDisclosure } from '../../hooks';
 import { theme } from '../../styles';
+import { Portal } from '../common';
 import AskModal from './AskModal';
 import ConfirmModal from './ConfirmModal';
 import Context from './Context';
 import ModalTriggerButton from './ModalTriggerButton';
-import Portal from './Portal';
 
 type UseDisclosure = typeof useDisclosure;
 
@@ -36,7 +37,7 @@ function Modal({ modalNode, triggerNode, initialIsOpen = false, onOpen, onClose 
     <Context.Provider value={{ open, close }}>
       {triggerNode}
       {isOpen ? (
-        <Portal id={portalId}>
+        <Portal id={portalId} position='fixed'>
           <ModalBackground
             onClick={() => {
               if (typeof onClose !== 'undefined') {

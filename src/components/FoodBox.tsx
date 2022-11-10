@@ -1,7 +1,9 @@
 import styled from '@emotion/styled';
 import { Dispatch, SetStateAction } from 'react';
 import { Dinner, Style } from '../@types';
+import { ChangeFoodInfo } from '../stores';
 import { theme } from '../styles';
+import { getBasicFoodCountInDinner } from '../utils';
 import { NumberInput, SwitchCase, Typography } from './common';
 import StyleSelectBoxList from './StyleSelectBoxList';
 import TitleWithLine from './TitleWithLine';
@@ -9,25 +11,23 @@ import TitleWithLine from './TitleWithLine';
 interface Props {
   type: 'beforeOrder' | 'order';
   dinner: Dinner;
-  handleChangeDinnerQuantity?: (quantity: number) => void;
   selectedStyle: Style | null;
+  addedFoodInfos?: ChangeFoodInfo[];
+  reducedFoodInfos?: ChangeFoodInfo[];
   setSelectedStyle?: Dispatch<SetStateAction<Style | null>>;
+  handleChangeDinnerQuantity?: (quantity: number) => void;
 }
-
-const dummyFoodInfo = [
-  { name: '감자', quantity: 1 },
-  { name: '감자2', quantity: 1 },
-  { name: '감자3', quantity: 1 },
-];
 
 function FoodBox({
   type,
   dinner,
   selectedStyle,
+  addedFoodInfos,
+  reducedFoodInfos,
   setSelectedStyle,
   handleChangeDinnerQuantity,
 }: Props) {
-  const isShampain = true;
+  const isShampain = dinner.dinnerName?.split(' ').join('') === '샴페인축제디너';
 
   const handleClickStyleBox = (style: Style) => {
     if (style === selectedStyle) {
@@ -70,6 +70,34 @@ function FoodBox({
                   selectedStyle={selectedStyle}
                   handleClickStyle={handleClickStyleBox}
                 />
+                <StyleDescription style={{ minHeight: '80px', content: '' }}>
+                  {selectedStyle?.styleTablewareInfoResponseList.map((tableware) => (
+                    <Typography type='body3' key={tableware.tablewareId}>
+                      {tableware.tablewareName}
+                    </Typography>
+                  ))}
+                </StyleDescription>
+
+                <QuantitySelectBox>
+                  <Typography type='h4' color={theme.colors.text.bold}>
+                    수량 선택
+                  </Typography>
+                  <NumberInput
+                    value={dinner.dinnerQuantity ?? 0}
+                    type={'large'}
+                    onChange={(e) => handleChangeDinnerQuantity?.(Number(e.target.value))}
+                    onClickPlusIcon={() =>
+                      handleChangeDinnerQuantity?.(Number(dinner.dinnerQuantity || 0) + 1)
+                    }
+                    onClickMinusIcon={() =>
+                      handleChangeDinnerQuantity?.(
+                        Number(dinner.dinnerQuantity) - 1 < 0
+                          ? 0
+                          : Number(dinner.dinnerQuantity) - 1,
+                      )
+                    }
+                  />
+                </QuantitySelectBox>
               </>
             ),
             order: (
@@ -81,53 +109,26 @@ function FoodBox({
                   handleClickStyle={handleClickStyleBox}
                   disabled
                 />
+                <ExtraInfomationSection>
+                  <TitleWithLine title='메뉴 변경 정보' titleFontType='h4' />
+                  {addedFoodInfos?.map((item) => (
+                    <InfomationLine key={item.foodId}>
+                      <Typography type='body4'>• {item.foodName}</Typography>
+                      <Typography type='body4' color={theme.colors.primary.blue}>
+                        {item.quantity - getBasicFoodCountInDinner(dinner, item)}개 추가
+                      </Typography>
+                    </InfomationLine>
+                  ))}
+                  {reducedFoodInfos?.map((item) => (
+                    <InfomationLine key={item.foodId}>
+                      <Typography type='body4'>• {item.foodName}</Typography>
+                      <Typography type='body4' color={theme.colors.primary.red}>
+                        {getBasicFoodCountInDinner(dinner, item) - item.quantity}개 삭제
+                      </Typography>
+                    </InfomationLine>
+                  ))}
+                </ExtraInfomationSection>
               </>
-            ),
-          }}
-        />
-        <SwitchCase
-          value={type}
-          caseBy={{
-            beforeOrder: (
-              <QuantitySelectBox>
-                <Typography type='h4' color={theme.colors.text.bold}>
-                  수량 선택
-                </Typography>
-                <NumberInput
-                  value={dinner.dinnerQuantity ?? 0}
-                  type={'large'}
-                  onChange={(e) => handleChangeDinnerQuantity?.(Number(e.target.value))}
-                  onClickPlusIcon={() =>
-                    handleChangeDinnerQuantity?.(Number(dinner.dinnerQuantity || 0) + 1)
-                  }
-                  onClickMinusIcon={() =>
-                    handleChangeDinnerQuantity?.(
-                      Number(dinner.dinnerQuantity) - 1 < 0 ? 0 : Number(dinner.dinnerQuantity) - 1,
-                    )
-                  }
-                />
-              </QuantitySelectBox>
-            ),
-            order: (
-              <ExtraInfomationSection>
-                <TitleWithLine title='메뉴 추가 및 삭제 정보' titleFontType='h4' />
-                {dummyFoodInfo.map((item) => (
-                  <InfomationLine key={item.name}>
-                    <Typography type='body4'>• {item.name}</Typography>
-                    <Typography type='body4' color={theme.colors.primary.blue}>
-                      {item.quantity}개 추가
-                    </Typography>
-                  </InfomationLine>
-                ))}
-                {dummyFoodInfo.map((item) => (
-                  <InfomationLine key={item.name}>
-                    <Typography type='body4'>• {item.name}</Typography>
-                    <Typography type='body4' color={theme.colors.primary.red}>
-                      {item.quantity}개 삭제
-                    </Typography>
-                  </InfomationLine>
-                ))}
-              </ExtraInfomationSection>
             ),
           }}
         />
@@ -139,7 +140,6 @@ function FoodBox({
 const FoodSection = styled.section`
   display: flex;
   justify-content: space-between;
-  gap: 60px;
 `;
 
 const FoodImage = styled.img`
@@ -152,7 +152,7 @@ const FoodDescription = styled.section`
   display: flex;
   flex-direction: column;
   gap: 24px;
-  flex-shrink: 1;
+  width: 50%;
 `;
 
 const TextLine = styled.span`
@@ -178,5 +178,7 @@ const InfomationLine = styled.span`
   display: flex;
   justify-content: space-between;
 `;
+
+const StyleDescription = styled.div``;
 
 export default FoodBox;

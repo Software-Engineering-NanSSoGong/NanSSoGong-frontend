@@ -3,7 +3,7 @@ import { useRecoilValue } from 'recoil';
 import { Dinner, FoodWithQuantity, Style } from '../@types';
 import { foodState } from '../stores/Food';
 import { theme } from '../styles';
-import { getDifferenceFoodInfoFromDinner } from '../utils';
+import { getDifferenceFoodInfoFromDinner, getTotalPrice } from '../utils';
 import { Typography } from './common';
 
 interface Props {
@@ -12,13 +12,21 @@ interface Props {
   selectedStyle: Style;
 }
 
-function OrderConfirmBox({ dinner, orderedFoodInfo }: Props) {
+function OrderConfirmBox({ dinner, orderedFoodInfo, selectedStyle }: Props) {
   const foods = useRecoilValue(foodState);
   const { addedFoodInfos, reducedFoodInfos } = getDifferenceFoodInfoFromDinner(
     dinner,
     orderedFoodInfo,
     foods,
   );
+  const totalPrice = getTotalPrice([
+    {
+      dinner,
+      addedFoodInfos,
+      reducedFoodInfos,
+      selectedStyle,
+    },
+  ]);
 
   return (
     <Wrapper>
@@ -32,6 +40,14 @@ function OrderConfirmBox({ dinner, orderedFoodInfo }: Props) {
           </Typography>
           <Typography type='body5' color={theme.colors.text.dark}>
             {dinner?.dinnerQuantity}개
+          </Typography>
+        </Line>
+        <Line>
+          <Typography type='h6' color={theme.colors.text.dark}>
+            스타일
+          </Typography>
+          <Typography type='body5' color={theme.colors.text.dark}>
+            {selectedStyle.styleName}
           </Typography>
         </Line>
         {addedFoodInfos?.map((food) => (
@@ -59,7 +75,7 @@ function OrderConfirmBox({ dinner, orderedFoodInfo }: Props) {
             총 금액
           </Typography>
           <Typography type='body5' color={theme.colors.text.dark} textAlign='end'>
-            150,000원
+            {totalPrice.toLocaleString()}원
           </Typography>
         </Line>
       </ModalSpacer>
@@ -91,6 +107,7 @@ const Line = styled.span`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 
 export default OrderConfirmBox;

@@ -16,6 +16,7 @@ import {
   OrderPage,
   EmployeePage,
 } from '../pages';
+import ToastTestPage from '../pages/ToastTestPage';
 import { foodState } from '../stores/Food';
 import { styleState } from '../stores/Style';
 import RequiredAuthGuard from './RequiredAuthGuard';
@@ -39,6 +40,7 @@ function Router() {
     <Routes>
       <Route path='/' element={<LoginPage />} />
       <Route path='/modal' element={<ModalTestPage />} />
+      <Route path='/toast' element={<ToastTestPage />} />
       <Route path='/main' element={<MainPage />} />
       <Route path='/signup-type' element={<SignUpSelectUserTypePage />} />
       <Route path='/signup-email' element={<SignUpEmailPage />} />
