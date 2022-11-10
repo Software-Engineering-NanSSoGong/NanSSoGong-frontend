@@ -80,7 +80,7 @@ function FoodBox({
 
                 <QuantitySelectBox>
                   <Typography type='h4' color={theme.colors.text.bold}>
-                    수량 선택
+                    수량
                   </Typography>
                   <NumberInput
                     value={dinner.dinnerQuantity ?? 0}

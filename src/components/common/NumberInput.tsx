@@ -18,13 +18,23 @@ function NumberInput({
 }: Props) {
   return (
     <Wrapper>
-      <Input value={value} onChange={onChange} type={type} pattern='\d*' />
-      <PlusIcon onClick={onClickPlusIcon} hierarchy={ButtonHierarchy.Parent}>
-        ➕
-      </PlusIcon>
-      <MinusIcon onClick={onClickMinusIcon} hierarchy={ButtonHierarchy.Parent}>
-        ➖
-      </MinusIcon>
+      <Input
+        value={value}
+        onChange={onChange}
+        type={type}
+        pattern='\d*'
+        disabled={type === 'large'}
+      />
+      {type === 'small' && (
+        <>
+          <PlusIcon onClick={onClickPlusIcon} hierarchy={ButtonHierarchy.Parent}>
+            ➕
+          </PlusIcon>
+          <MinusIcon onClick={onClickMinusIcon} hierarchy={ButtonHierarchy.Parent}>
+            ➖
+          </MinusIcon>
+        </>
+      )}
     </Wrapper>
   );
 }
@@ -46,6 +56,10 @@ const Input = styled.input<StyleProps>`
   padding: ${({ type }) => (type === 'large' ? '18px' : '8px')};
   border-radius: ${({ type }) => (type === 'large' ? '16px' : '0 0 16px 16px')};
   font-size: ${({ type }) => (type === 'large' ? '16px' : '12px')};
+
+  &:disabled {
+    background-color: ${({ theme }) => theme.palette.white};
+  }
 `;
 
 const PlusIcon = styled(Button)<StyleProps>`

@@ -1,16 +1,76 @@
 import styled from '@emotion/styled';
-import { HistoryOrderCard, SideMenuList, Typography } from '../components';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { History, OrderStatus } from '../@types';
+// import { OrderService } from '../api';
+import { ClickableHistoryOrderCard, SideMenuList, Typography } from '../components';
 import { theme } from '../styles';
 
-const tempHistory = {
-  address: '서울특별시 동대문구 서울시립대로 163, 기숙사',
-  plusFoods: ['감자', '시럽', '야채'],
-  minusFoods: ['감자'],
-  dinnerSets: ['프렌치 디너 서비스'],
-  date: '2022. 09. 09',
-};
+const dummy = [
+  {
+    orderId: 22,
+    riderId: null,
+    riderName: '미정',
+    address: {
+      city: 'seoul0',
+      street: 'mangu0',
+      zipcode: '123450',
+    },
+    orderTime: new Date(),
+    reservedTime: null,
+    orderStatus: 'ORDERED' as OrderStatus,
+    totalPriceAfterSale: null,
+    orderSheetResponseList: [
+      {
+        orderSheetId: 23,
+        styleId: 20,
+        styleName: '스타일0',
+        dinnerId: 21,
+        dinnerName: '디너0',
+        foodDifferenceInfoResponseList: [
+          {
+            orderSheetItemId: 6103,
+            foodId: 6,
+            foodName: '스테이크0',
+            foodQuantity: 1,
+          },
+          {
+            orderSheetItemId: 6104,
+            foodId: 7,
+            foodName: '치킨0',
+            foodQuantity: 1,
+          },
+        ],
+      },
+    ],
+    clientId: 1,
+    clientName: 'Client0',
+  },
+];
 
 function ClientHistoryOrderPage() {
+  const [histories, setHistories] = useState<History[]>([]);
+  const [params] = useSearchParams();
+
+  useEffect(() => {
+    const uuid = params.get('uuid');
+    if (uuid) {
+      // guset History
+      (async () => {
+        // const res = await OrderService.getGuestHistory({ id: Number(uuid) });
+        // setHistories([res]);
+      })();
+    } else {
+      // client History
+      (async () => {
+        // const res = await OrderService.getClientHistory({ page: 0, size: 200 });
+        // setHistories(res.content);
+      })();
+      // FIXME: 더미 데이터
+      setHistories(dummy);
+    }
+  }, [params]);
+
   return (
     <Wrapper>
       <SideMenuList />
@@ -19,42 +79,17 @@ function ClientHistoryOrderPage() {
           주문 내역
         </Typography>
         <CardList>
-          <HistoryOrderCard
-            userType='client'
-            orderStatus='주문 수정'
-            dinnerSets={tempHistory.dinnerSets}
-            plusFoods={tempHistory.plusFoods}
-            minusFoods={tempHistory.minusFoods}
-            date={tempHistory.date}
-            address={tempHistory.address}
-          />
-          <HistoryOrderCard
-            userType='client'
-            orderStatus='주문 완료'
-            dinnerSets={tempHistory.dinnerSets}
-            plusFoods={tempHistory.plusFoods}
-            minusFoods={tempHistory.minusFoods}
-            date={tempHistory.date}
-            address={tempHistory.address}
-          />
-          <HistoryOrderCard
-            userType='client'
-            orderStatus='배달 중'
-            dinnerSets={tempHistory.dinnerSets}
-            plusFoods={tempHistory.plusFoods}
-            minusFoods={tempHistory.minusFoods}
-            date={tempHistory.date}
-            address={tempHistory.address}
-          />
-          <HistoryOrderCard
-            userType='client'
-            orderStatus='배달 완료'
-            dinnerSets={tempHistory.dinnerSets}
-            plusFoods={tempHistory.plusFoods}
-            minusFoods={tempHistory.minusFoods}
-            date={tempHistory.date}
-            address={tempHistory.address}
-          />
+          {histories?.map((history) => (
+            <ClickableHistoryOrderCard
+              key={history.orderId}
+              userType='client'
+              orderStatus={history.orderStatus}
+              dinnerName={history.orderSheetResponseList[0].dinnerName}
+              differenceFoodList={history.orderSheetResponseList[0].foodDifferenceInfoResponseList}
+              date={history.orderTime}
+              address={`${history.address.city} ${history.address.street} ${history.address.zipcode}`}
+            />
+          ))}
         </CardList>
       </Spacer>
     </Wrapper>
@@ -74,7 +109,7 @@ const CardList = styled.section`
   flex-direction: column;
   gap: 80px;
 
-  section:nth-last-child(1) {
+  section:nth-last-of-type(1) {
     margin-bottom: 80px;
   }
 `;
