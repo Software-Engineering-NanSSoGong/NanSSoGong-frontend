@@ -6,6 +6,7 @@ import { theme } from '../../styles';
 
 function SignUpEmailPage() {
   const navigate = useNavigate();
+  const [name, setName] = React.useState<string>('');
   const [email, setEmail] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
   const [passwordAgain, setPasswordAgain] = React.useState<string>('');
@@ -23,10 +24,14 @@ function SignUpEmailPage() {
           />
           <Lines>
             <Typography type='h5' color={theme.palette.gray400} textAlign='left'>
+              성명
+            </Typography>
+            <IconInputLine icon='user' value={name} onChange={(e) => setName(e.target.value)} />
+            <Typography type='h5' color={theme.palette.gray400} textAlign='left'>
               아이디
             </Typography>
             <IconInputLine icon='user' value={email} onChange={(e) => setEmail(e.target.value)} />
-            <CheckButton>
+            <CheckButton onClick={() => alert('사용가능한 아이디입니다.')}>
               <Typography
                 type='h5'
                 color={theme.palette.white}
@@ -65,6 +70,7 @@ function SignUpEmailPage() {
               style={{ padding: '12px' }}
               onClick={() => navigate('/signup-name')}
               disabled={
+                name === '' ||
                 email === '' ||
                 password === '' ||
                 passwordAgain === '' ||

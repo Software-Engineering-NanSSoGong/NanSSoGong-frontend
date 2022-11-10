@@ -45,25 +45,6 @@ function SignUpNamePage() {
             borderColor={theme.palette.black}
           />
           <Lines>
-            <LabelWithMultipleInput
-              title='카드 번호'
-              placeholders={['', '', '', '']}
-              labelColor={theme.colors.background}
-              inputBackgroundColor={theme.palette.gray200}
-              inputColor={theme.colors.text.bold}
-              handleChangeInput={handleChangeMultipleInput}
-            />
-
-            <LabelWithMultipleInput
-              title='상세 주소'
-              // placeholders={['예시) 동대문구', '서울시립대로 163', '국제학사 1001호']}
-              placeholders={['예시) 동대문구', '서울시립대로 163', '국제학사']}
-              labelColor={theme.colors.background}
-              inputBackgroundColor={theme.palette.gray200}
-              inputColor={theme.colors.text.bold}
-              handleChangeInput={handleChangeMultipleInput}
-            />
-
             <Typography type='h4' color={theme.palette.gray400} textAlign='left'>
               개인정보 이용 동의
             </Typography>
@@ -78,7 +59,28 @@ function SignUpNamePage() {
                 동의합니다
               </Typography>
             </AcceptButton>
+            <Typography type='h5' color={theme.palette.coreRed} textAlign='center'>
+              개인정보 이용에 동의하지 않더라도, 가입할 수 있습니다
+            </Typography>
           </Lines>
+          <LabelWithMultipleInput
+            title='카드 번호'
+            placeholders={['', '', '', '']}
+            labelColor={theme.colors.background}
+            inputBackgroundColor={theme.palette.gray200}
+            inputColor={theme.colors.text.bold}
+            handleChangeInput={handleChangeMultipleInput}
+          />
+
+          <LabelWithMultipleInput
+            title='상세 주소'
+            // placeholders={['예시) 동대문구', '서울시립대로 163', '국제학사 1001호']}
+            placeholders={['예시) 동대문구', '서울시립대로 163', '국제학사']}
+            labelColor={theme.colors.background}
+            inputBackgroundColor={theme.palette.gray200}
+            inputColor={theme.colors.text.bold}
+            handleChangeInput={handleChangeMultipleInput}
+          />
           <Lines>
             <Button
               fullWidth
