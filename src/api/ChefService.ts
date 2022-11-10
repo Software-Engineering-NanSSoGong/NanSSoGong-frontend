@@ -1,3 +1,4 @@
+import { RequestSignUpInfo, ResponseSignUpInfo } from '../@types';
 import APIBase from './core';
 
 class ChefSerivce extends APIBase {
@@ -5,9 +6,16 @@ class ChefSerivce extends APIBase {
     super('chef');
   }
 
-  public sign() {
-    return this.baseHTTP.post('sign').then(APIBase._handleResponse).catch(APIBase._handleError);
+  public signUp({ email, password, name }: RequestSignUpInfo): Promise<ResponseSignUpInfo> {
+    return this.baseHTTP
+      .post('sign', {
+        loginId: email,
+        password,
+        name,
+      })
+      .then(APIBase._handleResponse)
+      .catch(APIBase._handleError);
   }
 }
 
-export default ChefSerivce;
+export default new ChefSerivce();

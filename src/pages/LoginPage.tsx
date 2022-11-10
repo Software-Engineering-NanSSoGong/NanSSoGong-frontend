@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { MemberService } from '../api';
 import { Button, IconInputLine, TitleWithLine, Typography } from '../components';
 import { ButtonHierarchy } from '../components/common/Button';
 import { theme } from '../styles';
@@ -10,8 +11,14 @@ function LoginPage() {
   const [password, setPassword] = React.useState<string>('');
   const navigate = useNavigate();
 
-  const handleClickLoginButton = () => {
-    console.log(email, password);
+  const handleClickLoginButton = async () => {
+    const res = await MemberService.logIn({ email, password });
+    if (res.hasOwnProperty('sessionId')) {
+      navigate('/main');
+      alert(`${email}님 로그인을 환영합니다.`);
+    } else {
+      alert('등록되지 않은 회원정보입니다');
+    }
   };
 
   return (

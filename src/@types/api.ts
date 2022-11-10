@@ -56,3 +56,8 @@ type FailResponseSignUpInfo = {
 };
 
 export type ResponseSignUpInfo = SuccessResponseSignUpInfo | FailResponseSignUpInfo;
+
+export interface RequestLogInInfo {
+  email: string;
+  password: string;
+}
