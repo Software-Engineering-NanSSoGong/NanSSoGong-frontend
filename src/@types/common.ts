@@ -75,8 +75,8 @@ export interface History {
   riderId: number | null;
   riderName: string;
   address: Address;
-  orderTime: Date;
-  reservedTime: Date | null;
+  orderTime: string;
+  reservedTime: string | null;
   orderStatus: OrderStatus;
   totalPriceAfterSale: number | null;
   orderSheetResponseList: OrderSheet[];
