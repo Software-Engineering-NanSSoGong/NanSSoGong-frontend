@@ -48,7 +48,7 @@ const dummy = [
   },
 ];
 
-function ClientHistoryOrderPage() {
+function ManagePage() {
   const [histories, setHistories] = useState<History[]>([]);
   const [params] = useSearchParams();
 
@@ -114,4 +114,4 @@ const CardList = styled.section`
   }
 `;
 
-export default ClientHistoryOrderPage;
+export default ManagePage;

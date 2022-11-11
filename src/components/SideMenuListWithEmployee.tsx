@@ -17,19 +17,19 @@ function SideMenuListWithEmployee() {
       <Spacer>
         {/* 상단 버튼 리스트 */}
         <ButtonList>
-          <ButtonWrapper fullWidth borderRadius={10} onClick={() => navigate('/main')}>
+          <ButtonWrapper fullWidth borderRadius={10} onClick={() => navigate('/employee')}>
             <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
-              메인
+              주문 내역
             </Typography>
           </ButtonWrapper>
           <ButtonWrapper
             fullWidth
             borderRadius={10}
             hierarchy={ButtonHierarchy.Warning}
-            onClick={() => navigate('/history')}
+            onClick={() => navigate('/manage')}
           >
             <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
-              주문 내역
+              매장 관리
             </Typography>
           </ButtonWrapper>
           {isAuth && (

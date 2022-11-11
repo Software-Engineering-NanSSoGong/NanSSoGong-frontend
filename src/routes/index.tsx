@@ -14,6 +14,7 @@ import {
   SignUpClientInfoPage,
   ProfilePage,
   OrderPage,
+  ManagePage,
   EmployeePage,
 } from '../pages';
 import ToastTestPage from '../pages/ToastTestPage';
@@ -50,6 +51,7 @@ function Router() {
       <Route path='/profile' element={<ProfilePage />} />
       <Route path='/order' element={<OrderPage />} />
       <Route path='/employee' element={<EmployeePage />} />
+      <Route path='/manage' element={<ManagePage />} />
       {/* 유저만 갈 수 있는 페이지 example: 내정보페이지 */}
       <Route element={<RequiredAuthGuard />}>
         <Route path='/user' element={<MainPage />} />
