@@ -15,22 +15,20 @@ import {
 import BottomButton from '../components/BottomButton';
 import { myBagSelector } from '../stores';
 import { foodState as RecoilFoodState } from '../stores/Food';
-import { getDifferenceFoodInfoFromDinner } from '../utils';
+import { getBasicFoodIndexInDinner, getDifferenceFoodInfoFromDinner } from '../utils';
 
 const transformToNameWithInfoObject = (foodList: FoodWithQuantity[], dinner: Dinner) => {
-  return foodList.reduce(
-    (acc, item) => ({
+  return foodList.reduce((acc, item) => {
+    const foodIndex = getBasicFoodIndexInDinner(dinner, item);
+    return {
       ...acc,
       [item.foodName]: {
         ...item,
         foodQuantity:
-          dinner.dinnerFoodInfoResponseList?.findIndex((food) => food.foodId === item.foodId) === -1
-            ? 0
-            : dinner.dinnerQuantity || 1,
+          foodIndex === -1 ? 0 : dinner.dinnerFoodInfoResponseList[foodIndex].foodQuantity || 1,
       },
-    }),
-    {},
-  );
+    };
+  }, {});
 };
 
 function ItemDetailPage() {

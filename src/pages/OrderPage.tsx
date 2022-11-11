@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 
 import { ButtonHierarchy } from '../components/common/Button';
@@ -15,11 +15,13 @@ import {
 import { theme } from '../styles';
 import { myBagSelector } from '../stores';
 import { getTotalPrice, storage } from '../utils';
+import { foodState } from '../stores/Food';
 
 function OrderPage() {
   const navigate = useNavigate();
+  const foodList = useRecoilValue(foodState);
   const [myBagState, setMyBagState] = useRecoilState(myBagSelector);
-  const totalPrice = getTotalPrice(myBagState);
+  const totalPrice = getTotalPrice(myBagState, foodList);
 
   const handleClickModalConfirmButton = () => {
     // TODO: 백엔드로 정보 보내기

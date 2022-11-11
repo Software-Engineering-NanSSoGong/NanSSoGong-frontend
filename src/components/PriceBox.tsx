@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
 import { useRecoilValue } from 'recoil';
 import { myBagSelector } from '../stores';
+import { foodState } from '../stores/Food';
 import { theme } from '../styles';
-import { getBasicFoodCountInDinner, guardDinnerQuantity } from '../utils';
+import { getBasicDinnerPrice, getBasicFoodCountInDinner, guardDinnerQuantity } from '../utils';
 import { Typography } from './common';
 
 interface Props {
@@ -10,6 +11,7 @@ interface Props {
 }
 
 function PriceBox({ totalPrice }: Props) {
+  const foodList = useRecoilValue(foodState);
   const myBagState = useRecoilValue(myBagSelector);
 
   return (
@@ -29,7 +31,7 @@ function PriceBox({ totalPrice }: Props) {
               </Typography>
             </NameWithQuantity>
             <Typography type='body4' color={theme.colors.primary.yellow}>
-              + {((item.dinner.dinnerQuantity || 1) * 50000).toLocaleString()} 원
+              + {getBasicDinnerPrice(item.dinner, foodList).toLocaleString()} 원
             </Typography>
           </BetweenLine>
 
