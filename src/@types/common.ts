@@ -60,7 +60,15 @@ export interface OrderSheet {
   })[];
 }
 
-export type OrderStatus = 'ORDERED';
+export type OrderStatus =
+  | 'ORDERED'
+  | 'RESERVED'
+  | 'ACCEPTED'
+  | 'DENIED'
+  | 'CANCEL'
+  | 'COOKED'
+  | 'DELIVERING'
+  | 'DELIVERED';
 
 export interface History {
   orderId: number;
