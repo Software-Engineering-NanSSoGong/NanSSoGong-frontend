@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { Dinner, FoodWithQuantity, Style } from '../@types';
-import { DinnerService } from '../api';
+import { DinnerService, OrderService } from '../api';
 import {
   FoodBox,
   FoodQuantityBoxList,
@@ -49,8 +49,11 @@ function ModifyItemDetailPage() {
   const [foodState, setFoodState] = useState<Record<string, FoodWithQuantity>>({});
   const [selectedStyle, setSelectedStyle] = useState<Style | null>(null);
 
-  const handleClickModalConfirmButton = () => {
-    // TODO: 주문 수정 백엔드 호출
+  const handleClickModalConfirmButton = async () => {
+    await OrderService.modifyOrderInfo({
+      orderId: changeFood.orderId,
+      orderSheetUpdateRequestList: changeFood.orderSheetUpdateRequestList,
+    });
     resetChangeFood();
     alert('주문을 수정하였습니다.');
     navigate('/history');

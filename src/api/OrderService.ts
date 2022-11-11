@@ -2,6 +2,7 @@ import {
   BasePageRequest,
   BaseRequsetId,
   History,
+  RequestModifyOrderInfo,
   ResponseFoodList,
   ResponseOrderHistoryList,
 } from '../@types';
@@ -29,6 +30,13 @@ class OrderService extends APIBase {
   public getList({ page, size }: BasePageRequest): Promise<ResponseFoodList> {
     return this.baseHTTP
       .get(`list?page=${page}&size=${size}`)
+      .then(APIBase._handleResponse)
+      .catch(APIBase._handleError);
+  }
+
+  public modifyOrderInfo({ orderId, orderSheetUpdateRequestList }: RequestModifyOrderInfo) {
+    return this.baseHTTP
+      .put(`${orderId}`, { orderSheetUpdateRequestList })
       .then(APIBase._handleResponse)
       .catch(APIBase._handleError);
   }
