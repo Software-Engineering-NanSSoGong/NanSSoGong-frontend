@@ -9,14 +9,13 @@ import {
   LabelWithMultipleInput,
   Modal,
   PriceBox,
-  // SideMenuListEmp,
+  SideMenuList,
   TitleWithLine,
   Typography,
 } from '../components';
 import { theme } from '../styles';
 import { myBagSelector } from '../stores';
 import { getTotalPrice, storage } from '../utils';
-import SideMenuListEmp from '../components/SideMenuListWithEmployee';
 
 function OrderPage() {
   const navigate = useNavigate();
@@ -35,7 +34,7 @@ function OrderPage() {
 
   return (
     <Wrapper>
-      <SideMenuListEmp />
+      <SideMenuList />
       <Spacer>
         <TitleWithLine title='주문하기' titleFontType='h1' />
         {myBagState?.map((item, idx) => (
