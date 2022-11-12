@@ -4,6 +4,12 @@ export interface Address {
   street: string;
   zipcode: string;
 }
+export interface Card {
+  card1: number | null;
+  card2: number | null;
+  card3: number | null;
+  card4: number | null;
+}
 
 export interface Food {
   foodId: number;
@@ -82,4 +88,16 @@ export interface History {
   orderSheetResponseList: OrderSheet[];
   clientId: number;
   clientName: string;
+}
+
+export interface Order {
+  address: Address;
+  orderStatus?: OrderStatus;
+  reservedTime?: Date;
+  totalPriceAfterSale: number;
+  orderSheetCreateRequestList: {
+    styleId: number;
+    dinnerId: number;
+    foodIdAndDifference: Record<string, number>;
+  }[];
 }

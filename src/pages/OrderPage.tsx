@@ -15,24 +15,59 @@ import {
 } from '../components';
 import { theme } from '../styles';
 import { myBagSelector } from '../stores';
-import { getTotalPrice, storage } from '../utils';
+import { getTotalPrice, storage, transformNameWithQuantity } from '../utils';
 import { foodState } from '../stores/Food';
+import { useEffect, useState } from 'react';
+import { Address, Card } from '../@types';
+import { STRING_MAX_LENGTH } from '../components/LabelWithMultipleInput';
+import { OrderService } from '../api';
 
 function OrderPage() {
   const navigate = useNavigate();
   const foodList = useRecoilValue(foodState);
   const [myBagState, setMyBagState] = useRecoilState(myBagSelector);
   const totalPrice = getTotalPrice(myBagState, foodList);
+  const [ordererName, setOrdererName] = useState<string>('');
+  const [address, setAddress] = useState<Address>({ city: '', street: '', zipcode: '' });
+  const [cardNumber, setCardNumber] = useState<Card>({
+    card1: null,
+    card2: null,
+    card3: null,
+    card4: null,
+  });
 
-  const handleClickModalConfirmButton = () => {
-    // TODO: 백엔드로 정보 보내기
+  const handleClickModalConfirmButton = async () => {
+    const res = await OrderService.orderClient({
+      address,
+      totalPriceAfterSale: 0,
+      orderSheetCreateRequestList: myBagState.map((myBag) => ({
+        styleId: myBag.selectedStyle.styleId,
+        dinnerId: myBag.dinner.dinnerId,
+        foodIdAndDifference: {
+          ...transformNameWithQuantity(myBag.addedFoodInfos),
+          ...transformNameWithQuantity(myBag.reducedFoodInfos),
+        },
+      })),
+    });
+    console.log(res);
     storage.removeAll();
     setMyBagState([]);
     alert('성공적으로 구매했습니다.');
     navigate('/main');
   };
 
-  const handleChangeMultipleInput = () => {};
+  const handleChangeMultipleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { maxLength, name, value } = e.currentTarget;
+    if (maxLength !== STRING_MAX_LENGTH) {
+      setCardNumber((prev) => ({ ...prev, [name]: value.slice(0, maxLength) }));
+    } else {
+      setAddress((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  useEffect(() => {
+    // TODO: 로그인 되어있으면 정보 가져오기
+  }, []);
 
   return (
     <Wrapper>
@@ -60,13 +95,19 @@ function OrderPage() {
                   주문자 이름
                 </Typography>
                 <Inputs>
-                  <Input style={{ width: '20%' }} />
+                  <Input
+                    style={{ width: '20%' }}
+                    value={ordererName}
+                    onChange={(e) => setOrdererName(e.target.value)}
+                  />
                 </Inputs>
               </LabelWithInput>
 
               <LabelWithMultipleInput
                 title='상세 주소'
-                placeholders={['예시) 동대문구', '서울시립대로 163', '국제 학사']}
+                type='text'
+                values={[address.city, address.street, address.zipcode]}
+                placeholders={['city', 'street', 'zipcode']}
                 labelColor={theme.palette.white}
                 inputBackgroundColor={theme.palette.gray50}
                 inputColor={theme.colors.text.dark}
@@ -88,22 +129,25 @@ function OrderPage() {
 
               <LabelWithMultipleInput
                 title='카드 번호'
-                placeholders={[' ', ' ', ' ', ' ']}
+                type='number'
+                pattern='\d*'
+                values={[cardNumber.card1, cardNumber.card2, cardNumber.card3, cardNumber.card4]}
+                placeholders={['card1', 'card2', 'card3', 'card4']}
                 labelColor={theme.palette.white}
                 inputBackgroundColor={theme.palette.gray50}
                 inputColor={theme.colors.text.dark}
+                maxLength={4}
                 handleChangeInput={handleChangeMultipleInput}
               />
             </OrderInfomationBox>
             <OrderInfomationBox>
-              <PriceBox totalPrice={totalPrice} />
+              <PriceBox totalPrice={totalPrice} clientGrade={'CHALLENGER'} />
             </OrderInfomationBox>
           </Spacer>
           <Modal
             triggerNode={
               <Modal.triggerButton
                 modalType='open'
-                onClick={handleClickModalConfirmButton}
                 style={{
                   position: 'fixed',
                   marginLeft: '300px',
@@ -111,7 +155,15 @@ function OrderPage() {
                 }}
                 buttonProps={{
                   hierarchy: ButtonHierarchy.Danger,
-                  disabled: myBagState.length === 0,
+                  disabled:
+                    myBagState.length === 0 ||
+                    address.city === '' ||
+                    address.street === '' ||
+                    address.zipcode === '' ||
+                    cardNumber.card1?.toString().length !== 4 ||
+                    cardNumber.card2?.toString().length !== 4 ||
+                    cardNumber.card3?.toString().length !== 4 ||
+                    cardNumber.card4?.toString().length !== 4,
                 }}
                 as={BottomButton}
               >
@@ -121,7 +173,7 @@ function OrderPage() {
               </Modal.triggerButton>
             }
             modalNode={
-              <Modal.askModal>
+              <Modal.askModal onClickConfirm={handleClickModalConfirmButton}>
                 <ModalBody>
                   <Typography type='h3' color={theme.colors.text.dark} textAlign='center'>
                     구매 확정
