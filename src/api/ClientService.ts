@@ -1,4 +1,4 @@
-import { RequestSignUpInfo, ResponseClientInfo } from '../@types';
+import { BaseRequestId, RequestSignUpInfo, ResponseClientInfo } from '../@types';
 import APIBase from './core';
 
 class ClientService extends APIBase {
@@ -16,8 +16,11 @@ class ClientService extends APIBase {
       .catch(APIBase._handleError);
   }
 
-  public getClientInfo(): Promise<ResponseClientInfo> {
-    return this.baseHTTP.get('').then(APIBase._handleResponse).catch(APIBase._handleError);
+  public getClientInfo({ id }: Partial<BaseRequestId>): Promise<ResponseClientInfo> {
+    return this.baseHTTP
+      .get(`/${id ? id : ''}`)
+      .then(APIBase._handleResponse)
+      .catch(APIBase._handleError);
   }
 }
 

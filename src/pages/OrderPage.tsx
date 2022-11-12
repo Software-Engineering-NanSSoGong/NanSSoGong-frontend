@@ -14,16 +14,17 @@ import {
   Typography,
 } from '../components';
 import { theme } from '../styles';
-import { myBagSelector } from '../stores';
+import { isAuth, myBagSelector } from '../stores';
 import { getTotalPrice, storage, transformNameWithQuantity } from '../utils';
 import { foodState } from '../stores/Food';
 import { useEffect, useState } from 'react';
 import { Address, Card } from '../@types';
 import { STRING_MAX_LENGTH } from '../components/LabelWithMultipleInput';
-import { OrderService } from '../api';
+import { ClientService, OrderService } from '../api';
 
 function OrderPage() {
   const navigate = useNavigate();
+  const me = useRecoilValue(isAuth);
   const foodList = useRecoilValue(foodState);
   const [myBagState, setMyBagState] = useRecoilState(myBagSelector);
   const totalPrice = getTotalPrice(myBagState, foodList);
@@ -37,23 +38,27 @@ function OrderPage() {
   });
 
   const handleClickModalConfirmButton = async () => {
-    const res = await OrderService.orderClient({
-      address,
-      totalPriceAfterSale: 0,
-      orderSheetCreateRequestList: myBagState.map((myBag) => ({
-        styleId: myBag.selectedStyle.styleId,
-        dinnerId: myBag.dinner.dinnerId,
-        foodIdAndDifference: {
-          ...transformNameWithQuantity(myBag.addedFoodInfos),
-          ...transformNameWithQuantity(myBag.reducedFoodInfos),
-        },
-      })),
-    });
-    console.log(res);
-    storage.removeAll();
-    setMyBagState([]);
-    alert('성공적으로 구매했습니다.');
-    navigate('/main');
+    try {
+      const res = await OrderService.orderClient({
+        address,
+        totalPriceAfterSale: 0,
+        orderSheetCreateRequestList: myBagState.map((myBag) => ({
+          styleId: myBag.selectedStyle.styleId,
+          dinnerId: myBag.dinner.dinnerId,
+          foodIdAndDifference: {
+            ...transformNameWithQuantity(myBag.addedFoodInfos),
+            ...transformNameWithQuantity(myBag.reducedFoodInfos),
+          },
+        })),
+      });
+      console.log(res);
+      if (res?.hasOwnProperty()) storage.removeAll();
+      setMyBagState([]);
+      alert('성공적으로 구매했습니다.');
+      navigate('/main');
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleChangeMultipleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,8 +71,24 @@ function OrderPage() {
   };
 
   useEffect(() => {
-    // TODO: 로그인 되어있으면 정보 가져오기
-  }, []);
+    (async () => {
+      try {
+        const res = await ClientService.getClientInfo({ id: me.id as number });
+        if (!res.hasOwnProperty('exceptionType')) {
+          setCardNumber({
+            card1: Number(res.cardNumber.slice(0, 4)),
+            card2: Number(res.cardNumber.slice(4, 8)),
+            card3: Number(res.cardNumber.slice(8, 12)),
+            card4: Number(res.cardNumber.slice(12)),
+          });
+          setAddress(res.address);
+          setOrdererName(res.name);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  }, [me]);
 
   return (
     <Wrapper>
