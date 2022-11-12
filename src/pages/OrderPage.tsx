@@ -6,6 +6,7 @@ import { ButtonHierarchy } from '../components/common/Button';
 import {
   BottomButton,
   FoodBox,
+  LabelWithMultipleInput,
   Modal,
   PriceBox,
   SideMenuList,
@@ -30,6 +31,8 @@ function OrderPage() {
     alert('성공적으로 구매했습니다.');
     navigate('/main');
   };
+
+  const handleChangeMultipleInput = () => {};
 
   return (
     <Wrapper>
@@ -60,16 +63,15 @@ function OrderPage() {
                   <Input style={{ width: '20%' }} />
                 </Inputs>
               </LabelWithInput>
-              <LabelWithInput>
-                <Typography type='h4' color={theme.colors.text.bold}>
-                  상세 주소
-                </Typography>
-                <Inputs>
-                  <Input />
-                  <Input />
-                  <Input />
-                </Inputs>
-              </LabelWithInput>
+
+              <LabelWithMultipleInput
+                title='상세 주소'
+                placeholders={['예시) 동대문구', '서울시립대로 163', '국제 학사']}
+                labelColor={theme.palette.white}
+                inputBackgroundColor={theme.palette.gray50}
+                inputColor={theme.colors.text.dark}
+                handleChangeInput={handleChangeMultipleInput}
+              />
             </OrderInfomationBox>
             <OrderInfomationBox>
               <Typography type='h3' color={theme.colors.text.bold}>
@@ -83,17 +85,15 @@ function OrderPage() {
                   <Input style={{ width: '20%' }} />
                 </Inputs>
               </LabelWithInput>
-              <LabelWithInput>
-                <Typography type='h4' color={theme.colors.text.bold}>
-                  카드 번호
-                </Typography>
-                <Inputs>
-                  <Input />
-                  <Input />
-                  <Input />
-                  <Input />
-                </Inputs>
-              </LabelWithInput>
+
+              <LabelWithMultipleInput
+                title='카드 번호'
+                placeholders={[' ', ' ', ' ', ' ']}
+                labelColor={theme.palette.white}
+                inputBackgroundColor={theme.palette.gray50}
+                inputColor={theme.colors.text.dark}
+                handleChangeInput={handleChangeMultipleInput}
+              />
             </OrderInfomationBox>
             <OrderInfomationBox>
               <PriceBox totalPrice={totalPrice} />
