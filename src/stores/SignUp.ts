@@ -5,7 +5,7 @@ interface SignUpState {
   userType: UserType | null;
   email: string;
   password: string;
-  name?: string;
+  name: string;
   city?: string;
   address?: string;
   zipcode?: string;
