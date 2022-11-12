@@ -1,4 +1,5 @@
 import { RequestLogInInfo, RequestSignUpInfo } from '../@types';
+import { LoginedUser } from '../stores';
 import APIBase from './core';
 
 class MemberService extends APIBase {
@@ -6,7 +7,7 @@ class MemberService extends APIBase {
     super('member');
   }
 
-  public logIn({ email, password }: RequestLogInInfo) {
+  public logIn({ email, password }: RequestLogInInfo): Promise<LoginedUser> {
     return this.baseHTTP
       .post('login', {
         loginId: email,
