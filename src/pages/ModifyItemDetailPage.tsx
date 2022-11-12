@@ -13,9 +13,9 @@ import {
   Typography,
 } from '../components';
 import BottomButton from '../components/BottomButton';
-import { changeFoodState, styleState } from '../stores';
+import { ChangeFoodInfo, changeFoodState, styleState } from '../stores';
 import { foodState as RecoilFoodState } from '../stores/Food';
-import { getBasicFoodIndexInDinner } from '../utils';
+import { getBasicFoodIndexInDinner, getDifferenceFoodInfoFromDinner } from '../utils';
 
 const transformToNameWithInfoObject = (
   foodList: FoodWithQuantity[],
@@ -38,10 +38,20 @@ const transformToNameWithInfoObject = (
   }, {});
 };
 
+const transformNameWithQuantity = (foodInfos: ChangeFoodInfo[]) => {
+  return foodInfos.reduce(
+    (acc, food) => ({
+      ...acc,
+      [food.foodId]: food.quantity,
+    }),
+    {},
+  );
+};
+
 function ModifyItemDetailPage() {
   const navigate = useNavigate();
   const params = useParams();
-  const foods = useRecoilValue(RecoilFoodState);
+  const foodList = useRecoilValue(RecoilFoodState);
   const styleList = useRecoilValue(styleState);
   const changeFood = useRecoilValue(changeFoodState);
   const resetChangeFood = useResetRecoilState(changeFoodState);
@@ -50,9 +60,31 @@ function ModifyItemDetailPage() {
   const [selectedStyle, setSelectedStyle] = useState<Style | null>(null);
 
   const handleClickModalConfirmButton = async () => {
+    const { addedFoodInfos, reducedFoodInfos } = getDifferenceFoodInfoFromDinner(
+      dinner,
+      foodState,
+      foodList,
+    );
+    const addedNameWithQuantityObject = transformNameWithQuantity(addedFoodInfos);
+    const reducedNameWithQuantityObject = transformNameWithQuantity(reducedFoodInfos);
+    const nextOrderSheetUpdateRequestList = [...changeFood.orderSheetUpdateRequestList].map(
+      (info, idx) => {
+        if (idx === changeFood.willChangeOrderIndex) {
+          return {
+            ...info,
+            styleId: Number(selectedStyle?.styleId),
+            foodIdAndDifference: {
+              ...addedNameWithQuantityObject,
+              ...reducedNameWithQuantityObject,
+            },
+          };
+        }
+        return { ...info };
+      },
+    );
     await OrderService.modifyOrderInfo({
       orderId: changeFood.orderId,
-      orderSheetUpdateRequestList: changeFood.orderSheetUpdateRequestList,
+      orderSheetUpdateRequestList: nextOrderSheetUpdateRequestList,
     });
     resetChangeFood();
     alert('주문을 수정하였습니다.');
@@ -65,7 +97,7 @@ function ModifyItemDetailPage() {
         const dinnerItem = await DinnerService.getDinnerItem({ id: Number(params?.id) });
         setFoodState(
           transformToNameWithInfoObject(
-            foods,
+            foodList,
             dinnerItem,
             changeFood.orderSheetUpdateRequestList[changeFood.willChangeOrderIndex]
               ?.foodIdAndDifference,
@@ -79,7 +111,7 @@ function ModifyItemDetailPage() {
     changeFood.orderSheetUpdateRequestList,
     changeFood.styleId,
     changeFood.willChangeOrderIndex,
-    foods,
+    foodList,
     params?.id,
     styleList,
   ]);
