@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
-import { Dinner, FoodWithQuantity, Style } from '../@types';
+import { Dinner, FoodWithQuantity, FOOD_CATEGORY, Style } from '../@types';
 import { DinnerService, OrderService } from '../api';
 import {
   FoodBox,
@@ -15,7 +15,12 @@ import {
 import BottomButton from '../components/BottomButton';
 import { changeFoodState, styleState } from '../stores';
 import { foodState as RecoilFoodState } from '../stores/Food';
-import { getBasicFoodIndexInDinner, getDifferenceFoodInfoFromDinner, transformNameWithQuantity } from '../utils';
+import {
+  getBasicFoodCountInDinner,
+  getBasicFoodIndexInDinner,
+  getDifferenceFoodInfoFromDinner,
+  transformNameWithQuantity,
+} from '../utils';
 
 const transformToNameWithInfoObject = (
   foodList: FoodWithQuantity[],
@@ -24,15 +29,18 @@ const transformToNameWithInfoObject = (
 ) => {
   return foodList.reduce((acc, item) => {
     const foodIndex = getBasicFoodIndexInDinner(dinner, item);
+    let quantity = foodIndex === -1 ? 0 : dinner.dinnerFoodInfoResponseList[foodIndex].foodQuantity;
+    if (modifiedFoodList?.hasOwnProperty(item.foodId)) {
+      quantity =
+        foodIndex === -1
+          ? modifiedFoodList[item.foodId]
+          : getBasicFoodCountInDinner(dinner, item) + modifiedFoodList[item.foodId];
+    }
     return {
       ...acc,
       [item.foodName]: {
         ...item,
-        foodQuantity: modifiedFoodList?.hasOwnProperty(item.foodId)
-          ? modifiedFoodList[item.foodId]
-          : foodIndex === -1
-          ? 0
-          : dinner.dinnerFoodInfoResponseList[foodIndex].foodQuantity || 1,
+        foodQuantity: quantity,
       },
     };
   }, {});
@@ -56,7 +64,9 @@ function ModifyItemDetailPage() {
       foodList,
     );
     const addedNameWithQuantityObject = transformNameWithQuantity(addedFoodInfos);
-    const reducedNameWithQuantityObject = transformNameWithQuantity(reducedFoodInfos);
+    const reducedNameWithQuantityObject = Object.entries(
+      transformNameWithQuantity(reducedFoodInfos),
+    ).reduce((acc, [key, value]) => ({ ...acc, [key]: -Number(value) }), {});
     const nextOrderSheetUpdateRequestList = [...changeFood.orderSheetUpdateRequestList].map(
       (info, idx) => {
         if (idx === changeFood.willChangeOrderIndex) {
@@ -116,21 +126,14 @@ function ModifyItemDetailPage() {
           selectedStyle={selectedStyle}
           setSelectedStyle={setSelectedStyle}
         />
-        <FoodQuantityBoxList
-          title='밥 추가'
-          foods={Object.values(foodState).filter((item) => item.foodCategory === 'rice')}
-          setFoodState={setFoodState}
-        />
-        <FoodQuantityBoxList
-          title='고기 추가'
-          foods={Object.values(foodState).filter((item) => item.foodCategory === 'MEAT')}
-          setFoodState={setFoodState}
-        />
-        <FoodQuantityBoxList
-          title='음료 추가'
-          foods={Object.values(foodState).filter((item) => item.foodCategory === 'drink')}
-          setFoodState={setFoodState}
-        />
+        {Object.keys(FOOD_CATEGORY).map((category) => (
+          <FoodQuantityBoxList
+            key={category}
+            title={`${category} 추가`}
+            foods={Object.values(foodState).filter((item) => item.foodCategory === category)}
+            setFoodState={setFoodState}
+          />
+        ))}
       </Spacer>
       <Modal
         triggerNode={
