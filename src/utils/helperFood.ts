@@ -133,3 +133,18 @@ export function getTotalPrice(myBagState: MyBag[], foodList: FoodWithQuantity[])
     0,
   );
 }
+
+/**
+ * changeFood 정보를 가지고 { "foodId": "foodQuantity" }와 같은 오브젝트를 만들어 주는 함수
+ * @param foodInfos changeFoodInfo
+ * @returns Record<foodId, foodQuantity>
+ */
+export const transformNameWithQuantity = (foodInfos: ChangeFoodInfo[]) => {
+  return foodInfos.reduce(
+    (acc, food) => ({
+      ...acc,
+      [food.foodId]: food.quantity,
+    }),
+    {},
+  );
+};

@@ -13,9 +13,9 @@ import {
   Typography,
 } from '../components';
 import BottomButton from '../components/BottomButton';
-import { ChangeFoodInfo, changeFoodState, styleState } from '../stores';
+import { changeFoodState, styleState } from '../stores';
 import { foodState as RecoilFoodState } from '../stores/Food';
-import { getBasicFoodIndexInDinner, getDifferenceFoodInfoFromDinner } from '../utils';
+import { getBasicFoodIndexInDinner, getDifferenceFoodInfoFromDinner, transformNameWithQuantity } from '../utils';
 
 const transformToNameWithInfoObject = (
   foodList: FoodWithQuantity[],
@@ -36,16 +36,6 @@ const transformToNameWithInfoObject = (
       },
     };
   }, {});
-};
-
-const transformNameWithQuantity = (foodInfos: ChangeFoodInfo[]) => {
-  return foodInfos.reduce(
-    (acc, food) => ({
-      ...acc,
-      [food.foodId]: food.quantity,
-    }),
-    {},
-  );
 };
 
 function ModifyItemDetailPage() {
