@@ -36,6 +36,15 @@ export interface ResponseFoodList extends BasePageResponse<Food> {}
 
 // Order Service
 export interface ResponseOrderHistoryList extends BasePageResponse<History> {}
+export interface RequestModifyOrderInfo {
+  orderId: number;
+  orderSheetUpdateRequestList: {
+    orderSheetId: number;
+    styleId: number;
+    dinnerId: number;
+    foodIdAndDifference: Record<string, number>;
+  }[];
+}
 
 // User Service
 export interface RequestSignUpInfo {

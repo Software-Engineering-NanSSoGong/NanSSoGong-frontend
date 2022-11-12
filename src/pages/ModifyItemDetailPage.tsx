@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { Dinner, FoodWithQuantity, Style } from '../@types';
-import { DinnerService } from '../api';
+import { DinnerService, OrderService } from '../api';
 import {
   FoodBox,
   FoodQuantityBoxList,
@@ -13,60 +13,76 @@ import {
   Typography,
 } from '../components';
 import BottomButton from '../components/BottomButton';
-import { myBagSelector } from '../stores';
+import { changeFoodState, styleState } from '../stores';
 import { foodState as RecoilFoodState } from '../stores/Food';
-import { getBasicFoodIndexInDinner, getDifferenceFoodInfoFromDinner } from '../utils';
+import { getBasicFoodIndexInDinner } from '../utils';
 
-const transformToNameWithInfoObject = (foodList: FoodWithQuantity[], dinner: Dinner) => {
+const transformToNameWithInfoObject = (
+  foodList: FoodWithQuantity[],
+  dinner: Dinner,
+  modifiedFoodList: Record<string, number>,
+) => {
   return foodList.reduce((acc, item) => {
     const foodIndex = getBasicFoodIndexInDinner(dinner, item);
     return {
       ...acc,
       [item.foodName]: {
         ...item,
-        foodQuantity:
-          foodIndex === -1 ? 0 : dinner.dinnerFoodInfoResponseList[foodIndex].foodQuantity || 1,
+        foodQuantity: modifiedFoodList?.hasOwnProperty(item.foodId)
+          ? modifiedFoodList[item.foodId]
+          : foodIndex === -1
+          ? 0
+          : dinner.dinnerFoodInfoResponseList[foodIndex].foodQuantity || 1,
       },
     };
   }, {});
 };
 
-function ItemDetailPage() {
+function ModifyItemDetailPage() {
   const navigate = useNavigate();
   const params = useParams();
   const foods = useRecoilValue(RecoilFoodState);
-  const setMyBagState = useSetRecoilState(myBagSelector);
+  const styleList = useRecoilValue(styleState);
+  const changeFood = useRecoilValue(changeFoodState);
+  const resetChangeFood = useResetRecoilState(changeFoodState);
   const [dinner, setDinner] = useState<Dinner>({} as Dinner);
   const [foodState, setFoodState] = useState<Record<string, FoodWithQuantity>>({});
   const [selectedStyle, setSelectedStyle] = useState<Style | null>(null);
 
-  const handleChangeDinnerQuantity = (quantity: number) => {
-    const nextDinnerItem = { ...dinner, dinnerQuantity: quantity };
-    setDinner(nextDinnerItem);
-    setFoodState(transformToNameWithInfoObject(foods, nextDinnerItem));
-  };
-
-  const handleClickModalConfirmButton = () => {
-    const { addedFoodInfos, reducedFoodInfos } = getDifferenceFoodInfoFromDinner(
-      dinner,
-      foodState,
-      foods,
-    );
-    setMyBagState((prev) => [
-      ...prev,
-      { dinner, selectedStyle: selectedStyle as Style, addedFoodInfos, reducedFoodInfos },
-    ]);
-    alert('장바구니에 성공적으로 담겼습니다.');
-    navigate('/main');
+  const handleClickModalConfirmButton = async () => {
+    await OrderService.modifyOrderInfo({
+      orderId: changeFood.orderId,
+      orderSheetUpdateRequestList: changeFood.orderSheetUpdateRequestList,
+    });
+    resetChangeFood();
+    alert('주문을 수정하였습니다.');
+    navigate('/history');
   };
 
   useEffect(() => {
     (async () => {
-      const dinnerItem = await DinnerService.getDinnerItem({ id: Number(params?.id) });
-      setFoodState(transformToNameWithInfoObject(foods, dinnerItem));
-      setDinner({ ...dinnerItem, dinnerQuantity: 1 });
+      if (changeFood.willChangeOrderIndex !== -1) {
+        const dinnerItem = await DinnerService.getDinnerItem({ id: Number(params?.id) });
+        setFoodState(
+          transformToNameWithInfoObject(
+            foods,
+            dinnerItem,
+            changeFood.orderSheetUpdateRequestList[changeFood.willChangeOrderIndex]
+              ?.foodIdAndDifference,
+          ),
+        );
+        setDinner({ ...dinnerItem, dinnerQuantity: 1 });
+        setSelectedStyle(styleList.find((st) => st.styleId === changeFood.styleId) as Style);
+      }
     })();
-  }, [foods, params?.id]);
+  }, [
+    changeFood.orderSheetUpdateRequestList,
+    changeFood.styleId,
+    changeFood.willChangeOrderIndex,
+    foods,
+    params?.id,
+    styleList,
+  ]);
 
   return (
     <Wrapper>
@@ -75,7 +91,6 @@ function ItemDetailPage() {
         <FoodBox
           type='beforeOrder'
           dinner={dinner}
-          handleChangeDinnerQuantity={handleChangeDinnerQuantity}
           selectedStyle={selectedStyle}
           setSelectedStyle={setSelectedStyle}
         />
@@ -108,7 +123,7 @@ function ItemDetailPage() {
             }}
           >
             <Typography type='h3' textAlign='center'>
-              주문하기
+              수정하기
             </Typography>
           </Modal.triggerButton>
         }
@@ -134,4 +149,4 @@ const Spacer = styled.div`
   padding: 80px 80px 120px 380px;
 `;
 
-export default ItemDetailPage;
+export default ModifyItemDetailPage;

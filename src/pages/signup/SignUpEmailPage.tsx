@@ -39,7 +39,7 @@ function SignUpEmailPage() {
       }
     } else {
       setSignUpState((prev) => ({ ...prev, name, email, password }));
-      navigate('/signup-name');
+      navigate('/signup-client-info');
     }
   };
 
