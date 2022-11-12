@@ -18,7 +18,7 @@ class ClientService extends APIBase {
 
   public getClientInfo({ id }: Partial<BaseRequestId>): Promise<ResponseClientInfo> {
     return this.baseHTTP
-      .get(`/${id ? id : ''}`)
+      .get(`${id ? `/${id}` : ''}`)
       .then(APIBase._handleResponse)
       .catch(APIBase._handleError);
   }
