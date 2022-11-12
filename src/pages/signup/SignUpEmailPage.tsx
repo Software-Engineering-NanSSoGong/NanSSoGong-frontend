@@ -21,11 +21,15 @@ function SignUpEmailPage() {
       alert('이메일 칸을 채워주세요.');
       return;
     }
-    const res = await MemberService.checkValidId({ email });
-    if (!res) {
-      alert('중복된 아이디입니다');
-    } else {
-      alert('사용가능한 아이디입니다');
+    try {
+      const res = await MemberService.checkValidId({ email });
+      if (!res) {
+        alert('중복된 아이디입니다');
+      } else {
+        alert('사용 가능한 아이디입니다.');
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 

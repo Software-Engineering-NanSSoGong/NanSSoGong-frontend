@@ -38,8 +38,7 @@ function SignUpClientInfoPage() {
         alert('회원가입이 완료되었습니다.');
       }
     } catch (err) {
-      alert(`${err}\n처음부터 다시 시도해주세요.`);
-      navigate('/');
+      console.error(err);
     }
   };
 

@@ -23,7 +23,7 @@ function LoginPage() {
         alert(`${email}님 로그인을 환영합니다.`);
       }
     } catch (err) {
-      alert('등록되지 않은 회원정보입니다');
+      console.error(err);
     }
   };
 
