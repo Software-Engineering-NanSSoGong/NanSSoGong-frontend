@@ -5,6 +5,7 @@ export { default as ClickableDinnerCard } from './ClickableDinnerCard';
 export { default as ClickableHistoryOrderCard } from './ClickableHistoryOrderCard';
 export { default as IconInputLine } from './IconInputLine';
 export { default as SideMenuList } from './SideMenuList';
+export { default as SideMenuListWithEmployee } from './SideMenuListWithEmployee';
 export { default as TitleWithLine } from './TitleWithLine';
 export { default as StyleSelectBoxList } from './StyleSelectBoxList';
 export { default as FoodQuantityBox } from './FoodQuantityBox';
