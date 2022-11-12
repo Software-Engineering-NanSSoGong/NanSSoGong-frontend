@@ -17,6 +17,10 @@ class MemberService extends APIBase {
       .catch(APIBase._handleError);
   }
 
+  public logOut(): Promise<string> {
+    return this.baseHTTP.get('logout').then(APIBase._handleResponse).catch(APIBase._handleError);
+  }
+
   public checkValidId({ email }: Pick<RequestSignUpInfo, 'email'>) {
     return this.baseHTTP
       .get(`valid-id?loginId=${email}`)

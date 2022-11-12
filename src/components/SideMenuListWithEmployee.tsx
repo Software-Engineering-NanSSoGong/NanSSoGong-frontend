@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
+import { MemberService } from '../api';
 
 import { isAuth as RecoilIsAuth } from '../stores';
 import { theme } from '../styles';
@@ -59,7 +60,16 @@ function SideMenuListWithEmployee() {
           </ButtonWrapper>
 
           {isAuth ? (
-            <ButtonWrapper fullWidth borderRadius={10} hierarchy={ButtonHierarchy.Gray}>
+            <ButtonWrapper
+              fullWidth
+              borderRadius={10}
+              hierarchy={ButtonHierarchy.Gray}
+              onClick={() => {
+                MemberService.logOut();
+                navigate('/');
+                alert('로그아웃이 완료되었습니다.');
+              }}
+            >
               <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
                 로그아웃
               </Typography>
