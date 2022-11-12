@@ -57,11 +57,8 @@ const Spacer = styled.div`
 const CardList = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 40px;
-
-  section:nth-last-of-type(1) {
-    margin-bottom: 80px;
-  }
+  gap: 80px;
+  padding-bottom: 80px;
 `;
 
 export default ClientHistoryOrderPage;

@@ -81,6 +81,9 @@ function ClickableHistoryOrderCard({
           modalType='open'
           buttonProps={{
             hierarchy: ButtonHierarchy.DarkGray,
+            style: {
+              padding: 0,
+            },
           }}
           disabled={orderStatus !== 'ORDERED'}
         >
@@ -117,7 +120,7 @@ function ClickableHistoryOrderCard({
                       <Typography type='body4'>
                         {plusFoods.map(
                           (food, idx) =>
-                            `${food.foodName} 추가${idx !== plusFoods.length - 1 ? ', ' : ''}`,
+                            `${food.foodName}  ${idx !== plusFoods.length - 1 ? ', ' : ''}`,
                         )}
                       </Typography>
                     </OrderChangeLine>
@@ -137,6 +140,7 @@ function ClickableHistoryOrderCard({
                     <Typography type='body4'>{address}</Typography>
                     <Typography type='body5'>{formatDateToYYYYMMDD(new Date(date))}</Typography>
                   </BetweenAlignLine>
+                  {index !== orderSheetResponseList.length - 1 && <Divider />}
                 </Wrapper>
               );
             })}
@@ -159,8 +163,7 @@ function ClickableHistoryOrderCard({
 const Wrapper = styled.article`
   background-color: ${theme.palette.gray300};
   box-sizing: border-box;
-  padding: 28px;
-  border-radius: 4px;
+  padding: 24px;
 `;
 
 const BetweenAlignLine = styled.span`
@@ -191,7 +194,30 @@ const ModalBody = styled.div`
 const CardList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+
+  & > article:not(:last-of-type) {
+    padding-bottom: 0;
+  }
+
+  & > article:first-of-type {
+    border-radius: 4px 4px 0 0;
+  }
+
+  & > article:last-of-type {
+    border-radius: 0 0 4px 4px;
+  }
+
+  & > article:first-of-type:last-of-type {
+    border-radius: 4px;
+  }
+`;
+
+const Divider = styled.div`
+  width: calc(100% + 46px);
+  margin-left: -24px;
+  margin-top: 32px;
+  content: '';
+  border: 1px solid ${theme.palette.gray50};
 `;
 
 export default ClickableHistoryOrderCard;
