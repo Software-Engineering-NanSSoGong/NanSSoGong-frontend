@@ -15,10 +15,10 @@ import {
 } from '../components';
 import { theme } from '../styles';
 import { isAuth, myBagSelector } from '../stores';
-import { getTotalPrice, storage, transformNameWithQuantity } from '../utils';
+import { getPriceAfterSale, getTotalPrice, storage, transformNameWithQuantity } from '../utils';
 import { foodState } from '../stores/Food';
 import { useEffect, useState } from 'react';
-import { Address, Card } from '../@types';
+import { Address, Card, GRADE, GRADE_INFO } from '../@types';
 import { STRING_MAX_LENGTH } from '../components/LabelWithMultipleInput';
 import { ClientService, OrderService } from '../api';
 
@@ -28,6 +28,7 @@ function OrderPage() {
   const foodList = useRecoilValue(foodState);
   const [myBagState, setMyBagState] = useRecoilState(myBagSelector);
   const totalPrice = getTotalPrice(myBagState, foodList);
+  const [grade, setGrade] = useState<GRADE>('BRONZE');
   const [ordererName, setOrdererName] = useState<string>('');
   const [address, setAddress] = useState<Address>({ city: '', street: '', zipcode: '' });
   const [cardNumber, setCardNumber] = useState<Card>({
@@ -41,7 +42,7 @@ function OrderPage() {
     try {
       const res = await OrderService.orderClient({
         address,
-        totalPriceAfterSale: 0,
+        totalPriceAfterSale: getPriceAfterSale(totalPrice, GRADE_INFO[grade].saleRate),
         orderSheetCreateRequestList: myBagState.map((myBag) => ({
           styleId: myBag.selectedStyle.styleId,
           dinnerId: myBag.dinner.dinnerId,
@@ -83,6 +84,7 @@ function OrderPage() {
           });
           setAddress(res.address);
           setOrdererName(res.name);
+          setGrade(res.clientGrade);
         }
       } catch (err) {
         console.error(err);
@@ -162,7 +164,7 @@ function OrderPage() {
               />
             </OrderInfomationBox>
             <OrderInfomationBox>
-              <PriceBox totalPrice={totalPrice} clientGrade={'CHALLENGER'} />
+              <PriceBox totalPrice={totalPrice} clientGrade={grade} />
             </OrderInfomationBox>
           </Spacer>
           <Modal

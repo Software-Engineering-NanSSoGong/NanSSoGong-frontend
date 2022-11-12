@@ -119,7 +119,7 @@ export function getTotalPrice(myBagState: MyBag[], foodList: FoodWithQuantity[])
     (acc, item) =>
       acc +
       getBasicDinnerPrice(item.dinner, foodList) +
-      (item.selectedStyle.styleSellPrice || 5000) +
+      item.selectedStyle.styleSellPrice +
       item.addedFoodInfos.reduce(
         (acc2, food) =>
           acc2 + food.price * (food.quantity - getBasicFoodCountInDinner(item.dinner, food)),
@@ -133,6 +133,16 @@ export function getTotalPrice(myBagState: MyBag[], foodList: FoodWithQuantity[])
     0,
   );
 }
+
+/**
+ * 전체 가격에 세일된 가격을 제외한 가격을 반환하는 함수
+ * @param totalPrice
+ * @param saleRate
+ * @returns totalPrice * ((100 - saleRate) / 100)
+ */
+export const getPriceAfterSale = (totalPrice: number, saleRate: number): number => {
+  return totalPrice * ((100 - saleRate) / 100);
+};
 
 /**
  * changeFood 정보를 가지고 { "foodId": "foodQuantity" }와 같은 오브젝트를 만들어 주는 함수

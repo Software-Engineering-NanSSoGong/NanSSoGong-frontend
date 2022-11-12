@@ -4,17 +4,13 @@ import { GRADE, GRADE_INFO } from '../@types';
 import { myBagSelector } from '../stores';
 import { foodState } from '../stores/Food';
 import { theme } from '../styles';
-import { getBasicDinnerPrice, getBasicFoodCountInDinner, guardDinnerQuantity } from '../utils';
+import { getBasicDinnerPrice, getBasicFoodCountInDinner, getPriceAfterSale, guardDinnerQuantity } from '../utils';
 import { Typography } from './common';
 
 interface Props {
   totalPrice: number;
   clientGrade: GRADE;
 }
-
-const getPriceAfterSale = (totalPrice: number, saleRate: number): number => {
-  return totalPrice * ((100 - saleRate) / 100);
-};
 
 function PriceBox({ totalPrice, clientGrade }: Props) {
   const foodList = useRecoilValue(foodState);
@@ -46,7 +42,7 @@ function PriceBox({ totalPrice, clientGrade }: Props) {
               {item.selectedStyle.styleName}
             </Typography>
             <Typography type='body4' color={theme.colors.primary.yellow}>
-              + {(item.selectedStyle.styleSellPrice || 5000).toLocaleString()} 원
+              + {item.selectedStyle.styleSellPrice?.toLocaleString()} 원
             </Typography>
           </BetweenLine>
 
