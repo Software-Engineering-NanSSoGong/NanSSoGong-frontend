@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { Dinner, FoodWithQuantity, Style } from '../@types';
+import { Dinner, FoodWithQuantity, FOOD_CATEGORY, Style } from '../@types';
 import { DinnerService } from '../api';
 import {
   FoodBox,
@@ -79,21 +79,14 @@ function ItemDetailPage() {
           selectedStyle={selectedStyle}
           setSelectedStyle={setSelectedStyle}
         />
-        <FoodQuantityBoxList
-          title='밥 추가'
-          foods={Object.values(foodState).filter((item) => item.foodCategory === 'rice')}
-          setFoodState={setFoodState}
-        />
-        <FoodQuantityBoxList
-          title='고기 추가'
-          foods={Object.values(foodState).filter((item) => item.foodCategory === 'MEAT')}
-          setFoodState={setFoodState}
-        />
-        <FoodQuantityBoxList
-          title='음료 추가'
-          foods={Object.values(foodState).filter((item) => item.foodCategory === 'drink')}
-          setFoodState={setFoodState}
-        />
+        {Object.keys(FOOD_CATEGORY).map((category) => (
+          <FoodQuantityBoxList
+            key={category}
+            title={`${category} 추가`}
+            foods={Object.values(foodState).filter((item) => item.foodCategory === category)}
+            setFoodState={setFoodState}
+          />
+        ))}
       </Spacer>
       <Modal
         triggerNode={
