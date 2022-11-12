@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Address } from '../@types';
 import {
   Button,
   IconInputLine,
@@ -14,10 +15,10 @@ import { theme } from '../styles';
 function ProfilePage() {
   const navigate = useNavigate();
   const [nickname, setNickname] = React.useState<string>('');
-  const [address, setAddress] = React.useState<Record<string, string>>({
-    address_1: '',
-    address_2: '',
-    address_3: '',
+  const [address, setAddress] = React.useState<Address>({
+    city: '',
+    street: '',
+    zipcode: '',
   });
   const [accept, setAccept] = React.useState<boolean>(false);
 
@@ -61,11 +62,12 @@ function ProfilePage() {
             /> */}
             <LabelWithMultipleInput
               title='상세 주소'
-              // placeholders={['예시) 동대문구', '서울시립대로 163', '국제학사 1001호']}
-              placeholders={['예시) 동대문구', '서울시립대로 163', '국제학사']}
-              labelColor={theme.colors.background}
-              inputBackgroundColor={theme.palette.gray200}
-              inputColor={theme.colors.text.bold}
+              type='text'
+              values={[address.city, address.street, address.zipcode]}
+              placeholders={['city', 'street', 'zipcode']}
+              labelColor={theme.palette.white}
+              inputBackgroundColor={theme.palette.gray50}
+              inputColor={theme.colors.text.dark}
               handleChangeInput={handleChangeMultipleInput}
             />
 
