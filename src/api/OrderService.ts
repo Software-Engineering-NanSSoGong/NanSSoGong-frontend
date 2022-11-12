@@ -1,7 +1,8 @@
 import {
   BasePageRequest,
-  BaseRequsetId,
+  BaseRequestId,
   History,
+  Order,
   RequestModifyOrderInfo,
   ResponseFoodList,
   ResponseOrderHistoryList,
@@ -20,7 +21,18 @@ class OrderService extends APIBase {
       .catch(APIBase._handleError);
   }
 
-  public getGuestHistory({ id }: BaseRequsetId): Promise<History> {
+  public orderClient({ ...orderInfo }: Order) {
+    return this.baseHTTP
+      .post('client', {
+        ...orderInfo,
+        orderStatus: 'ORDERED',
+        reservedTime: new Date().toISOString(),
+      })
+      .then(APIBase._handleResponse)
+      .catch(APIBase._handleError);
+  }
+
+  public getGuestHistory({ id }: BaseRequestId): Promise<History> {
     return this.baseHTTP
       .get(`guest/${id}`)
       .then(APIBase._handleResponse)

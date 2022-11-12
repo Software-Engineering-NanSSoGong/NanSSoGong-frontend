@@ -20,7 +20,7 @@ export interface BasePageResponse<T> {
   last: boolean;
 }
 
-export interface BaseRequsetId {
+export interface BaseRequestId {
   id: number;
 }
 
