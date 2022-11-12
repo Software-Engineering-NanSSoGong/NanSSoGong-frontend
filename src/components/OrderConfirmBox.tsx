@@ -17,20 +17,23 @@ interface Props {
 }
 
 function OrderConfirmBox({ dinner, orderedFoodInfo, selectedStyle }: Props) {
-  const foods = useRecoilValue(foodState);
+  const foodList = useRecoilValue(foodState);
   const { addedFoodInfos, reducedFoodInfos } = getDifferenceFoodInfoFromDinner(
     dinner,
     orderedFoodInfo,
-    foods,
+    foodList,
   );
-  const totalPrice = getTotalPrice([
-    {
-      dinner,
-      addedFoodInfos,
-      reducedFoodInfos,
-      selectedStyle,
-    },
-  ]);
+  const totalPrice = getTotalPrice(
+    [
+      {
+        dinner,
+        addedFoodInfos,
+        reducedFoodInfos,
+        selectedStyle,
+      },
+    ],
+    foodList,
+  );
 
   return (
     <Wrapper>

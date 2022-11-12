@@ -14,6 +14,7 @@ import {
   SignUpNamePage,
   ProfilePage,
   OrderPage,
+  ModifyItemDetailPage,
 } from '../pages';
 import ToastTestPage from '../pages/ToastTestPage';
 import { foodState } from '../stores/Food';
@@ -44,6 +45,7 @@ function Router() {
       <Route path='/signup-type' element={<SignUpSelectUserTypePage />} />
       <Route path='/signup-email' element={<SignUpEmailPage />} />
       <Route path='/signup-name' element={<SignUpNamePage />} />
+      <Route path='/modify/:id' element={<ModifyItemDetailPage />} />
       <Route path='/item/:id' element={<ItemDetailPage />} />
       <Route path='/history' element={<ClientHistoryOrderPage />} />
       <Route path='/profile' element={<ProfilePage />} />

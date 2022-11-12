@@ -60,15 +60,23 @@ export interface OrderSheet {
   })[];
 }
 
-export type OrderStatus = 'ORDERED';
+export type OrderStatus =
+  | 'ORDERED'
+  | 'RESERVED'
+  | 'ACCEPTED'
+  | 'DENIED'
+  | 'CANCEL'
+  | 'COOKED'
+  | 'DELIVERING'
+  | 'DELIVERED';
 
 export interface History {
   orderId: number;
   riderId: number | null;
   riderName: string;
   address: Address;
-  orderTime: Date;
-  reservedTime: Date | null;
+  orderTime: string;
+  reservedTime: string | null;
   orderStatus: OrderStatus;
   totalPriceAfterSale: number | null;
   orderSheetResponseList: OrderSheet[];

@@ -25,7 +25,11 @@ export const myBagSelector = selector<MyBag[]>({
   key: 'myBagSelector',
   get: ({ get }) => {
     const recoilStoredData = get(myBagAtom);
-    return recoilStoredData.length === 0 ? storage.get('mybag') : recoilStoredData;
+    const localStoragedData = storage.get('mybag');
+    if (recoilStoredData.length === 0) {
+      return Array.isArray(localStoragedData) ? localStoragedData : [];
+    }
+    return recoilStoredData;
   },
   set: ({ set }, willUpdatedState) => {
     set(myBagAtom, willUpdatedState);

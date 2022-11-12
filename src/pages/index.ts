@@ -6,3 +6,4 @@ export { default as ClientHistoryOrderPage } from './ClientHistoryOrderPage';
 export { default as ItemDetailPage } from './ItemDetailPage';
 export { default as ProfilePage } from './ProfilePage';
 export { default as OrderPage } from './OrderPage';
+export { default as ModifyItemDetailPage } from './ModifyItemDetailPage';
