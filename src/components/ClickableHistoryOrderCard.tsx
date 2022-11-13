@@ -3,9 +3,9 @@ import { ButtonHierarchy } from '../components/common/Button';
 import { OrderSheet, OrderStatus } from '../@types';
 import { theme } from '../styles';
 import { Typography } from './common';
-import Chip, { ChipType } from './common/Chip';
+import Chip from './common/Chip';
 import { Modal } from './modal';
-import { formatDateToYYYYMMDD } from '../utils';
+import { convertToChipTypeFromOrderStatus, formatDateToYYYYMMDD } from '../utils';
 import { useSetRecoilState } from 'recoil';
 import { changeFoodState } from '../stores';
 import { useNavigate } from 'react-router-dom';
@@ -18,27 +18,6 @@ interface Props {
   date: string;
   orderSheetResponseList: OrderSheet[];
 }
-
-const convertToChipTypeFromOrderStatus: (orderStatus: OrderStatus) => ChipType = (
-  orderStatus: OrderStatus,
-) => {
-  switch (orderStatus) {
-    case 'ORDERED':
-    case 'RESERVED':
-      return 'warning';
-    case 'COOKED':
-    case 'ACCEPTED':
-      return 'primary';
-    case 'DELIVERING':
-      return 'success';
-    case 'DELIVERED':
-    case 'DENIED':
-    case 'CANCEL':
-      return 'danger';
-    default:
-      return 'primary';
-  }
-};
 
 function ClickableHistoryOrderCard({
   orderId,
