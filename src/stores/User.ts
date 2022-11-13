@@ -2,7 +2,7 @@ import { atom, selector } from 'recoil';
 
 export interface LoginedUser {
   memberId: number | null;
-  memberType: string;
+  memberType: 'loginClient' | 'loginChef' | 'loginRider';
   sessionId: string;
 }
 
@@ -10,7 +10,7 @@ export const userState = atom<LoginedUser>({
   key: 'user',
   default: {
     memberId: null,
-    memberType: '',
+    memberType: 'loginClient',
     sessionId: '',
   },
 });

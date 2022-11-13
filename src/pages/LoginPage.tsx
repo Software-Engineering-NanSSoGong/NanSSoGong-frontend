@@ -19,8 +19,12 @@ function LoginPage() {
       const res = await MemberService.logIn({ email, password });
       if (res.hasOwnProperty('sessionId')) {
         setUserState({ ...res });
-        navigate('/main');
         alert(`${email}님 로그인을 환영합니다.`);
+        if (res.memberType === 'loginClient') {
+          navigate('/main');
+        } else {
+          navigate('/manage-order');
+        }
       }
     } catch (err) {
       console.error(err);
