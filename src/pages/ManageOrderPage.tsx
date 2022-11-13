@@ -6,6 +6,7 @@ import { EmployeeHistoryOrderCard, SideMenuListWithEmployee, Typography } from '
 import { theme } from '../styles';
 
 function ManageOrderPage() {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [histories, setHistories] = useState<History[]>([]);
   const [filteredHistories, setFilteredHistories] = useState<History[]>([]);
   const statusList: OrderStatus[] = [
@@ -31,9 +32,11 @@ function ManageOrderPage() {
   useEffect(() => {
     // client History
     (async () => {
+      setIsLoading(true);
       const res = await OrderService.getList({ page: 0, size: 50 });
       setHistories(res.content);
       setFilteredHistories(res.content);
+      setIsLoading(false);
     })();
   }, []);
 
@@ -44,35 +47,41 @@ function ManageOrderPage() {
         <Typography type='h1' color={theme.colors.text.bold} style={{ marginBottom: 40 }}>
           주문 내역
         </Typography>
-        <SelectStatusSection>
-          <SelectStatus onChange={handleChangeSelect}>
-            <option value={'default'}>전체</option>
-            {statusList.map((status) => (
-              <option key={status} value={status}>
-                {status}
-              </option>
-            ))}
-          </SelectStatus>
-        </SelectStatusSection>
-        <CardList>
-          {filteredHistories.length > 0 ? (
-            filteredHistories.map((history) => (
-              <EmployeeHistoryOrderCard
-                key={history.orderId}
-                orderId={history.orderId}
-                status={history.orderStatus}
-                orderSheetResponseList={history.orderSheetResponseList}
-                orderTime={history.orderTime}
-                address={`${history.address.city} ${history.address.street} ${history.address.zipcode}`}
-                setHistories={setHistories}
-              />
-            ))
-          ) : (
-            <Typography type='h3' color={theme.colors.primary.red} textAlign='center'>
-              주문 내역이 없습니다.
-            </Typography>
-          )}
-        </CardList>
+        {isLoading ? (
+          <LoadingGIF src='/loading.gif' alt='loading-component' />
+        ) : (
+          <>
+            <SelectStatusSection>
+              <SelectStatus onChange={handleChangeSelect}>
+                <option value={'default'}>전체</option>
+                {statusList.map((status) => (
+                  <option key={status} value={status}>
+                    {status}
+                  </option>
+                ))}
+              </SelectStatus>
+            </SelectStatusSection>
+            <CardList>
+              {filteredHistories.length > 0 ? (
+                filteredHistories.map((history) => (
+                  <EmployeeHistoryOrderCard
+                    key={history.orderId}
+                    orderId={history.orderId}
+                    status={history.orderStatus}
+                    orderSheetResponseList={history.orderSheetResponseList}
+                    orderTime={history.orderTime}
+                    address={`${history.address.city} ${history.address.street} ${history.address.zipcode}`}
+                    setHistories={setHistories}
+                  />
+                ))
+              ) : (
+                <Typography type='h3' color={theme.colors.primary.red} textAlign='center'>
+                  주문 내역이 없습니다.
+                </Typography>
+              )}
+            </CardList>
+          </>
+        )}
       </Spacer>
     </Wrapper>
   );
@@ -106,6 +115,11 @@ const SelectStatus = styled.select`
   border-radius: 4px;
   padding: 4px;
   margin-bottom: 16px;
+`;
+
+const LoadingGIF = styled.img`
+  width: 100%;
+  height: 100%;
 `;
 
 export default ManageOrderPage;
