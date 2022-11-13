@@ -1,16 +1,13 @@
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
 import { MemberService } from '../api';
 
-import { isAuth as RecoilIsAuth } from '../stores';
 import { theme } from '../styles';
 import { Button, Typography } from './common';
 import { ButtonHierarchy } from './common/Button';
 
 function SideMenuListWithEmployee() {
   const navigate = useNavigate();
-  const isAuth = useRecoilValue(RecoilIsAuth);
 
   return (
     <SideMenu>
@@ -18,7 +15,7 @@ function SideMenuListWithEmployee() {
       <Spacer>
         {/* 상단 버튼 리스트 */}
         <ButtonList>
-          <ButtonWrapper fullWidth borderRadius={10} onClick={() => navigate('/employee')}>
+          <ButtonWrapper fullWidth borderRadius={10} onClick={() => navigate('/manage-order')}>
             <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
               주문 내역
             </Typography>
@@ -27,65 +24,39 @@ function SideMenuListWithEmployee() {
             fullWidth
             borderRadius={10}
             hierarchy={ButtonHierarchy.Warning}
-            onClick={() => navigate('/manage')}
+            onClick={() => navigate('')}
           >
             <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
               매장 관리
             </Typography>
           </ButtonWrapper>
-          {isAuth && (
-            <ButtonWrapper
-              fullWidth
-              borderRadius={10}
-              hierarchy={ButtonHierarchy.DarkGray}
-              onClick={() => navigate('/')}
-            >
-              <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
-                내 정보 수정하기
-              </Typography>
-            </ButtonWrapper>
-          )}
+          <ButtonWrapper
+            fullWidth
+            borderRadius={10}
+            hierarchy={ButtonHierarchy.DarkGray}
+            onClick={() => navigate('/manage-time')}
+          >
+            <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
+              운영 시간 관리
+            </Typography>
+          </ButtonWrapper>
         </ButtonList>
         {/* 하단 버튼 리스트 */}
         <ButtonList>
           <ButtonWrapper
             fullWidth
             borderRadius={10}
-            hierarchy={ButtonHierarchy.Danger}
-            onClick={() => navigate('/order')}
+            hierarchy={ButtonHierarchy.Gray}
+            onClick={() => {
+              MemberService.logOut();
+              navigate('/');
+              alert('로그아웃이 완료되었습니다.');
+            }}
           >
             <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
-              결제 하기
+              로그아웃
             </Typography>
           </ButtonWrapper>
-
-          {isAuth ? (
-            <ButtonWrapper
-              fullWidth
-              borderRadius={10}
-              hierarchy={ButtonHierarchy.Gray}
-              onClick={() => {
-                MemberService.logOut();
-                navigate('/');
-                alert('로그아웃이 완료되었습니다.');
-              }}
-            >
-              <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
-                로그아웃
-              </Typography>
-            </ButtonWrapper>
-          ) : (
-            <ButtonWrapper
-              fullWidth
-              borderRadius={10}
-              hierarchy={ButtonHierarchy.Success}
-              onClick={() => navigate('/')}
-            >
-              <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
-                로그인
-              </Typography>
-            </ButtonWrapper>
-          )}
         </ButtonList>
       </Spacer>
     </SideMenu>
