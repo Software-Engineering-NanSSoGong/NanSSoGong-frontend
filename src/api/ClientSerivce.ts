@@ -10,4 +10,4 @@ class ClientService extends APIBase {
   }
 }
 
-export default ClientService;
+export default new ClientService();

@@ -8,9 +8,9 @@ import { theme } from '../../styles';
 
 function SignUpClientInfoPage() {
   const [address, setAddress] = React.useState<Record<string, string>>({
-    address_1: '',
-    address_2: '',
-    address_3: '',
+    city: '',
+    street: '',
+    zipcode: '',
   });
   const [cardnum, setCardNum] = React.useState<Record<string, string>>({
     card_1: '',

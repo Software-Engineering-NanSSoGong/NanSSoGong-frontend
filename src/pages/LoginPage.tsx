@@ -14,7 +14,11 @@ function LoginPage() {
   const handleClickLoginButton = async () => {
     const res = await MemberService.logIn({ email, password });
     if (res.hasOwnProperty('sessionId')) {
-      navigate('/main');
+      if (res.memberType !== 'client') {
+        navigate('/employee');
+      } else {
+        navigate('/main');
+      }
       alert(`${email}님 로그인을 환영합니다.`);
     } else {
       alert('등록되지 않은 회원정보입니다');
