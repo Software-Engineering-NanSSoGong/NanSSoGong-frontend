@@ -1,15 +1,32 @@
 export type StyleName = 'simple' | 'deluxe' | 'grande';
+
 export interface Address {
   city: string;
   street: string;
   zipcode: string;
 }
 
+export interface Card {
+  card1: number | null;
+  card2: number | null;
+  card3: number | null;
+  card4: number | null;
+}
+
+export const FOOD_CATEGORY = {
+  WINE: 'WINE',
+  BREAD: 'BREAD',
+  MEAT: 'MEAT',
+  SALAD: 'SALAD',
+  COFFEE: 'COFFEE',
+  SIDE: 'SIDE',
+} as const;
+
 export interface Food {
   foodId: number;
   foodName: string;
   foodSellPrice: number;
-  foodCategory: string;
+  foodCategory: keyof typeof FOOD_CATEGORY;
   foodOrderable: boolean;
 }
 
@@ -82,4 +99,16 @@ export interface History {
   orderSheetResponseList: OrderSheet[];
   clientId: number;
   clientName: string;
+}
+
+export interface Order {
+  address: Address;
+  orderStatus?: OrderStatus;
+  reservedTime?: Date;
+  totalPriceAfterSale: number;
+  orderSheetCreateRequestList: {
+    styleId: number;
+    dinnerId: number;
+    foodIdAndDifference: Record<string, number>;
+  }[];
 }

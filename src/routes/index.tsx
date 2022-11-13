@@ -14,9 +14,9 @@ import {
   SignUpClientInfoPage,
   ProfilePage,
   OrderPage,
-  ManagePage,
-  EmployeePage,
+  ManageOrderPage,
   ModifyItemDetailPage,
+  ManageTimePage,
 } from '../pages';
 import ToastTestPage from '../pages/ToastTestPage';
 import { foodState } from '../stores/Food';
@@ -52,8 +52,8 @@ function Router() {
       <Route path='/history' element={<ClientHistoryOrderPage />} />
       <Route path='/profile' element={<ProfilePage />} />
       <Route path='/order' element={<OrderPage />} />
-      <Route path='/employee' element={<EmployeePage />} />
-      <Route path='/manage' element={<ManagePage />} />
+      <Route path='/manage-order' element={<ManageOrderPage />} />
+      <Route path='/manage-time' element={<ManageTimePage />} />
       {/* 유저만 갈 수 있는 페이지 example: 내정보페이지 */}
       <Route element={<RequiredAuthGuard />}>
         <Route path='/user' element={<MainPage />} />

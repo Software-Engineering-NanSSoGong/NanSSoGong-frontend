@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
-import { Dinner, FoodWithQuantity, Style } from '../@types';
+import { Dinner, FoodWithQuantity, FOOD_CATEGORY, Style } from '../@types';
 import { DinnerService, OrderService } from '../api';
 import {
   FoodBox,
@@ -15,7 +15,12 @@ import {
 import BottomButton from '../components/BottomButton';
 import { changeFoodState, styleState } from '../stores';
 import { foodState as RecoilFoodState } from '../stores/Food';
-import { getBasicFoodIndexInDinner } from '../utils';
+import {
+  getBasicFoodCountInDinner,
+  getBasicFoodIndexInDinner,
+  getDifferenceFoodInfoFromDinner,
+  transformNameWithQuantity,
+} from '../utils';
 
 const transformToNameWithInfoObject = (
   foodList: FoodWithQuantity[],
@@ -24,15 +29,18 @@ const transformToNameWithInfoObject = (
 ) => {
   return foodList.reduce((acc, item) => {
     const foodIndex = getBasicFoodIndexInDinner(dinner, item);
+    let quantity = foodIndex === -1 ? 0 : dinner.dinnerFoodInfoResponseList[foodIndex].foodQuantity;
+    if (modifiedFoodList?.hasOwnProperty(item.foodId)) {
+      quantity =
+        foodIndex === -1
+          ? modifiedFoodList[item.foodId]
+          : getBasicFoodCountInDinner(dinner, item) + modifiedFoodList[item.foodId];
+    }
     return {
       ...acc,
       [item.foodName]: {
         ...item,
-        foodQuantity: modifiedFoodList?.hasOwnProperty(item.foodId)
-          ? modifiedFoodList[item.foodId]
-          : foodIndex === -1
-          ? 0
-          : dinner.dinnerFoodInfoResponseList[foodIndex].foodQuantity || 1,
+        foodQuantity: quantity,
       },
     };
   }, {});
@@ -41,7 +49,7 @@ const transformToNameWithInfoObject = (
 function ModifyItemDetailPage() {
   const navigate = useNavigate();
   const params = useParams();
-  const foods = useRecoilValue(RecoilFoodState);
+  const foodList = useRecoilValue(RecoilFoodState);
   const styleList = useRecoilValue(styleState);
   const changeFood = useRecoilValue(changeFoodState);
   const resetChangeFood = useResetRecoilState(changeFoodState);
@@ -50,9 +58,33 @@ function ModifyItemDetailPage() {
   const [selectedStyle, setSelectedStyle] = useState<Style | null>(null);
 
   const handleClickModalConfirmButton = async () => {
+    const { addedFoodInfos, reducedFoodInfos } = getDifferenceFoodInfoFromDinner(
+      dinner,
+      foodState,
+      foodList,
+    );
+    const addedNameWithQuantityObject = transformNameWithQuantity(addedFoodInfos);
+    const reducedNameWithQuantityObject = Object.entries(
+      transformNameWithQuantity(reducedFoodInfos),
+    ).reduce((acc, [key, value]) => ({ ...acc, [key]: -Number(value) }), {});
+    const nextOrderSheetUpdateRequestList = [...changeFood.orderSheetUpdateRequestList].map(
+      (info, idx) => {
+        if (idx === changeFood.willChangeOrderIndex) {
+          return {
+            ...info,
+            styleId: Number(selectedStyle?.styleId),
+            foodIdAndDifference: {
+              ...addedNameWithQuantityObject,
+              ...reducedNameWithQuantityObject,
+            },
+          };
+        }
+        return { ...info };
+      },
+    );
     await OrderService.modifyOrderInfo({
       orderId: changeFood.orderId,
-      orderSheetUpdateRequestList: changeFood.orderSheetUpdateRequestList,
+      orderSheetUpdateRequestList: nextOrderSheetUpdateRequestList,
     });
     resetChangeFood();
     alert('주문을 수정하였습니다.');
@@ -65,7 +97,7 @@ function ModifyItemDetailPage() {
         const dinnerItem = await DinnerService.getDinnerItem({ id: Number(params?.id) });
         setFoodState(
           transformToNameWithInfoObject(
-            foods,
+            foodList,
             dinnerItem,
             changeFood.orderSheetUpdateRequestList[changeFood.willChangeOrderIndex]
               ?.foodIdAndDifference,
@@ -79,7 +111,7 @@ function ModifyItemDetailPage() {
     changeFood.orderSheetUpdateRequestList,
     changeFood.styleId,
     changeFood.willChangeOrderIndex,
-    foods,
+    foodList,
     params?.id,
     styleList,
   ]);
@@ -94,21 +126,14 @@ function ModifyItemDetailPage() {
           selectedStyle={selectedStyle}
           setSelectedStyle={setSelectedStyle}
         />
-        <FoodQuantityBoxList
-          title='밥 추가'
-          foods={Object.values(foodState).filter((item) => item.foodCategory === 'rice')}
-          setFoodState={setFoodState}
-        />
-        <FoodQuantityBoxList
-          title='고기 추가'
-          foods={Object.values(foodState).filter((item) => item.foodCategory === 'MEAT')}
-          setFoodState={setFoodState}
-        />
-        <FoodQuantityBoxList
-          title='음료 추가'
-          foods={Object.values(foodState).filter((item) => item.foodCategory === 'drink')}
-          setFoodState={setFoodState}
-        />
+        {Object.keys(FOOD_CATEGORY).map((category) => (
+          <FoodQuantityBoxList
+            key={category}
+            title={`${category} 추가`}
+            foods={Object.values(foodState).filter((item) => item.foodCategory === category)}
+            setFoodState={setFoodState}
+          />
+        ))}
       </Spacer>
       <Modal
         triggerNode={

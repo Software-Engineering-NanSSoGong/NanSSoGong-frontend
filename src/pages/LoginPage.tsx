@@ -1,23 +1,33 @@
 import styled from '@emotion/styled';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 import { MemberService } from '../api';
 import { Button, IconInputLine, TitleWithLine, Typography } from '../components';
 import { ButtonHierarchy } from '../components/common/Button';
+import { userState } from '../stores';
 import { theme } from '../styles';
 
 function LoginPage() {
+  const navigate = useNavigate();
+  const setUserState = useSetRecoilState(userState);
   const [email, setEmail] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
-  const navigate = useNavigate();
 
   const handleClickLoginButton = async () => {
-    const res = await MemberService.logIn({ email, password });
-    if (res.hasOwnProperty('sessionId')) {
-      navigate('/main');
-      alert(`${email}님 로그인을 환영합니다.`);
-    } else {
-      alert('등록되지 않은 회원정보입니다');
+    try {
+      const res = await MemberService.logIn({ email, password });
+      if (res.hasOwnProperty('sessionId')) {
+        setUserState({ ...res });
+        alert(`${email}님 로그인을 환영합니다.`);
+        if (res.memberType === 'loginClient') {
+          navigate('/main');
+        } else {
+          navigate('/manage-order');
+        }
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 

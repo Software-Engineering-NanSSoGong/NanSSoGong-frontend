@@ -1,16 +1,18 @@
 import styled from '@emotion/styled';
 import { useRecoilValue } from 'recoil';
+import { GRADE, GRADE_INFO } from '../@types';
 import { myBagSelector } from '../stores';
 import { foodState } from '../stores/Food';
 import { theme } from '../styles';
-import { getBasicDinnerPrice, getBasicFoodCountInDinner, guardDinnerQuantity } from '../utils';
+import { getBasicDinnerPrice, getBasicFoodCountInDinner, getPriceAfterSale, guardDinnerQuantity } from '../utils';
 import { Typography } from './common';
 
 interface Props {
   totalPrice: number;
+  clientGrade: GRADE;
 }
 
-function PriceBox({ totalPrice }: Props) {
+function PriceBox({ totalPrice, clientGrade }: Props) {
   const foodList = useRecoilValue(foodState);
   const myBagState = useRecoilValue(myBagSelector);
 
@@ -40,7 +42,7 @@ function PriceBox({ totalPrice }: Props) {
               {item.selectedStyle.styleName}
             </Typography>
             <Typography type='body4' color={theme.colors.primary.yellow}>
-              + {(item.selectedStyle.styleSellPrice || 5000).toLocaleString()} 원
+              + {item.selectedStyle.styleSellPrice?.toLocaleString()} 원
             </Typography>
           </BetweenLine>
 
@@ -69,9 +71,20 @@ function PriceBox({ totalPrice }: Props) {
       ))}
       <BetweenLine style={{ marginTop: '32px' }}>
         <Typography type='h4' color={theme.colors.text.bold}>
+          {clientGrade} 등급
+        </Typography>
+        <Typography type='body4' color={theme.colors.primary.yellow}>
+          {GRADE_INFO[clientGrade].saleRate} % 할인
+        </Typography>
+      </BetweenLine>
+      <Divider />
+      <BetweenLine style={{ marginTop: '32px' }}>
+        <Typography type='h4' color={theme.colors.text.bold}>
           총 금액
         </Typography>
-        <Typography type='h4'>{totalPrice.toLocaleString()} 원</Typography>
+        <Typography type='h4'>
+          {getPriceAfterSale(totalPrice, GRADE_INFO[clientGrade].saleRate).toLocaleString()} 원
+        </Typography>
       </BetweenLine>
     </Wrapper>
   );

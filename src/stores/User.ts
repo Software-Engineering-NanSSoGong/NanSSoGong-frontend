@@ -1,20 +1,24 @@
 import { atom, selector } from 'recoil';
 
-interface User {
-  token?: string;
+export interface LoginedUser {
+  memberId: number | null;
+  memberType: 'loginClient' | 'loginChef' | 'loginRider';
+  sessionId: string;
 }
 
-export const userState = atom<User>({
+export const userState = atom<LoginedUser>({
   key: 'user',
   default: {
-    token: '',
+    memberId: null,
+    memberType: 'loginClient',
+    sessionId: '',
   },
 });
 
-export const isAuth = selector<boolean>({
+export const isAuth = selector({
   key: 'isAuth',
   get: ({ get }) => {
-    const { token } = get(userState);
-    return !!token;
+    const { memberId } = get(userState);
+    return { isLogin: !!memberId, id: memberId };
   },
 });

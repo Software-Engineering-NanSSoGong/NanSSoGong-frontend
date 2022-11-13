@@ -1,4 +1,4 @@
-import { BasePageRequest, BaseRequsetId, ResponseDinnerItem, ResponseDinnerList } from '../@types';
+import { BasePageRequest, BaseRequestId, ResponseDinnerItem, ResponseDinnerList } from '../@types';
 import APIBase from './core';
 
 class DinnerService extends APIBase {
@@ -13,7 +13,7 @@ class DinnerService extends APIBase {
       .catch(APIBase._handleError);
   }
 
-  getDinnerItem({ id }: BaseRequsetId): Promise<ResponseDinnerItem> {
+  getDinnerItem({ id }: BaseRequestId): Promise<ResponseDinnerItem> {
     return this.baseHTTP.get(`${id}`).then(APIBase._handleResponse).catch(APIBase._handleError);
   }
 }

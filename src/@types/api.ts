@@ -1,4 +1,5 @@
-import { Address, Dinner, Food, History, Style } from './common';
+import { Address, Dinner, Food, History, OrderStatus, Style } from './common';
+import { GRADE } from './User';
 
 export interface BaseAPIResponse<T> {
   status: number;
@@ -20,8 +21,14 @@ export interface BasePageResponse<T> {
   last: boolean;
 }
 
-export interface BaseRequsetId {
+export interface BaseRequestId {
   id: number;
+}
+
+export interface BaseFailResponse {
+  exceptionName: string;
+  exceptionType: string;
+  message: string;
 }
 
 /** Dinner Service */
@@ -45,6 +52,10 @@ export interface RequestModifyOrderInfo {
     foodIdAndDifference: Record<string, number>;
   }[];
 }
+export interface RequestChangeOrderStatus {
+  orderId: number;
+  orderStatus: OrderStatus;
+}
 
 // User Service
 export interface RequestSignUpInfo {
@@ -58,15 +69,20 @@ export interface RequestSignUpInfo {
 type SuccessResponseSignUpInfo = {
   name: string;
 };
-type FailResponseSignUpInfo = {
-  exceptionName: string;
-  exceptionType: string;
-  message: string;
-};
 
-export type ResponseSignUpInfo = SuccessResponseSignUpInfo | FailResponseSignUpInfo;
+export type ResponseSignUpInfo = SuccessResponseSignUpInfo | BaseFailResponse;
 
 export interface RequestLogInInfo {
   email: string;
   password: string;
+}
+export interface ResponseClientInfo {
+  id: number;
+  name: string;
+  loginId: string;
+  password: string;
+  cardNumber: string;
+  clientGrade: GRADE;
+  address: Address;
+  enable: true;
 }
