@@ -7,5 +7,5 @@ export { default as ItemDetailPage } from './ItemDetailPage';
 export { default as ProfilePage } from './ProfilePage';
 export { default as OrderPage } from './OrderPage';
 export { default as EmployeePage } from './EmployeeOrderPage';
-export { default as ManagePage } from './ManagePage';
+export { default as ManageOrderPage } from './ManageOrderPage';
 export { default as ModifyItemDetailPage } from './ModifyItemDetailPage';

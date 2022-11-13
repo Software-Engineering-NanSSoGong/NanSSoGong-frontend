@@ -16,3 +16,5 @@ export { default as ClickableIcon } from './ClickableIcon';
 export { default as LabelWithMultipleInput } from './LabelWithMultipleInput';
 export { default as OrderConfirmBox } from './OrderConfirmBox';
 export { default as PriceBox } from './PriceBox';
+export { default as EmployeeHistoryOrderCard } from './EmployeeHistoryOrderCard';
+export { default as ChangeOrderStatusButton } from './ChangeOrderStatusButton';

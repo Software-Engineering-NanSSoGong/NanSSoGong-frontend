@@ -3,8 +3,8 @@ import {
   BaseRequestId,
   History,
   Order,
+  RequestChangeOrderStatus,
   RequestModifyOrderInfo,
-  ResponseFoodList,
   ResponseOrderHistoryList,
 } from '../@types';
 import APIBase from './core';
@@ -39,7 +39,7 @@ class OrderService extends APIBase {
       .catch(APIBase._handleError);
   }
 
-  public getList({ page, size }: BasePageRequest): Promise<ResponseFoodList> {
+  public getList({ page, size }: BasePageRequest): Promise<ResponseOrderHistoryList> {
     return this.baseHTTP
       .get(`list?page=${page}&size=${size}`)
       .then(APIBase._handleResponse)
@@ -49,6 +49,16 @@ class OrderService extends APIBase {
   public modifyOrderInfo({ orderId, orderSheetUpdateRequestList }: RequestModifyOrderInfo) {
     return this.baseHTTP
       .put(`${orderId}`, { orderSheetUpdateRequestList })
+      .then(APIBase._handleResponse)
+      .catch(APIBase._handleError);
+  }
+
+  public changeOrderStatus({ orderId, orderStatus }: RequestChangeOrderStatus): Promise<string> {
+    return this.baseHTTP
+      .patch('status', {
+        orderId,
+        orderStatus,
+      })
       .then(APIBase._handleResponse)
       .catch(APIBase._handleError);
   }

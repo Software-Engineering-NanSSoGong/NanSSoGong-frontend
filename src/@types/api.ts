@@ -1,4 +1,4 @@
-import { Address, Dinner, Food, History, Style } from './common';
+import { Address, Dinner, Food, History, OrderStatus, Style } from './common';
 import { GRADE } from './User';
 
 export interface BaseAPIResponse<T> {
@@ -51,6 +51,10 @@ export interface RequestModifyOrderInfo {
     dinnerId: number;
     foodIdAndDifference: Record<string, number>;
   }[];
+}
+export interface RequestChangeOrderStatus {
+  orderId: number;
+  orderStatus: OrderStatus;
 }
 
 // User Service
