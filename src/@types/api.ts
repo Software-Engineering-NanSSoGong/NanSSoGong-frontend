@@ -29,7 +29,7 @@ export interface BaseFailResponse {
   exceptionName: string;
   exceptionType: string;
   message: string;
-};
+}
 
 /** Dinner Service */
 export interface ResponseDinnerList extends BasePageResponse<Dinner> {}
@@ -70,7 +70,6 @@ type SuccessResponseSignUpInfo = {
   name: string;
 };
 
-
 export type ResponseSignUpInfo = SuccessResponseSignUpInfo | BaseFailResponse;
 
 export interface RequestLogInInfo {
@@ -84,6 +83,6 @@ export interface ResponseClientInfo {
   password: string;
   cardNumber: string;
   clientGrade: GRADE;
-  address: Address
+  address: Address;
   enable: true;
 }
