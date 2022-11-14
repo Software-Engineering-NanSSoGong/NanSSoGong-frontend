@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useResetRecoilState } from 'recoil';
-import { MemberService, RiderService } from '../../api';
+import { ChefService, MemberService, RiderService } from '../../api';
 import { Button, IconInputLine, TitleWithLine, Typography } from '../../components';
 import { signUpState as RecoilSignUpState } from '../../stores/SignUp';
 import { theme } from '../../styles';
@@ -21,25 +21,34 @@ function SignUpEmailPage() {
       alert('이메일 칸을 채워주세요.');
       return;
     }
-    const res = await MemberService.checkValidId({ email });
-    if (res) {
-      alert('중복된 아이디입니다');
-    } else {
-      alert('사용가능한 아이디입니다');
+    try {
+      const res = await MemberService.checkValidId({ email });
+      if (!res) {
+        alert('중복된 아이디입니다');
+      } else {
+        alert('사용 가능한 아이디입니다.');
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 
   const handleClickSignUpEmailButton = async () => {
-    if (signUpState.userType !== 'client') {
-      const res = await RiderService.signUp({ email, password, name });
-      if (res.hasOwnProperty('name')) {
-        navigate('/');
-        resetSignUpState();
-        alert(`${name}님 회원가입이 완료되었습니다.`);
-      }
-    } else {
+    let res = {};
+    if (signUpState.userType === 'client') {
       setSignUpState((prev) => ({ ...prev, name, email, password }));
       navigate('/signup-client-info');
+      return;
+    }
+    if (signUpState.userType === 'rider') {
+      res = await RiderService.signUp({ email, password, name });
+    } else if (signUpState.userType === 'employee') {
+      res = await ChefService.signUp({ email, password, name });
+    }
+    if (res.hasOwnProperty('name')) {
+      navigate('/');
+      resetSignUpState();
+      alert(`${name}님 회원가입이 완료되었습니다.`);
     }
   };
 

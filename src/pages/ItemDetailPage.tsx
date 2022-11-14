@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { Dinner, FoodWithQuantity, Style } from '../@types';
+import { Dinner, FoodWithQuantity, FOOD_CATEGORY, Style } from '../@types';
 import { DinnerService } from '../api';
 import {
   FoodBox,
@@ -15,22 +15,20 @@ import {
 import BottomButton from '../components/BottomButton';
 import { myBagSelector } from '../stores';
 import { foodState as RecoilFoodState } from '../stores/Food';
-import { getDifferenceFoodInfoFromDinner } from '../utils';
+import { getBasicFoodIndexInDinner, getDifferenceFoodInfoFromDinner } from '../utils';
 
 const transformToNameWithInfoObject = (foodList: FoodWithQuantity[], dinner: Dinner) => {
-  return foodList.reduce(
-    (acc, item) => ({
+  return foodList.reduce((acc, item) => {
+    const foodIndex = getBasicFoodIndexInDinner(dinner, item);
+    return {
       ...acc,
       [item.foodName]: {
         ...item,
         foodQuantity:
-          dinner.dinnerFoodInfoResponseList?.findIndex((food) => food.foodId === item.foodId) === -1
-            ? 0
-            : dinner.dinnerQuantity || 1,
+          foodIndex === -1 ? 0 : dinner.dinnerFoodInfoResponseList[foodIndex].foodQuantity || 1,
       },
-    }),
-    {},
-  );
+    };
+  }, {});
 };
 
 function ItemDetailPage() {
@@ -81,21 +79,14 @@ function ItemDetailPage() {
           selectedStyle={selectedStyle}
           setSelectedStyle={setSelectedStyle}
         />
-        <FoodQuantityBoxList
-          title='밥 추가'
-          foods={Object.values(foodState).filter((item) => item.foodCategory === 'rice')}
-          setFoodState={setFoodState}
-        />
-        <FoodQuantityBoxList
-          title='고기 추가'
-          foods={Object.values(foodState).filter((item) => item.foodCategory === 'MEAT')}
-          setFoodState={setFoodState}
-        />
-        <FoodQuantityBoxList
-          title='음료 추가'
-          foods={Object.values(foodState).filter((item) => item.foodCategory === 'drink')}
-          setFoodState={setFoodState}
-        />
+        {Object.keys(FOOD_CATEGORY).map((category) => (
+          <FoodQuantityBoxList
+            key={category}
+            title={`${category} 추가`}
+            foods={Object.values(foodState).filter((item) => item.foodCategory === category)}
+            setFoodState={setFoodState}
+          />
+        ))}
       </Spacer>
       <Modal
         triggerNode={

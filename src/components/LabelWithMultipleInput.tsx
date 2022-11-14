@@ -10,15 +10,25 @@ interface Props {
   inputBackgroundColor: PalleteValueType;
   inputColor: PalleteValueType;
   placeholders: string[];
+  type: React.InputHTMLAttributes<HTMLInputElement>['type'];
+  values: any[];
+  pattern?: React.InputHTMLAttributes<HTMLInputElement>['pattern'];
+  maxLength?: number;
   handleChangeInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
+export const STRING_MAX_LENGTH = 200;
+
 function LabelWithMultipleInput({
   title,
+  type,
   placeholders,
   labelColor,
   inputBackgroundColor,
   inputColor,
+  values,
+  pattern = '',
+  maxLength = STRING_MAX_LENGTH,
   handleChangeInput,
 }: Props) {
   return (
@@ -28,11 +38,15 @@ function LabelWithMultipleInput({
           {title}
         </Typography>
         <Inputs>
-          {placeholders.map((text, idx) => (
+          {placeholders.map((placeholder, idx) => (
             <Input
               key={idx}
-              name={text}
-              placeholder={text}
+              type={type}
+              name={placeholder}
+              placeholder={placeholder}
+              maxLength={maxLength}
+              pattern={pattern}
+              value={values[idx] ?? ''}
               inputBackgroundColor={inputBackgroundColor}
               inputColor={inputColor}
               onChange={handleChangeInput}

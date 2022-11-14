@@ -1,8 +1,10 @@
 import {
   BasePageRequest,
-  BaseRequsetId,
+  BaseRequestId,
   History,
-  ResponseFoodList,
+  Order,
+  RequestChangeOrderStatus,
+  RequestModifyOrderInfo,
   ResponseOrderHistoryList,
 } from '../@types';
 import APIBase from './core';
@@ -19,16 +21,44 @@ class OrderService extends APIBase {
       .catch(APIBase._handleError);
   }
 
-  public getGuestHistory({ id }: BaseRequsetId): Promise<History> {
+  public orderClient({ ...orderInfo }: Order) {
+    return this.baseHTTP
+      .post('client', {
+        ...orderInfo,
+        orderStatus: 'ORDERED',
+        reservedTime: new Date().toISOString(),
+      })
+      .then(APIBase._handleResponse)
+      .catch(APIBase._handleError);
+  }
+
+  public getGuestHistory({ id }: BaseRequestId): Promise<History> {
     return this.baseHTTP
       .get(`guest/${id}`)
       .then(APIBase._handleResponse)
       .catch(APIBase._handleError);
   }
 
-  public getList({ page, size }: BasePageRequest): Promise<ResponseFoodList> {
+  public getList({ page, size }: BasePageRequest): Promise<ResponseOrderHistoryList> {
     return this.baseHTTP
       .get(`list?page=${page}&size=${size}`)
+      .then(APIBase._handleResponse)
+      .catch(APIBase._handleError);
+  }
+
+  public modifyOrderInfo({ orderId, orderSheetUpdateRequestList }: RequestModifyOrderInfo) {
+    return this.baseHTTP
+      .put(`${orderId}`, { orderSheetUpdateRequestList })
+      .then(APIBase._handleResponse)
+      .catch(APIBase._handleError);
+  }
+
+  public changeOrderStatus({ orderId, orderStatus }: RequestChangeOrderStatus): Promise<string> {
+    return this.baseHTTP
+      .patch('status', {
+        orderId,
+        orderStatus,
+      })
       .then(APIBase._handleResponse)
       .catch(APIBase._handleError);
   }

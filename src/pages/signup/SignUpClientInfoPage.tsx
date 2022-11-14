@@ -1,40 +1,58 @@
 import styled from '@emotion/styled';
 import React from 'react';
-import { useRecoilState } from 'recoil';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
+import { Address, Card } from '../../@types';
+import { ClientService } from '../../api';
 import { Button, LabelWithMultipleInput, TitleWithLine, Typography } from '../../components';
 import { ButtonHierarchy } from '../../components/common/Button';
+import { STRING_MAX_LENGTH } from '../../components/LabelWithMultipleInput';
 import { signUpState as RecoilSignUpState } from '../../stores/SignUp';
 import { theme } from '../../styles';
 
 function SignUpClientInfoPage() {
-  const [address, setAddress] = React.useState<Record<string, string>>({
-    city: '',
-    street: '',
-    zipcode: '',
+  const navigate = useNavigate();
+  const signUpState = useRecoilValue(RecoilSignUpState);
+  const resetSignUpState = useResetRecoilState(RecoilSignUpState);
+  const [address, setAddress] = React.useState<Address>({ city: '', street: '', zipcode: '' });
+  const [cardNumber, setCardNumber] = React.useState<Card>({
+    card1: null,
+    card2: null,
+    card3: null,
+    card4: null,
   });
-  const [cardnum, setCardNum] = React.useState<Record<string, string>>({
-    card_1: '',
-    card_2: '',
-    card_3: '',
-    card_4: '',
-  });
-  const [signUpState] = useRecoilState(RecoilSignUpState);
   const [accept, setAccept] = React.useState<boolean>(false);
 
-  const handleChangeMultipleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setAddress((prev) => ({ ...prev, [name]: value }));
-    setCardNum((prev) => ({ ...prev, [name]: value }));
+  const handleClickButton = async () => {
+    const concatCardNumber = `${cardNumber.card1}${cardNumber.card2}${cardNumber.card3}${cardNumber.card4}`;
+    try {
+      const res = await ClientService.signUp({
+        ...signUpState,
+        personalInformationCollectionAgreement: accept,
+        address,
+        cardNumber: concatCardNumber,
+      });
+      if (res?.id) {
+        resetSignUpState();
+        navigate('/');
+        alert('회원가입이 완료되었습니다.');
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const handleClickButton = () => {
-    console.log(address);
-    console.log(cardnum);
+  const handleChangeMultipleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { maxLength, name, value } = e.currentTarget;
+    if (maxLength !== STRING_MAX_LENGTH) {
+      setCardNumber((prev) => ({ ...prev, [name]: value.slice(0, maxLength) }));
+    } else {
+      setAddress((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   return (
     <Wrapper>
-      {signUpState.userType}
       <SignupBoxLayout>
         <BoxLayout>
           <Title
@@ -65,17 +83,22 @@ function SignUpClientInfoPage() {
           </Lines>
           <LabelWithMultipleInput
             title='카드 번호'
-            placeholders={['', '', '', '']}
+            type='number'
+            pattern='\d*'
+            values={[cardNumber.card1, cardNumber.card2, cardNumber.card3, cardNumber.card4]}
+            placeholders={['card1', 'card2', 'card3', 'card4']}
             labelColor={theme.colors.background}
             inputBackgroundColor={theme.palette.gray200}
             inputColor={theme.colors.text.bold}
+            maxLength={4}
             handleChangeInput={handleChangeMultipleInput}
           />
 
           <LabelWithMultipleInput
             title='상세 주소'
-            // placeholders={['예시) 동대문구', '서울시립대로 163', '국제학사 1001호']}
-            placeholders={['예시) 동대문구', '서울시립대로 163', '국제학사']}
+            type='text'
+            values={[address.city, address.street, address.zipcode]}
+            placeholders={['city', 'street', 'zipcode']}
             labelColor={theme.colors.background}
             inputBackgroundColor={theme.palette.gray200}
             inputColor={theme.colors.text.bold}
@@ -85,12 +108,20 @@ function SignUpClientInfoPage() {
             <Button
               fullWidth
               style={{ padding: '12px' }}
-              // onClick={() => navigate('/main')}
               onClick={handleClickButton}
-              // disabled={name === '' || address === ''}
+              disabled={
+                accept &&
+                (address.city === '' ||
+                  address.street === '' ||
+                  address.zipcode === '' ||
+                  cardNumber.card1?.toString().length !== 4 ||
+                  cardNumber.card2?.toString().length !== 4 ||
+                  cardNumber.card3?.toString().length !== 4 ||
+                  cardNumber.card4?.toString().length !== 4)
+              }
             >
               <Typography type='h4' color={theme.palette.gray50} textAlign='center'>
-                계속하기
+                가입하기
               </Typography>
             </Button>
           </Lines>
