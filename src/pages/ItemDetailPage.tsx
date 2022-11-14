@@ -25,7 +25,7 @@ const transformToNameWithInfoObject = (foodList: FoodWithQuantity[], dinner: Din
       [item.foodName]: {
         ...item,
         foodQuantity:
-          foodIndex === -1 ? 0 : dinner.dinnerFoodInfoResponseList[foodIndex].foodQuantity || 1,
+          foodIndex === -1 ? 0 : dinner.dinnerFoodInfoResponseList[foodIndex].foodQuantity,
       },
     };
   }, {});
@@ -99,6 +99,7 @@ function ItemDetailPage() {
               marginLeft: '300px',
               width: 'calc(100% - 300px)',
             }}
+            disabled={Object.values(foodState).every((food) => food.foodQuantity === 0)}
           >
             <Typography type='h3' textAlign='center'>
               주문하기

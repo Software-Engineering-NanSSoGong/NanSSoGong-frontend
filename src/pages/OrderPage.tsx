@@ -48,15 +48,16 @@ function OrderPage() {
           dinnerId: myBag.dinner.dinnerId,
           foodIdAndDifference: {
             ...transformNameWithQuantity(myBag.addedFoodInfos),
-            ...transformNameWithQuantity(myBag.reducedFoodInfos),
+            ...transformNameWithQuantity(myBag.reducedFoodInfos, 'minus'),
           },
         })),
       });
-      console.log(res);
-      if (res?.hasOwnProperty()) storage.removeAll();
-      setMyBagState([]);
-      alert('성공적으로 구매했습니다.');
-      navigate('/main');
+      if (res?.hasOwnProperty('orderId')) {
+        storage.removeAll();
+        setMyBagState([]);
+        alert('성공적으로 구매했습니다.');
+        navigate('/main');
+      }
     } catch (err) {
       console.error(err);
     }
