@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
-import { ComponentProps, CSSProperties, PropsWithChildren } from 'react';
+import { ComponentPropsWithoutRef, CSSProperties, PropsWithChildren } from 'react';
 import { theme } from '../../styles';
+import { XOR } from '../../utils';
 
 export enum ButtonHierarchy {
   Primary = 'Primary',
@@ -12,13 +13,19 @@ export enum ButtonHierarchy {
   Warning = 'Warning',
 }
 
-interface Props extends ComponentProps<'button'> {
+type FullWidthProps = ComponentPropsWithoutRef<'button'> & {
   hierarchy?: ButtonHierarchy;
-  width?: CSSProperties['width'];
-  fullWidth?: boolean;
   borderRadius?: number | string;
   disabled?: boolean;
-}
+  fullWidth?: boolean;
+};
+
+type WidthProps = ComponentPropsWithoutRef<'button'> & {
+  hierarchy?: ButtonHierarchy;
+  borderRadius?: number | string;
+  disabled?: boolean;
+  width?: CSSProperties['width'];
+};
 
 function Button({
   width,
@@ -28,7 +35,7 @@ function Button({
   fullWidth = false,
   borderRadius = 10,
   ...restProps
-}: PropsWithChildren<Props>) {
+}: PropsWithChildren<XOR<WidthProps, FullWidthProps>>) {
   return (
     <Wrapper
       width={width}
@@ -43,11 +50,21 @@ function Button({
   );
 }
 
-type StyleProps = Pick<Props, 'width' | 'disabled' | 'borderRadius' | 'fullWidth' | 'hierarchy'>;
+type StyleProps = Pick<
+  XOR<WidthProps, FullWidthProps>,
+  'width' | 'disabled' | 'borderRadius' | 'fullWidth' | 'hierarchy'
+>;
 
 const Wrapper = styled.button<StyleProps>`
-  width: ${({ fullWidth, width }) =>
-    fullWidth ? '100%' : typeof width === 'number' ? `${width}px` : width};
+  width: ${({ fullWidth, width }) => {
+    if (fullWidth) {
+      return '100%';
+    }
+    if (typeof width === 'number') {
+      return `${width}px`;
+    }
+    return width;
+  }};
   cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
   border-radius: ${({ borderRadius }) =>
     typeof borderRadius === 'string' ? borderRadius : `${borderRadius}px`};
