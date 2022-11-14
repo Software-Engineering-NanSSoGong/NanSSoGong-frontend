@@ -13,14 +13,14 @@ export enum ButtonHierarchy {
   Warning = 'Warning',
 }
 
-type FullWidthProps = ComponentPropsWithoutRef<'button'> & {
+export type FullWidthProps = ComponentPropsWithoutRef<'button'> & {
   hierarchy?: ButtonHierarchy;
   borderRadius?: number | string;
   disabled?: boolean;
   fullWidth?: boolean;
 };
 
-type WidthProps = ComponentPropsWithoutRef<'button'> & {
+export type WidthProps = ComponentPropsWithoutRef<'button'> & {
   hierarchy?: ButtonHierarchy;
   borderRadius?: number | string;
   disabled?: boolean;

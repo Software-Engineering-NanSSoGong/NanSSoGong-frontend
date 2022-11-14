@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
-import { ComponentPropsWithoutRef, CSSProperties, PropsWithChildren } from 'react';
+import { CSSProperties, PropsWithChildren } from 'react';
 import { Button } from './common';
+import { FullWidthProps } from './common/Button';
 
 interface Props {
   position: CSSProperties['position'];
-  buttonProps?: ComponentPropsWithoutRef<typeof Button>;
+  buttonProps?: FullWidthProps;
   style?: CSSProperties;
 }
 
