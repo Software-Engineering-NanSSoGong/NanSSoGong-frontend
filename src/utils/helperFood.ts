@@ -119,7 +119,7 @@ export function getTotalPrice(myBagState: MyBag[], foodList: FoodWithQuantity[])
     (acc, item) =>
       acc +
       getBasicDinnerPrice(item.dinner, foodList) +
-      item.selectedStyle.styleSellPrice +
+      item.selectedStyle?.styleSellPrice +
       item.addedFoodInfos.reduce(
         (acc2, food) =>
           acc2 + food.price * (food.quantity - getBasicFoodCountInDinner(item.dinner, food)),
