@@ -140,16 +140,19 @@ export const getPriceAfterSale = (totalPrice: number, saleRate: number): number 
   return totalPrice * ((100 - saleRate) / 100);
 };
 
+type Sign = 'plus' | 'minus';
 /**
  * changeFood 정보를 가지고 { "foodId": "foodQuantity" }와 같은 오브젝트를 만들어 주는 함수
+ * sign에 따라서 +로 할 지, -로 할 지 결정 된다.
  * @param foodInfos changeFoodInfo
+ * @param sign string (plus면 양수, minus면 음수)
  * @returns Record<foodId, foodQuantity>
  */
-export const transformNameWithQuantity = (foodInfos: ChangeFoodInfo[]) => {
+export const transformNameWithQuantity = (foodInfos: ChangeFoodInfo[], sign: Sign = 'plus') => {
   return foodInfos.reduce(
     (acc, food) => ({
       ...acc,
-      [food.foodId]: food.quantity,
+      [food.foodId]: sign === 'plus' ? food.quantity : -food.quantity,
     }),
     {},
   );

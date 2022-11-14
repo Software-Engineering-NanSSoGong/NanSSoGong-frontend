@@ -25,7 +25,7 @@ const transformToNameWithInfoObject = (foodList: FoodWithQuantity[], dinner: Din
       [item.foodName]: {
         ...item,
         foodQuantity:
-          foodIndex === -1 ? 0 : dinner.dinnerFoodInfoResponseList[foodIndex].foodQuantity || 1,
+          foodIndex === -1 ? 0 : dinner.dinnerFoodInfoResponseList[foodIndex].foodQuantity,
       },
     };
   }, {});
