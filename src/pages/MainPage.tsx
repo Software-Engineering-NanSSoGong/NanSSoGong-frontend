@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { useEffect, useRef, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import { Dinner } from '../@types';
 import { DinnerService } from '../api';
 import {
@@ -11,14 +12,17 @@ import {
   Typography,
 } from '../components';
 import usePagination from '../hooks/usePagination';
+import { dinnerNameState } from '../stores';
 import { theme } from '../styles';
 
 function MainPage() {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const dinnerNameList = useRecoilValue(dinnerNameState);
   const [transcript, setTranscript] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [totalCount, setTotalCount] = useState<number>(0);
   const [dinnerList, setDinnerList] = useState<Dinner[]>([]);
-  const [searchParams] = useSearchParams();
   const topContainer = useRef<HTMLDivElement>(null);
   const page = searchParams.get('page') || 0;
   const size = searchParams.get('size') || 10;
@@ -43,8 +47,17 @@ function MainPage() {
   }, [dinnerList]);
 
   useEffect(() => {
-    console.log(transcript);
-  }, [transcript]);
+    const dinnerIndex = dinnerNameList.findIndex((dinner) => dinner.name === transcript);
+    if (dinnerIndex === -1 && transcript !== '') {
+      // 찾지 못했을 때
+      alert('해당 디너가 없습니다.');
+      setTranscript('');
+    } else if (dinnerIndex > 0) {
+      console.log(dinnerNameList[dinnerIndex]);
+      alert('해당 디너 페이지로 넘어갑니다.');
+      navigate(`/item/${dinnerNameList[dinnerIndex].id}`);
+    }
+  }, [dinnerNameList, navigate, transcript]);
 
   return (
     <Wrapper>
