@@ -99,6 +99,7 @@ function ItemDetailPage() {
               marginLeft: '300px',
               width: 'calc(100% - 300px)',
             }}
+            disabled={Object.values(foodState).every((food) => food.foodQuantity === 0)}
           >
             <Typography type='h3' textAlign='center'>
               주문하기
