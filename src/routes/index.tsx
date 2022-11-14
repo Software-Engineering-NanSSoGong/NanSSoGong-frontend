@@ -34,18 +34,18 @@ function Router() {
     // style, food initial
     (async () => {
       const styles = await StyleService.getList();
-      setStyleList(styles.content);
       const foods = await FoodService.getList({ page: 0, size: 200 });
-      const foodList = foods.content.map((food) => ({ ...food, foodQuantity: 0 }));
-      setFoodState(foodList);
       const dinners = await DinnerService.getDinnerNameWithIdList();
+      const foodList = foods.content.map((food) => ({ ...food, foodQuantity: 0 }));
       const dinnerList = dinners.dinnerNameAndIdList.map((dinner) => {
         const [name, id] = dinner.split('/');
         return { name, id: Number(id) };
       });
+      setStyleList(styles.content);
+      setFoodState(foodList);
       setDinnerList(dinnerList);
     })();
-  });
+  }, [setDinnerList, setFoodState, setStyleList]);
 
   return (
     <Routes>

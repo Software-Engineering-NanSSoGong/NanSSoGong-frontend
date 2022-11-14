@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useCallback } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import { useDebouncedEffect } from '../hooks';
 import { theme } from '../styles';
 import ClickableIcon from './ClickableIcon';
 import { Typography } from './common';
@@ -13,19 +14,26 @@ function ClickableSpeechIcon({ setValue }: Props) {
   const { transcript, listening, browserSupportsSpeechRecognition, resetTranscript } =
     useSpeechRecognition();
 
-  if (!browserSupportsSpeechRecognition) {
-    return <span>Browser doesn`t support speech recognition.</span>;
-  }
+  useDebouncedEffect(
+    () => {
+      setValue(transcript);
+    },
+    [setValue, transcript],
+    2000,
+  );
 
-  const handleClickSpeechIcon = () => {
+  const handleClickSpeechIcon = useCallback(() => {
     if (listening) {
       SpeechRecognition.stopListening();
-      setValue(transcript);
       resetTranscript();
     } else {
       SpeechRecognition.startListening({ continuous: true, language: 'ko' });
     }
-  };
+  }, [listening, resetTranscript]);
+
+  if (!browserSupportsSpeechRecognition) {
+    return <span>Browser doesn`t support speech recognition.</span>;
+  }
 
   return (
     <Wrapper>

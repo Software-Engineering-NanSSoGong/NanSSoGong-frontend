@@ -47,13 +47,12 @@ function MainPage() {
   }, [dinnerList]);
 
   useEffect(() => {
-    const dinnerIndex = dinnerNameList.findIndex((dinner) => dinner.name === transcript);
+    const finalTranscript = transcript.split(' ').join('');
+    const dinnerIndex = dinnerNameList.findIndex((dinner) => dinner.name === finalTranscript);
     if (dinnerIndex === -1 && transcript !== '') {
       // 찾지 못했을 때
       alert('해당 디너가 없습니다.');
-      setTranscript('');
-    } else if (dinnerIndex > 0) {
-      console.log(dinnerNameList[dinnerIndex]);
+    } else if (dinnerIndex >= 0) {
       alert('해당 디너 페이지로 넘어갑니다.');
       navigate(`/item/${dinnerNameList[dinnerIndex].id}`);
     }
