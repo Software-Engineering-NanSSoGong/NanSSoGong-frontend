@@ -18,3 +18,4 @@ export { default as OrderConfirmBox } from './OrderConfirmBox';
 export { default as PriceBox } from './PriceBox';
 export { default as EmployeeHistoryOrderCard } from './EmployeeHistoryOrderCard';
 export { default as ChangeOrderStatusButton } from './ChangeOrderStatusButton';
+export { default as ClickableSpeechIcon } from './ClickableSpeechIcon';

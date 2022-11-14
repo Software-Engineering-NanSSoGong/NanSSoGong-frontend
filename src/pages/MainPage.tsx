@@ -3,11 +3,18 @@ import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Dinner } from '../@types';
 import { DinnerService } from '../api';
-import { ClickableDinnerCard, PageNavigation, SideMenuList, TitleWithLine } from '../components';
+import {
+  ClickableDinnerCard,
+  PageNavigation,
+  SideMenuList,
+  TitleWithLine,
+  Typography,
+} from '../components';
 import usePagination from '../hooks/usePagination';
 import { theme } from '../styles';
 
 function MainPage() {
+  const [transcript, setTranscript] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [totalCount, setTotalCount] = useState<number>(0);
   const [dinnerList, setDinnerList] = useState<Dinner[]>([]);
@@ -35,6 +42,10 @@ function MainPage() {
     topContainer.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
   }, [dinnerList]);
 
+  useEffect(() => {
+    console.log(transcript);
+  }, [transcript]);
+
   return (
     <Wrapper>
       <SideMenuList />
@@ -46,12 +57,21 @@ function MainPage() {
         ) : (
           <>
             <div ref={topContainer} />
+
+            <TranscriptLine>
+              {transcript !== '' && (
+                <Transcript type='h3' textAlign='end'>
+                  음성: {transcript}
+                </Transcript>
+              )}
+            </TranscriptLine>
             <TitleWithLine
-              type='icon'
+              type='mic-icon'
               title='메뉴'
               titleFontType='h1'
               titleColor={theme.colors.text.bold}
               borderColor={theme.palette.gray50}
+              setValue={setTranscript}
             />
             <DinnerList>
               {dinnerList?.map((dinner) => (
@@ -95,6 +115,15 @@ const LoadingContainer = styled.div`
 const LoadingGIF = styled.img`
   max-width: 50%;
   height: 100%;
+`;
+
+const TranscriptLine = styled.section`
+  width: 100%;
+  min-height: 50px;
+`;
+
+const Transcript = styled(Typography)`
+  width: 100%;
 `;
 
 export default MainPage;
