@@ -111,4 +111,6 @@ export interface Order {
     dinnerId: number;
     foodIdAndDifference: Record<string, number>;
   }[];
+  name?: string;
+  cardNumber?: string;
 }

@@ -14,7 +14,7 @@ import {
   Typography,
 } from '../components';
 import { theme } from '../styles';
-import { isAuth, myBagSelector } from '../stores';
+import { isAuth as RecoilIsAuth, myBagSelector, userState } from '../stores';
 import { getPriceAfterSale, getTotalPrice, storage, transformNameWithQuantity } from '../utils';
 import { foodState } from '../stores/Food';
 import { useEffect, useState } from 'react';
@@ -24,9 +24,10 @@ import { ClientService, OrderService } from '../api';
 
 function OrderPage() {
   const navigate = useNavigate();
-  const me = useRecoilValue(isAuth);
+  const isAuth = useRecoilValue(RecoilIsAuth);
   const foodList = useRecoilValue(foodState);
   const [myBagState, setMyBagState] = useRecoilState(myBagSelector);
+  const [me, setMe] = useRecoilState(userState);
   const totalPrice = getTotalPrice(myBagState, foodList);
   const [grade, setGrade] = useState<GRADE>('BRONZE');
   const [ordererName, setOrdererName] = useState<string>('');
@@ -39,8 +40,9 @@ function OrderPage() {
   });
 
   const handleClickModalConfirmButton = async () => {
-    try {
-      const res = await OrderService.orderClient({
+    let res = { uuid: '' };
+    if (me.memberType === 'loginClient') {
+      res = await OrderService.orderClient({
         address,
         totalPriceAfterSale: getPriceAfterSale(totalPrice, GRADE_INFO[grade].saleRate),
         orderSheetCreateRequestList: myBagState.map((myBag) => ({
@@ -52,14 +54,28 @@ function OrderPage() {
           },
         })),
       });
-      if (res?.hasOwnProperty('orderId')) {
-        storage.removeAll();
-        setMyBagState([]);
-        alert('성공적으로 구매했습니다.');
-        navigate('/main');
-      }
-    } catch (err) {
-      console.error(err);
+    } else if (me.memberType === 'guest') {
+      res = await OrderService.orderGuest({
+        address,
+        totalPriceAfterSale: getPriceAfterSale(totalPrice, GRADE_INFO[grade].saleRate),
+        orderSheetCreateRequestList: myBagState.map((myBag) => ({
+          styleId: myBag.selectedStyle.styleId,
+          dinnerId: myBag.dinner.dinnerId,
+          foodIdAndDifference: {
+            ...transformNameWithQuantity(myBag.addedFoodInfos),
+            ...transformNameWithQuantity(myBag.reducedFoodInfos, 'minus'),
+          },
+        })),
+        name: ordererName,
+        cardNumber: `${cardNumber.card1}${cardNumber.card2}${cardNumber.card3}${cardNumber.card4}`,
+      });
+    }
+    if (res?.hasOwnProperty('orderId')) {
+      storage.removeAll();
+      setMyBagState([]);
+      navigate('/main');
+      alert('성공적으로 구매했습니다.');
+      setMe((prev) => ({ ...prev, uuid: String(res.uuid) }));
     }
   };
 
@@ -75,7 +91,7 @@ function OrderPage() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await ClientService.getClientInfo({ id: me.id as number });
+        const res = await ClientService.getClientInfo({ id: isAuth.id as number });
         if (!res.hasOwnProperty('exceptionType')) {
           setCardNumber({
             card1: Number(res.cardNumber.slice(0, 4)),
@@ -91,7 +107,7 @@ function OrderPage() {
         console.error(err);
       }
     })();
-  }, [me]);
+  }, [isAuth]);
 
   return (
     <Wrapper>
