@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { PropsWithChildren } from 'react';
+import useDetectModalKeyPress from '../../hooks/useDetectModalKeyPress';
 import { theme } from '../../styles';
 import { Typography } from '../common';
 import { ButtonHierarchy } from '../common/Button';
@@ -19,9 +20,12 @@ function AskModal({
   onClickCancel,
   onClickConfirm,
 }: PropsWithChildren<Props>) {
+  useDetectModalKeyPress({ onClickConfirm });
+
   return (
     <Wrapper>
       <Spacer>{children}</Spacer>
+
       <ModalBottomButtonSection>
         <ModalTriggerBottomButton
           modalType='close'
