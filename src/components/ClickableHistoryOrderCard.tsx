@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { ButtonHierarchy } from '../components/common/Button';
-import { OrderSheet, OrderStatus } from '../@types';
+import { OrderSheet, OrderStatus, History } from '../@types';
 import { theme } from '../styles';
 import { Typography } from './common';
 import Chip from './common/Chip';
@@ -9,7 +9,8 @@ import { convertToChipTypeFromOrderStatus, formatDateToYYYYMMDD } from '../utils
 import { useSetRecoilState } from 'recoil';
 import { changeFoodState } from '../stores';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { OrderService } from '../api';
 
 interface Props {
   orderStatus: OrderStatus;
@@ -17,6 +18,7 @@ interface Props {
   address: string;
   date: string;
   orderSheetResponseList: OrderSheet[];
+  setHistories: Dispatch<SetStateAction<History[]>>;
 }
 
 function ClickableHistoryOrderCard({
@@ -25,6 +27,7 @@ function ClickableHistoryOrderCard({
   address,
   date,
   orderSheetResponseList,
+  setHistories,
 }: Props) {
   const navigate = useNavigate();
   const setChangeFoodState = useSetRecoilState(changeFoodState);
@@ -51,6 +54,17 @@ function ClickableHistoryOrderCard({
       });
       navigate(`/modify/${changeOrderInfo.dinnerId}`);
     }
+  };
+
+  const handleClickModalDisproveButton = async () => {
+    setHistories((prev) => {
+      const nextHistories = [...prev];
+      const willUpdateIndex = nextHistories.findIndex((history) => history.orderId === orderId);
+      nextHistories[willUpdateIndex].orderStatus = 'CANCEL';
+      return nextHistories;
+    });
+    await OrderService.changeOrderStatus({ orderId, orderStatus: 'CANCEL' });
+    alert('주문 취소가 완료되었습니다.');
   };
 
   return (
@@ -127,13 +141,18 @@ function ClickableHistoryOrderCard({
         </Modal.triggerButton>
       }
       modalNode={
-        <Modal.askModal onClickConfirm={handleClickModalConfirmButton}>
+        <Modal.choice3Modal
+          disproveMsg='주문 취소'
+          confirmMsg='주문 변경'
+          onClickDisprove={handleClickModalDisproveButton}
+          onClickConfirm={handleClickModalConfirmButton}
+        >
           <ModalBody>
             <Typography type='h4' color={theme.colors.text.dark} textAlign='center'>
               해당 주문을 수정하시겠습니까?
             </Typography>
           </ModalBody>
-        </Modal.askModal>
+        </Modal.choice3Modal>
       }
     />
   );

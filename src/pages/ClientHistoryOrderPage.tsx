@@ -33,6 +33,7 @@ function ClientHistoryOrderPage() {
                 orderSheetResponseList={history.orderSheetResponseList}
                 date={history.orderTime}
                 address={`${history.address.city} ${history.address.street} ${history.address.zipcode}`}
+                setHistories={setHistories}
               />
             ))
           ) : (
