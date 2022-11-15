@@ -49,6 +49,11 @@ function LoginPage() {
               type='password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              onKeyUp={(e) => {
+                if (e.key === 'Enter') {
+                  handleClickLoginButton();
+                }
+              }}
             />
           </Lines>
           <Lines>

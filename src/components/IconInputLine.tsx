@@ -7,13 +7,14 @@ interface Props {
   value: string;
   type?: React.HTMLInputTypeAttribute;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyUp?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-function IconInputLine({ icon, value, type = 'text', onChange }: Props) {
+function IconInputLine({ icon, value, type = 'text', onChange, onKeyUp }: Props) {
   return (
     <Wrapper>
       <IconWrapper type={icon} color={'FFFFFF'} />
-      <Input value={value} onChange={onChange} type={type} />
+      <Input value={value} onChange={onChange} type={type} onKeyUp={onKeyUp} />
     </Wrapper>
   );
 }
