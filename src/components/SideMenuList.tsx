@@ -10,7 +10,7 @@ import { ButtonHierarchy } from './common/Button';
 
 function SideMenuList() {
   const navigate = useNavigate();
-  const isAuth = useRecoilValue(RecoilIsAuth);
+  const me = useRecoilValue(RecoilIsAuth);
 
   return (
     <SideMenu>
@@ -33,7 +33,7 @@ function SideMenuList() {
               주문 내역
             </Typography>
           </ButtonWrapper>
-          {isAuth && (
+          {me.isLogin && (
             <ButtonWrapper
               fullWidth
               borderRadius={10}
@@ -59,7 +59,7 @@ function SideMenuList() {
             </Typography>
           </ButtonWrapper>
 
-          {isAuth ? (
+          {me.isLogin ? (
             <ButtonWrapper
               fullWidth
               borderRadius={10}
