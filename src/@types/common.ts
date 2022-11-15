@@ -114,3 +114,10 @@ export interface Order {
   name?: string;
   cardNumber?: string;
 }
+
+export interface Ingredient {
+  ingredientId: number;
+  ingredientName: '소고기0';
+  stockQuantity: number;
+  ingredientRecipeInfoList: (Pick<Food, 'foodId' | 'foodName'> & { ingredientQuantity: number })[];
+}
