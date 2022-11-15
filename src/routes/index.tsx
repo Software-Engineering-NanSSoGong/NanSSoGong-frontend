@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
+import { DinnerService } from '../api';
 import FoodService from '../api/FoodService';
 import StyleService from '../api/StyleService';
 import {
@@ -19,6 +20,7 @@ import {
   ManageTimePage,
 } from '../pages';
 import ToastTestPage from '../pages/ToastTestPage';
+import { dinnerNameState } from '../stores';
 import { foodState } from '../stores/Food';
 import { styleState } from '../stores/Style';
 import RequiredAuthGuard from './RequiredAuthGuard';
@@ -26,17 +28,24 @@ import RequiredAuthGuard from './RequiredAuthGuard';
 function Router() {
   const setStyleList = useSetRecoilState(styleState);
   const setFoodState = useSetRecoilState(foodState);
+  const setDinnerList = useSetRecoilState(dinnerNameState);
 
   React.useEffect(() => {
     // style, food initial
     (async () => {
       const styles = await StyleService.getList();
-      setStyleList(styles.content);
       const foods = await FoodService.getList({ page: 0, size: 200 });
+      const dinners = await DinnerService.getDinnerNameWithIdList();
       const foodList = foods.content.map((food) => ({ ...food, foodQuantity: 0 }));
+      const dinnerList = dinners.dinnerNameAndIdList.map((dinner) => {
+        const [name, id] = dinner.split('/');
+        return { name, id: Number(id) };
+      });
+      setStyleList(styles.content);
       setFoodState(foodList);
+      setDinnerList(dinnerList);
     })();
-  });
+  }, [setDinnerList, setFoodState, setStyleList]);
 
   return (
     <Routes>

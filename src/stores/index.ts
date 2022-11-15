@@ -4,3 +4,4 @@ export * from './ChangeFood';
 export * from './Food';
 export * from './SignUp';
 export * from './Style';
+export * from './DinnerNameList';

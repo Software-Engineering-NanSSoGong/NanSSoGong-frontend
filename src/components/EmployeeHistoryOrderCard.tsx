@@ -71,11 +71,13 @@ function EmployeeHistoryOrderCard({
                   </Typography>
                 </OrderChangeLine>
               </OrderChangeList>
-              <ChangeOrderStatusButton
-                status={status}
-                orderId={orderId}
-                setHistories={setHistories}
-              />
+              {index === 0 && (
+                <ChangeOrderStatusButton
+                  status={status}
+                  orderId={orderId}
+                  setHistories={setHistories}
+                />
+              )}
             </ButtonWithOrderChangeList>
             <BetweenAlignLine>
               <Typography type='body4'>{address}</Typography>
@@ -94,6 +96,10 @@ const Wrapper = styled.section`
   box-sizing: border-box;
   padding: 24px;
   border-radius: 4px;
+
+  & > div:not(:nth-of-type(1)) {
+    padding-top: 32px;
+  }
 `;
 
 const BetweenAlignLine = styled.span`

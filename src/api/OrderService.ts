@@ -41,7 +41,7 @@ class OrderService extends APIBase {
 
   public getList({ page, size }: BasePageRequest): Promise<ResponseOrderHistoryList> {
     return this.baseHTTP
-      .get(`list?page=${page}&size=${size}`)
+      .get(`list?page=${page}&size=${size}&sort=orderTime,desc`)
       .then(APIBase._handleResponse)
       .catch(APIBase._handleError);
   }
