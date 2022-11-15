@@ -9,3 +9,4 @@ export { default as OrderPage } from './OrderPage';
 export { default as ManageOrderPage } from './ManageOrderPage';
 export { default as ModifyItemDetailPage } from './ModifyItemDetailPage';
 export { default as ManageTimePage } from './ManageTimePage';
+export { default as ManageIngredientPage } from './ManageIngredientPage';

@@ -18,6 +18,7 @@ import {
   ManageOrderPage,
   ModifyItemDetailPage,
   ManageTimePage,
+  ManageIngredientPage,
 } from '../pages';
 import ToastTestPage from '../pages/ToastTestPage';
 import { dinnerNameState } from '../stores';
@@ -63,6 +64,7 @@ function Router() {
       <Route path='/order' element={<OrderPage />} />
       <Route path='/manage-order' element={<ManageOrderPage />} />
       <Route path='/manage-time' element={<ManageTimePage />} />
+      <Route path='/manage-ingredient' element={<ManageIngredientPage />} />
       {/* 유저만 갈 수 있는 페이지 example: 내정보페이지 */}
       <Route element={<RequiredAuthGuard />}>
         <Route path='/user' element={<MainPage />} />
