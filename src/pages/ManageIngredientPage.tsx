@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Ingredient } from '../@types';
 import { IngredientService } from '../api';
 import { IngredientBox, PageNavigation, SideMenuListWithEmployee, Typography } from '../components';
-import usePagination from '../hooks/usePagination';
+import { usePagination } from '../hooks';
 import { theme } from '../styles';
 
 function ManageIngredientPage() {
