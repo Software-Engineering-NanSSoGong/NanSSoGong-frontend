@@ -1,11 +1,10 @@
 import styled from '@emotion/styled';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-// import { isAuth } from '../stores';
+import { isAuth } from '../stores';
 import { Address, Card } from '../@types';
 import { STRING_MAX_LENGTH } from '../components/LabelWithMultipleInput';
-import { signUpState as RecoilSignUpState } from '../stores/SignUp';
 import { Button, LabelWithMultipleInput, TitleWithLine, Typography } from '../components';
 import { ButtonHierarchy } from '../components/common/Button';
 import { theme } from '../styles';
@@ -13,7 +12,7 @@ import { ClientService } from '../api';
 
 function ProfilePage() {
   const navigate = useNavigate();
-  const signUpState = useRecoilValue(RecoilSignUpState);
+  const me = useRecoilValue(isAuth);
   const [address, setAddress] = React.useState<Address>({ city: '', street: '', zipcode: '' });
   const [cardNumber, setCardNumber] = React.useState<Card>({
     card1: null,
@@ -37,18 +36,44 @@ function ProfilePage() {
   //   navigate('/main');
   // };
 
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await ClientService.getClientInfo({ id: me.id as number });
+        if (!res.hasOwnProperty('exceptionType')) {
+          setCardNumber({
+            card1: Number(res.cardNumber.slice(0, 4)),
+            card2: Number(res.cardNumber.slice(4, 8)),
+            card3: Number(res.cardNumber.slice(8, 12)),
+            card4: Number(res.cardNumber.slice(12)),
+          });
+          setAddress(res.address);
+          // setAccept(res.personalInformationCollectionAgreement);
+          // setGrade(res.clientGrade);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  }, [me]);
+
   const handleClickButton = async () => {
     const concatCardNumber = `${cardNumber.card1}${cardNumber.card2}${cardNumber.card3}${cardNumber.card4}`;
     try {
-      const res = await ClientService.signUp({
-        ...signUpState,
+      const res = await ClientService.modifyCientInfo({
+        id: me.id as number,
         personalInformationCollectionAgreement: accept,
         address,
         cardNumber: concatCardNumber,
       });
+
+      // if (res?.id) {
+      //   navigate('/main');
+      //   alert('개인정보가 수정되었습니다');
+      // }
       if (res?.id) {
         navigate('/main');
-        alert('회원가입이 완료되었습니다.');
+        alert('개인정보가 수정되었습니다');
       }
     } catch (err) {
       console.error(err);
@@ -90,7 +115,7 @@ function ProfilePage() {
               handleChangeInput={handleChangeMultipleInput}
             />
 
-            <Typography type='h5' color={theme.palette.gray400} textAlign='left'>
+            <Typography type='h4' color={theme.palette.gray400} textAlign='left'>
               개인정보 이용 동의
             </Typography>
             <AcceptButton

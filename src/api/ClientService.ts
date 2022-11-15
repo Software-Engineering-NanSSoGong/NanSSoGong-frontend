@@ -23,9 +23,14 @@ class ClientService extends APIBase {
       .catch(APIBase._handleError);
   }
 
-  public modifyCientInfo({ id, orderSheetUpdateRequestList }: UpdateClientInfo) {
+  public modifyCientInfo({
+    id,
+    personalInformationCollectionAgreement,
+    cardNumber,
+    address,
+  }: UpdateClientInfo) {
     return this.baseHTTP
-      .put(`${id}`, { orderSheetUpdateRequestList })
+      .put(`${id}`, { personalInformationCollectionAgreement, cardNumber, address })
       .then(APIBase._handleResponse)
       .catch(APIBase._handleError);
   }
