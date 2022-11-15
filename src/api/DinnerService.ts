@@ -13,6 +13,13 @@ class DinnerService extends APIBase {
       .catch(APIBase._handleError);
   }
 
+  getDinnerNameWithIdList(): Promise<{ dinnerNameAndIdList: string[] }> {
+    return this.baseHTTP
+      .get('list/name-id')
+      .then(APIBase._handleResponse)
+      .catch(APIBase._handleError);
+  }
+
   getDinnerItem({ id }: BaseRequestId): Promise<ResponseDinnerItem> {
     return this.baseHTTP.get(`${id}`).then(APIBase._handleResponse).catch(APIBase._handleError);
   }

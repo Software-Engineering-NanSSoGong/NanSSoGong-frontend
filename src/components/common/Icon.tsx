@@ -36,7 +36,10 @@ function Icon({
   type,
   ...restProps
 }: IconProps): React.FunctionComponentElement<React.SVGProps<SVGSVGElement>> {
-  return React.createElement(ICONS[type], { ...restProps });
+  return React.createElement(ICONS[type], {
+    style: { display: 'flex', alignItems: 'center' },
+    ...restProps,
+  });
 }
 
 export default Icon;
