@@ -1,35 +1,58 @@
 import styled from '@emotion/styled';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Address } from '../@types';
-import {
-  Button,
-  IconInputLine,
-  LabelWithMultipleInput,
-  TitleWithLine,
-  Typography,
-} from '../components';
+import { useRecoilValue } from 'recoil';
+// import { isAuth } from '../stores';
+import { Address, Card } from '../@types';
+import { STRING_MAX_LENGTH } from '../components/LabelWithMultipleInput';
+import { signUpState as RecoilSignUpState } from '../stores/SignUp';
+import { Button, LabelWithMultipleInput, TitleWithLine, Typography } from '../components';
 import { ButtonHierarchy } from '../components/common/Button';
 import { theme } from '../styles';
+import { ClientService } from '../api';
 
 function ProfilePage() {
   const navigate = useNavigate();
-  const [nickname, setNickname] = React.useState<string>('');
-  const [address, setAddress] = React.useState<Address>({
-    city: '',
-    street: '',
-    zipcode: '',
+  const signUpState = useRecoilValue(RecoilSignUpState);
+  const [address, setAddress] = React.useState<Address>({ city: '', street: '', zipcode: '' });
+  const [cardNumber, setCardNumber] = React.useState<Card>({
+    card1: null,
+    card2: null,
+    card3: null,
+    card4: null,
   });
   const [accept, setAccept] = React.useState<boolean>(false);
 
   const handleChangeMultipleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setAddress((prev) => ({ ...prev, [name]: value }));
+    const { maxLength, name, value } = e.currentTarget;
+    if (maxLength !== STRING_MAX_LENGTH) {
+      setCardNumber((prev) => ({ ...prev, [name]: value.slice(0, maxLength) }));
+    } else {
+      setAddress((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
-  const handleClickButton = () => {
-    console.log(address);
-    navigate('/main');
+  // const handleClickButton = () => {
+  //   console.log(address);
+  //   navigate('/main');
+  // };
+
+  const handleClickButton = async () => {
+    const concatCardNumber = `${cardNumber.card1}${cardNumber.card2}${cardNumber.card3}${cardNumber.card4}`;
+    try {
+      const res = await ClientService.signUp({
+        ...signUpState,
+        personalInformationCollectionAgreement: accept,
+        address,
+        cardNumber: concatCardNumber,
+      });
+      if (res?.id) {
+        navigate('/main');
+        alert('회원가입이 완료되었습니다.');
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -44,30 +67,26 @@ function ProfilePage() {
             borderColor={theme.palette.black}
           />
           <Lines>
-            <Typography type='h5' color={theme.palette.gray400} textAlign='left'>
-              성명
-            </Typography>
-            <IconInputLine
-              icon='user'
-              value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
+            <LabelWithMultipleInput
+              title='카드 번호'
+              type='number'
+              pattern='\d*'
+              values={[cardNumber.card1, cardNumber.card2, cardNumber.card3, cardNumber.card4]}
+              placeholders={['card1', 'card2', 'card3', 'card4']}
+              labelColor={theme.colors.background}
+              inputBackgroundColor={theme.palette.gray200}
+              inputColor={theme.colors.text.bold}
+              maxLength={4}
+              handleChangeInput={handleChangeMultipleInput}
             />
-            {/* <Typography type='h5' color={theme.palette.gray400} textAlign='left'>
-              주소
-            </Typography>
-            <IconInputLine
-              icon='lock'
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-            /> */}
             <LabelWithMultipleInput
               title='상세 주소'
               type='text'
               values={[address.city, address.street, address.zipcode]}
               placeholders={['city', 'street', 'zipcode']}
-              labelColor={theme.palette.white}
-              inputBackgroundColor={theme.palette.gray50}
-              inputColor={theme.colors.text.dark}
+              labelColor={theme.colors.background}
+              inputBackgroundColor={theme.palette.gray200}
+              inputColor={theme.colors.text.bold}
               handleChangeInput={handleChangeMultipleInput}
             />
 
@@ -92,7 +111,7 @@ function ProfilePage() {
               fullWidth
               style={{ padding: '12px' }}
               onClick={handleClickButton}
-              disabled={nickname === ''}
+              // disabled={nickname === ''}
             >
               <Typography type='h4' color={theme.palette.gray50} textAlign='center'>
                 수정하기

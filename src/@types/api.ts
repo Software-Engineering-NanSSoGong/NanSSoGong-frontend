@@ -86,3 +86,10 @@ export interface ResponseClientInfo {
   address: Address;
   enable: true;
 }
+
+export interface UpdateClientInfo {
+  id : number;
+  personalInformationCollectionAgreement?: boolean;
+  cardNumber?: string;
+  address?: Address;
+}
