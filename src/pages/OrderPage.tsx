@@ -14,7 +14,7 @@ import {
   Typography,
 } from '../components';
 import { theme } from '../styles';
-import { isAuth as RecoilIsAuth, myBagSelector, userState } from '../stores';
+import { myBagSelector, userState } from '../stores';
 import { getPriceAfterSale, getTotalPrice, storage, transformNameWithQuantity } from '../utils';
 import { foodState } from '../stores/Food';
 import { useEffect, useState } from 'react';
@@ -24,7 +24,6 @@ import { ClientService, OrderService } from '../api';
 
 function OrderPage() {
   const navigate = useNavigate();
-  const isAuth = useRecoilValue(RecoilIsAuth);
   const foodList = useRecoilValue(foodState);
   const [myBagState, setMyBagState] = useRecoilState(myBagSelector);
   const [me, setMe] = useRecoilState(userState);
@@ -91,7 +90,7 @@ function OrderPage() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await ClientService.getClientInfo({ id: isAuth.id as number });
+        const res = await ClientService.getClientInfo({ id: me.memberId as number });
         if (!res.hasOwnProperty('exceptionType')) {
           setCardNumber({
             card1: Number(res.cardNumber.slice(0, 4)),
@@ -107,7 +106,7 @@ function OrderPage() {
         console.error(err);
       }
     })();
-  }, [isAuth]);
+  }, [me.memberId]);
 
   return (
     <Wrapper>
