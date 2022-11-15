@@ -44,7 +44,7 @@ class OrderService extends APIBase {
 
   public getGuestHistory({ id }: { id: string }): Promise<History> {
     return this.baseHTTP
-      .get(`guest?uuid=${id}`)
+      .get(`guest/${id}`)
       .then(APIBase._handleResponse)
       .catch(APIBase._handleError);
   }
