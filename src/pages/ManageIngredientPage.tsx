@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Ingredient } from '../@types';
 import { IngredientService } from '../api';
-import { PageNavigation, SideMenuListWithEmployee, Typography } from '../components';
+import { IngredientBox, PageNavigation, SideMenuListWithEmployee, Typography } from '../components';
 import usePagination from '../hooks/usePagination';
 import { theme } from '../styles';
 
@@ -49,14 +49,15 @@ function ManageIngredientPage() {
         ) : (
           <>
             <div ref={topContainer} />
-            {ingredientList.map((ingredient) => (
-              <div
-                key={ingredient.ingredientId}
-                onClick={() => navigate(`/ingredient/${ingredient.ingredientId}`)}
-              >
-                {ingredient.ingredientName} + {ingredient.ingredientId}
-              </div>
-            ))}
+            <IngredientList>
+              {ingredientList.map((ingredient) => (
+                <IngredientBox
+                  key={ingredient.ingredientId}
+                  name={ingredient.ingredientName}
+                  onClick={() => navigate(`/ingredient/${ingredient.ingredientId}`)}
+                />
+              ))}
+            </IngredientList>
             <PageNavigation pageOptions={pageOptions} handleChangePage={handleChangePage} />
           </>
         )}
@@ -81,6 +82,16 @@ const LoadingContainer = styled.div`
 const LoadingGIF = styled.img`
   width: 100%;
   height: 100%;
+`;
+
+const IngredientList = styled.section`
+  width: 100%;
+  height: 100%;
+  margin-block: 72px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  justify-content: space-between;
+  gap: 80px;
 `;
 
 export default ManageIngredientPage;
