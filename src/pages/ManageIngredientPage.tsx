@@ -40,7 +40,7 @@ function ManageIngredientPage() {
       <SideMenuListWithEmployee />
       <Spacer>
         <Typography type='h1' color={theme.colors.text.bold} style={{ marginBottom: 40 }}>
-          재료 수량 관리
+          재료 리스트 관리
         </Typography>
         {isLoading ? (
           <LoadingContainer>
