@@ -5,6 +5,7 @@ import { useDisclosure } from '../../hooks';
 import { theme } from '../../styles';
 import { Portal } from '../common';
 import AskModal from './AskModal';
+import Choice3Modal from './Choice3Modal';
 import ConfirmModal from './ConfirmModal';
 import Context from './Context';
 import ModalTriggerButton from './ModalTriggerButton';
@@ -74,5 +75,6 @@ const ModalNode = styled.section`
 Modal.triggerButton = ModalTriggerButton;
 Modal.askModal = AskModal;
 Modal.confirmModal = ConfirmModal;
+Modal.choice3Modal = Choice3Modal;
 
 export default Modal;

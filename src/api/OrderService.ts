@@ -1,6 +1,5 @@
 import {
   BasePageRequest,
-  BaseRequestId,
   History,
   Order,
   RequestChangeOrderStatus,
@@ -16,7 +15,7 @@ class OrderService extends APIBase {
 
   public getClientHistory({ page, size }: BasePageRequest): Promise<ResponseOrderHistoryList> {
     return this.baseHTTP
-      .get(`client/list?page=${page}size=${size}`)
+      .get(`client/list?page=${page}size=${size}&sort=orderTime,desc`)
       .then(APIBase._handleResponse)
       .catch(APIBase._handleError);
   }
@@ -32,7 +31,18 @@ class OrderService extends APIBase {
       .catch(APIBase._handleError);
   }
 
-  public getGuestHistory({ id }: BaseRequestId): Promise<History> {
+  public orderGuest({ ...orderInfo }: Order) {
+    return this.baseHTTP
+      .post('guest', {
+        ...orderInfo,
+        orderStatus: 'ORDERED',
+        reservedTime: new Date().toISOString(),
+      })
+      .then(APIBase._handleResponse)
+      .catch(APIBase._handleError);
+  }
+
+  public getGuestHistory({ id }: { id: string }): Promise<History> {
     return this.baseHTTP
       .get(`guest/${id}`)
       .then(APIBase._handleResponse)

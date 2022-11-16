@@ -24,10 +24,10 @@ function SideMenuListWithEmployee() {
             fullWidth
             borderRadius={10}
             hierarchy={ButtonHierarchy.Warning}
-            onClick={() => navigate('')}
+            onClick={() => navigate('/manage-ingredient')}
           >
             <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
-              매장 관리
+              재료 수량 관리
             </Typography>
           </ButtonWrapper>
           <ButtonWrapper

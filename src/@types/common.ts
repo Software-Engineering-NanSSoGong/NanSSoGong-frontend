@@ -111,4 +111,13 @@ export interface Order {
     dinnerId: number;
     foodIdAndDifference: Record<string, number>;
   }[];
+  name?: string;
+  cardNumber?: string;
+}
+
+export interface Ingredient {
+  ingredientId: number;
+  ingredientName: string;
+  stockQuantity: number;
+  ingredientRecipeInfoList: (Pick<Food, 'foodId' | 'foodName'> & { ingredientQuantity: number })[];
 }

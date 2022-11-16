@@ -49,7 +49,18 @@ function LabelWithMultipleInput({
               value={values[idx] ?? ''}
               inputBackgroundColor={inputBackgroundColor}
               inputColor={inputColor}
-              onChange={handleChangeInput}
+              onChange={(e) => {
+                handleChangeInput(e);
+                if (e.target.value.length === maxLength && idx !== placeholders.length - 1) {
+                  const nextfield = document.querySelector(
+                    `input[name=${placeholders[idx + 1]}]`,
+                  ) as HTMLInputElement;
+
+                  if (nextfield !== null) {
+                    nextfield.focus();
+                  }
+                }
+              }}
             />
           ))}
         </Inputs>
@@ -76,9 +87,7 @@ const Input = styled.input<InputStyleProps>`
   padding-left: 16px;
   color: ${(props) => props.inputColor};
   font-size: 16px;
-  &:focus {
-    outline: none;
-  }
+
   ::placeholder {
     color: ${theme.palette.gray100};
   }

@@ -13,6 +13,7 @@ function SignUpEmailPage() {
   const [email, setEmail] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
   const [passwordAgain, setPasswordAgain] = React.useState<string>('');
+  const [isAlreadyUsedEmail, setIsAlreadyUsedEmail] = React.useState<boolean>(true);
   const [signUpState, setSignUpState] = useRecoilState(RecoilSignUpState);
   const resetSignUpState = useResetRecoilState(RecoilSignUpState);
 
@@ -27,6 +28,7 @@ function SignUpEmailPage() {
         alert('중복된 아이디입니다');
       } else {
         alert('사용 가능한 아이디입니다.');
+        setIsAlreadyUsedEmail(false);
       }
     } catch (err) {
       console.error(err);
@@ -71,17 +73,19 @@ function SignUpEmailPage() {
             <Typography type='h5' color={theme.palette.gray400} textAlign='left'>
               아이디
             </Typography>
-            <IconInputLine icon='user' value={email} onChange={(e) => setEmail(e.target.value)} />
-            <CheckButton onClick={handleValidIdButton}>
-              <Typography
-                type='h5'
-                color={theme.palette.white}
-                textAlign='center'
-                style={{ padding: '12px' }}
-              >
-                중복확인
-              </Typography>
-            </CheckButton>
+            <BetweenLine>
+              <IconInputLine icon='user' value={email} onChange={(e) => setEmail(e.target.value)} />
+              <CheckButton onClick={handleValidIdButton}>
+                <Typography
+                  type='h5'
+                  color={theme.palette.white}
+                  textAlign='center'
+                  style={{ padding: '12px' }}
+                >
+                  중복확인
+                </Typography>
+              </CheckButton>
+            </BetweenLine>
             <Typography type='h5' color={theme.palette.gray400} textAlign='left'>
               비밀번호
             </Typography>
@@ -115,7 +119,8 @@ function SignUpEmailPage() {
                 email === '' ||
                 password === '' ||
                 passwordAgain === '' ||
-                passwordAgain !== password
+                passwordAgain !== password ||
+                isAlreadyUsedEmail
               }
             >
               <Typography type='h4' color={theme.palette.gray50} textAlign='center'>
@@ -142,9 +147,11 @@ const SignupBoxLayout = styled.section`
   background-color: ${theme.palette.gray50};
   border-radius: 16px;
 `;
+
 const BoxLayout = styled.div`
   margin-inline: 72px;
 `;
+
 const Title = styled(TitleWithLine)`
   padding-top: 56px;
 `;
@@ -162,8 +169,16 @@ const Lines = styled.section`
   flex-direction: column;
   gap: 30px;
 `;
+
 const CheckButton = styled(Button)`
-  width: 20%;
+  width: 50%;
+`;
+
+const BetweenLine = styled.span`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 80px;
 `;
 
 export default SignUpEmailPage;

@@ -1,4 +1,4 @@
-import { Address, Dinner, Food, History, OrderStatus, Style } from './common';
+import { Address, Dinner, Food, History, Ingredient, OrderStatus, Style } from './common';
 import { GRADE } from './User';
 
 export interface BaseAPIResponse<T> {
@@ -88,8 +88,10 @@ export interface ResponseClientInfo {
 }
 
 export interface UpdateClientInfo {
-  id : number;
-  personalInformationCollectionAgreement?: boolean;
-  cardNumber?: string;
-  address?: Address;
+  id: number;
+  personalInformationCollectionAgreement?: RequestSignUpInfo['personalInformationCollectionAgreement'];
+  cardNumber?: RequestSignUpInfo['cardNumber'];
+  address?: RequestSignUpInfo['address'];
 }
+// Ingredient Service
+export interface ResponseIngredientList extends BasePageResponse<Ingredient> {}
