@@ -6,6 +6,7 @@ import { ChefService, MemberService, RiderService } from '../../api';
 import { Button, IconInputLine, TitleWithLine, Typography } from '../../components';
 import { signUpState as RecoilSignUpState } from '../../stores/SignUp';
 import { theme } from '../../styles';
+import { emailRegex } from '../../utils';
 
 function SignUpEmailPage() {
   const navigate = useNavigate();
@@ -15,7 +16,9 @@ function SignUpEmailPage() {
   const [passwordAgain, setPasswordAgain] = React.useState<string>('');
   const [isAlreadyUsedEmail, setIsAlreadyUsedEmail] = React.useState<boolean>(true);
   const [signUpState, setSignUpState] = useRecoilState(RecoilSignUpState);
+  const emailInputRef = React.useRef<HTMLInputElement>(null);
   const resetSignUpState = useResetRecoilState(RecoilSignUpState);
+  const isEmailInputFocus = window?.document.activeElement === emailInputRef.current;
 
   const handleValidIdButton = async () => {
     if (email === '') {
@@ -74,7 +77,12 @@ function SignUpEmailPage() {
               아이디
             </Typography>
             <BetweenLine>
-              <IconInputLine icon='user' value={email} onChange={(e) => setEmail(e.target.value)} />
+              <IconInputLine
+                icon='user'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                ref={emailInputRef}
+              />
               <CheckButton onClick={handleValidIdButton}>
                 <Typography
                   type='h5'
@@ -86,6 +94,13 @@ function SignUpEmailPage() {
                 </Typography>
               </CheckButton>
             </BetweenLine>
+            <MinHeightLine>
+              {isEmailInputFocus && !emailRegex.test(email) && (
+                <Typography type='body4' textAlign={'end'} color={theme.colors.primary.red}>
+                  email의 형태로 입력해 주세요.
+                </Typography>
+              )}
+            </MinHeightLine>
             <Typography type='h5' color={theme.palette.gray400} textAlign='left'>
               비밀번호
             </Typography>
@@ -106,9 +121,16 @@ function SignUpEmailPage() {
             />
           </Lines>
 
-          <Typography type='h5' color={theme.palette.coreRed} textAlign='left'>
-            {password !== passwordAgain ? '비밀번호가 다릅니다' : ' '}
-          </Typography>
+          <MinHeightLine>
+            <Typography
+              type='body3'
+              color={theme.palette.coreRed}
+              textAlign='end'
+              style={{ paddingTop: '12px' }}
+            >
+              {password !== passwordAgain ? '비밀번호가 다릅니다' : ' '}
+            </Typography>
+          </MinHeightLine>
           <Lines>
             <Button
               fullWidth
@@ -179,6 +201,10 @@ const BetweenLine = styled.span`
   display: flex;
   justify-content: space-between;
   gap: 80px;
+`;
+
+const MinHeightLine = styled.div`
+  min-height: 52px;
 `;
 
 export default SignUpEmailPage;
