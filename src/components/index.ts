@@ -19,3 +19,4 @@ export { default as PriceBox } from './PriceBox';
 export { default as EmployeeHistoryOrderCard } from './EmployeeHistoryOrderCard';
 export { default as ChangeOrderStatusButton } from './ChangeOrderStatusButton';
 export { default as ClickableSpeechIcon } from './ClickableSpeechIcon';
+export { default as IngredientBox } from './IngredientBox';

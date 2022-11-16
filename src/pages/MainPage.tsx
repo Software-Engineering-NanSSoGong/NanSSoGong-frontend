@@ -11,7 +11,7 @@ import {
   TitleWithLine,
   Typography,
 } from '../components';
-import usePagination from '../hooks/usePagination';
+import { usePagination } from '../hooks';
 import { dinnerNameState } from '../stores';
 import { theme } from '../styles';
 
