@@ -8,7 +8,7 @@ class APIBase {
 
   constructor(url?: string) {
     const baseServerURL = import.meta.env.PROD
-      ? import.meta.env.BASE_SERVER_URL
+      ? import.meta.env.VITE_BASE_SERVER_URL
       : 'http://localhost:8080';
 
     this.baseHTTP = axios.create({

@@ -93,13 +93,15 @@ function ItemDetailPage() {
           <Modal.triggerButton
             modalType='open'
             as={BottomButton}
-            buttonProps={{ disabled: dinner.dinnerQuantity === 0 || selectedStyle === null }}
             style={{
               position: 'fixed',
               marginLeft: '300px',
               width: 'calc(100% - 300px)',
             }}
-            disabled={Object.values(foodState).every((food) => food.foodQuantity === 0)}
+            disabled={
+              Object.values(foodState).every((food) => food.foodQuantity === 0) ||
+              selectedStyle === null
+            }
           >
             <Typography type='h3' textAlign='center'>
               주문하기

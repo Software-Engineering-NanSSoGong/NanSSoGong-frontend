@@ -2,16 +2,18 @@ import { atom, selector } from 'recoil';
 
 export interface LoginedUser {
   memberId: number | null;
-  memberType: 'loginClient' | 'loginChef' | 'loginRider';
+  memberType: 'loginClient' | 'loginChef' | 'loginRider' | 'guest';
   sessionId: string;
+  uuid: string | null;
 }
 
 export const userState = atom<LoginedUser>({
   key: 'user',
   default: {
     memberId: null,
-    memberType: 'loginClient',
+    memberType: 'guest',
     sessionId: '',
+    uuid: null,
   },
 });
 
