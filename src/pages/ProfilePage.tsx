@@ -136,7 +136,7 @@ function ProfilePage() {
               fullWidth
               style={{ padding: '12px' }}
               onClick={handleClickButton}
-              // disabled={nickname === ''}
+              disabled={accept === false}
             >
               <Typography type='h4' color={theme.palette.gray50} textAlign='center'>
                 수정하기
