@@ -38,7 +38,7 @@ function SideMenuList() {
               fullWidth
               borderRadius={10}
               hierarchy={ButtonHierarchy.DarkGray}
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/profile')}
             >
               <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
                 내 정보 수정하기

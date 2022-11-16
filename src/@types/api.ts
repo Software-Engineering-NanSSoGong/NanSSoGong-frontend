@@ -87,5 +87,11 @@ export interface ResponseClientInfo {
   enable: true;
 }
 
+export interface UpdateClientInfo {
+  id: number;
+  personalInformationCollectionAgreement?: RequestSignUpInfo['personalInformationCollectionAgreement'];
+  cardNumber?: RequestSignUpInfo['cardNumber'];
+  address?: RequestSignUpInfo['address'];
+}
 // Ingredient Service
 export interface ResponseIngredientList extends BasePageResponse<Ingredient> {}

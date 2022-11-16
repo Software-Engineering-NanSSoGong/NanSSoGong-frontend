@@ -1,4 +1,4 @@
-import { BaseRequestId, RequestSignUpInfo, ResponseClientInfo } from '../@types';
+import { BaseRequestId, RequestSignUpInfo, ResponseClientInfo, UpdateClientInfo } from '../@types';
 import APIBase from './core';
 
 class ClientService extends APIBase {
@@ -19,6 +19,18 @@ class ClientService extends APIBase {
   public getClientInfo({ id }: Partial<BaseRequestId>): Promise<ResponseClientInfo> {
     return this.baseHTTP
       .get(`${id ? `/${id}` : ''}`)
+      .then(APIBase._handleResponse)
+      .catch(APIBase._handleError);
+  }
+
+  public modifyClientInfo({
+    id,
+    personalInformationCollectionAgreement,
+    cardNumber,
+    address,
+  }: UpdateClientInfo) {
+    return this.baseHTTP
+      .put(`${id}`, { personalInformationCollectionAgreement, cardNumber, address })
       .then(APIBase._handleResponse)
       .catch(APIBase._handleError);
   }
