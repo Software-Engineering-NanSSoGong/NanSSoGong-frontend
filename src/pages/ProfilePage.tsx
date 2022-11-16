@@ -31,11 +31,6 @@ function ProfilePage() {
     }
   };
 
-  // const handleClickButton = () => {
-  //   console.log(address);
-  //   navigate('/main');
-  // };
-
   useEffect(() => {
     (async () => {
       try {
@@ -48,8 +43,6 @@ function ProfilePage() {
             card4: Number(res.cardNumber.slice(12)),
           });
           setAddress(res.address);
-          // setAccept(res.personalInformationCollectionAgreement);
-          // setGrade(res.clientGrade);
         }
       } catch (err) {
         console.error(err);
@@ -60,17 +53,13 @@ function ProfilePage() {
   const handleClickButton = async () => {
     const concatCardNumber = `${cardNumber.card1}${cardNumber.card2}${cardNumber.card3}${cardNumber.card4}`;
     try {
-      const res = await ClientService.modifyCientInfo({
+      const res = await ClientService.modifyClientInfo({
         id: me.id as number,
         personalInformationCollectionAgreement: accept,
         address,
         cardNumber: concatCardNumber,
       });
 
-      // if (res?.id) {
-      //   navigate('/main');
-      //   alert('개인정보가 수정되었습니다');
-      // }
       if (res?.id) {
         navigate('/main');
         alert('개인정보가 수정되었습니다');
@@ -132,12 +121,7 @@ function ProfilePage() {
           </Lines>
 
           <Lines>
-            <Button
-              fullWidth
-              style={{ padding: '12px' }}
-              onClick={handleClickButton}
-              // disabled={nickname === ''}
-            >
+            <Button fullWidth style={{ padding: '12px' }} onClick={handleClickButton}>
               <Typography type='h4' color={theme.palette.gray50} textAlign='center'>
                 수정하기
               </Typography>
