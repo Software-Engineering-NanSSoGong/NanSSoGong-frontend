@@ -1,3 +1,4 @@
+import 'regenerator-runtime/runtime';
 import { Global, ThemeProvider } from '@emotion/react';
 import React from 'react';
 import { theme, globalStyle } from './styles';
