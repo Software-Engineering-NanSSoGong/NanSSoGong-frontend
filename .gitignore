@@ -25,3 +25,5 @@ dist-ssr
 
 # eslint cache
 .eslintcache
+
+.env
