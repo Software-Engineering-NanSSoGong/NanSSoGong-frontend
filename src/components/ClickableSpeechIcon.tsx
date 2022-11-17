@@ -11,8 +11,13 @@ interface Props {
 }
 
 function ClickableSpeechIcon({ setValue }: Props) {
-  const { transcript, listening, browserSupportsSpeechRecognition, resetTranscript } =
-    useSpeechRecognition();
+  const {
+    transcript,
+    listening,
+    browserSupportsSpeechRecognition,
+    resetTranscript,
+    isMicrophoneAvailable,
+  } = useSpeechRecognition();
 
   useDebouncedEffect(
     () => {
@@ -24,14 +29,14 @@ function ClickableSpeechIcon({ setValue }: Props) {
 
   const handleClickSpeechIcon = useCallback(() => {
     if (listening) {
-      SpeechRecognition.stopListening();
+      SpeechRecognition?.stopListening();
       resetTranscript();
     } else {
-      SpeechRecognition.startListening({ continuous: true, language: 'ko' });
+      SpeechRecognition?.startListening({ continuous: true, language: 'ko' });
     }
   }, [listening, resetTranscript]);
 
-  if (!browserSupportsSpeechRecognition) {
+  if (!browserSupportsSpeechRecognition || !isMicrophoneAvailable) {
     return <span>Browser doesn`t support speech recognition.</span>;
   }
 
