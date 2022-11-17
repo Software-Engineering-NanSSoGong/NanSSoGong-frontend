@@ -23,7 +23,7 @@ class ClientService extends APIBase {
       .catch(APIBase._handleError);
   }
 
-  public modifyCientInfo({
+  public modifyClientInfo({
     id,
     personalInformationCollectionAgreement,
     cardNumber,
