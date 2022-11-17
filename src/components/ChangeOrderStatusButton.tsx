@@ -1,7 +1,9 @@
 import styled from '@emotion/styled';
 import { Dispatch, SetStateAction } from 'react';
+import { useRecoilValue } from 'recoil';
 import { History, OrderStatus } from '../@types';
 import { OrderService } from '../api';
+import { userState } from '../stores';
 import { Button, Typography } from './common';
 import { ButtonHierarchy } from './common/Button';
 
@@ -68,6 +70,10 @@ const getNextOrderStatus = (status: OrderStatus): OrderStatus => {
 };
 
 function ChangeOrderStatusButton({ status, orderId, setHistories }: Props) {
+  const me = useRecoilValue(userState);
+  const isRider = me.memberType === 'loginRider';
+  const isChef = me.memberType === 'loginChef';
+
   const handleClickButton = async () => {
     const nextStatus = getNextOrderStatus(status);
     await OrderService.changeOrderStatus({ orderId, orderStatus: nextStatus });
@@ -94,17 +100,27 @@ function ChangeOrderStatusButton({ status, orderId, setHistories }: Props) {
 
   return status === 'ORDERED' || status === 'RESERVED' ? (
     <ButtonList>
-      <Wrapper onClick={handleClickButton}>
+      <Wrapper onClick={handleClickButton} disabled={isRider}>
         <Typography type='body3'>{changeStatusToButtonText(status)}</Typography>
       </Wrapper>
-      <Wrapper hierarchy={ButtonHierarchy.Danger} onClick={handleClickDenyButton}>
+      <Wrapper
+        hierarchy={ButtonHierarchy.Danger}
+        onClick={handleClickDenyButton}
+        disabled={isRider}
+      >
         <Typography type='body3'>거절하기</Typography>
       </Wrapper>
     </ButtonList>
   ) : (
     <Wrapper
       onClick={handleClickButton}
-      disabled={status === 'CANCEL' || status === 'DENIED' || status === 'DELIVERED'}
+      disabled={
+        status === 'CANCEL' ||
+        status === 'DENIED' ||
+        status === 'DELIVERED' ||
+        (isChef && status === 'COOKED') ||
+        (isChef && status === 'DELIVERING')
+      }
       hierarchy={changeStatusToButtonHierarchy(status)}
     >
       <Typography type='body3'>{changeStatusToButtonText(status)}</Typography>
