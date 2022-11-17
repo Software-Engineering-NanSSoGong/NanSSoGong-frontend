@@ -12,6 +12,7 @@ interface Props {
   orderTime: string;
   orderId: number;
   address: string;
+  reservedTime?: Date;
   setHistories: Dispatch<SetStateAction<History[]>>;
 }
 
@@ -21,6 +22,7 @@ function EmployeeHistoryOrderCard({
   orderTime,
   address,
   orderId,
+  reservedTime,
   setHistories,
 }: Props) {
   return (
@@ -38,6 +40,9 @@ function EmployeeHistoryOrderCard({
               <Typography type='h3' color={theme.colors.text.bold}>
                 {history.dinnerName}
               </Typography>
+              {reservedTime && (
+                <Typography type='body4'>예약 시간: {reservedTime.toString()}</Typography>
+              )}
               <Chip
                 label={status}
                 type={convertToChipTypeFromOrderStatus(status)}

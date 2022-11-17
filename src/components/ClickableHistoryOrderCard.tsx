@@ -18,6 +18,7 @@ interface Props {
   address: string;
   date: string;
   orderSheetResponseList: OrderSheet[];
+  reservedTime?: Date;
   setHistories: Dispatch<SetStateAction<History[]>>;
 }
 
@@ -27,6 +28,7 @@ function ClickableHistoryOrderCard({
   address,
   date,
   orderSheetResponseList,
+  reservedTime,
   setHistories,
 }: Props) {
   const navigate = useNavigate();
@@ -99,6 +101,9 @@ function ClickableHistoryOrderCard({
                     <Typography type='h3' color={theme.colors.text.bold}>
                       {history.dinnerName}
                     </Typography>
+                    {reservedTime && (
+                      <Typography type='body4'>예약 시간: {reservedTime.toString()}</Typography>
+                    )}
                     <Chip
                       label={orderStatus}
                       type={convertToChipTypeFromOrderStatus(orderStatus)}
