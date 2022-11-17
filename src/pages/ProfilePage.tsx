@@ -43,6 +43,7 @@ function ProfilePage() {
             card4: Number(res.cardNumber.slice(12)),
           });
           setAddress(res.address);
+          setAccept(res.enable);
         }
       } catch (err) {
         console.error(err);
