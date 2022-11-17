@@ -40,6 +40,16 @@ function SideMenuListWithEmployee() {
               운영 시간 관리
             </Typography>
           </ButtonWrapper>
+          <ButtonWrapper
+            fullWidth
+            borderRadius={10}
+            hierarchy={ButtonHierarchy.DarkGray}
+            onClick={() => navigate('/update-grade')}
+          >
+            <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
+              고객 등급 관리
+            </Typography>
+          </ButtonWrapper>
         </ButtonList>
         {/* 하단 버튼 리스트 */}
         <ButtonList>

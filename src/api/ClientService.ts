@@ -34,6 +34,10 @@ class ClientService extends APIBase {
       .then(APIBase._handleResponse)
       .catch(APIBase._handleError);
   }
+
+  public updateClientGrade() {
+    return this.baseHTTP.patch(`grade`).then(APIBase._handleResponse).catch(APIBase._handleError);
+  }
 }
 
 export default new ClientService();
