@@ -24,19 +24,18 @@ class OrderService extends APIBase {
     return this.baseHTTP
       .post('client', {
         ...orderInfo,
-        orderStatus: 'ORDERED',
-        reservedTime: new Date().toISOString(),
+        reservedTime: orderInfo.reservedTime?.toISOString(),
       })
       .then(APIBase._handleResponse)
       .catch(APIBase._handleError);
   }
 
   public orderGuest({ ...orderInfo }: Order) {
+    console.log(orderInfo);
     return this.baseHTTP
       .post('guest', {
         ...orderInfo,
-        orderStatus: 'ORDERED',
-        reservedTime: new Date().toISOString(),
+        reservedTime: orderInfo.reservedTime?.toISOString(),
       })
       .then(APIBase._handleResponse)
       .catch(APIBase._handleError);
