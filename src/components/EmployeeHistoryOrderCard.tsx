@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { History, OrderSheet, OrderStatus } from '../@types';
+import { OrderService } from '../api';
 import { theme } from '../styles';
 import { convertToChipTypeFromOrderStatus, formatDateToYYYYMMDD } from '../utils';
 import ChangeOrderStatusButton from './ChangeOrderStatusButton';
@@ -25,6 +26,15 @@ function EmployeeHistoryOrderCard({
   reservedTime,
   setHistories,
 }: Props) {
+  const [isCanMakeOrder, setIsCanMakeOrder] = useState<boolean>(true);
+
+  useEffect(() => {
+    (async () => {
+      const res = await OrderService.checkMakeOrder({ orderId });
+      setIsCanMakeOrder(res);
+    })();
+  }, [orderId]);
+
   return (
     <Wrapper>
       {orderSheetResponseList.map((history, index) => {
@@ -80,6 +90,7 @@ function EmployeeHistoryOrderCard({
                 <ChangeOrderStatusButton
                   status={status}
                   orderId={orderId}
+                  isCanMakeOrder={isCanMakeOrder}
                   setHistories={setHistories}
                 />
               )}

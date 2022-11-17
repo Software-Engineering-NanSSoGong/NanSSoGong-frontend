@@ -10,6 +10,7 @@ import { ButtonHierarchy } from './common/Button';
 interface Props {
   orderId: number;
   status: OrderStatus;
+  isCanMakeOrder: boolean;
   setHistories: Dispatch<SetStateAction<History[]>>;
 }
 
@@ -69,7 +70,7 @@ const getNextOrderStatus = (status: OrderStatus): OrderStatus => {
   }
 };
 
-function ChangeOrderStatusButton({ status, orderId, setHistories }: Props) {
+function ChangeOrderStatusButton({ status, orderId, isCanMakeOrder, setHistories }: Props) {
   const me = useRecoilValue(userState);
   const isRider = me.memberType === 'loginRider';
   const isChef = me.memberType === 'loginChef';
@@ -83,7 +84,12 @@ function ChangeOrderStatusButton({ status, orderId, setHistories }: Props) {
       nextHistories[willUpdateIndex].orderStatus = nextStatus;
       return nextHistories;
     });
-    alert('변경이 완료되었습니다.');
+    if (nextStatus === 'COOKED') {
+      await OrderService.makeOrder({ orderId });
+      alert('디너를 다 만들었습니다.');
+    } else {
+      alert('변경이 완료되었습니다.');
+    }
   };
 
   const handleClickDenyButton = async () => {
@@ -100,7 +106,7 @@ function ChangeOrderStatusButton({ status, orderId, setHistories }: Props) {
 
   return status === 'ORDERED' || status === 'RESERVED' ? (
     <ButtonList>
-      <Wrapper onClick={handleClickButton} disabled={isRider}>
+      <Wrapper onClick={handleClickButton} disabled={isRider || !isCanMakeOrder}>
         <Typography type='body3'>{changeStatusToButtonText(status)}</Typography>
       </Wrapper>
       <Wrapper
@@ -119,7 +125,8 @@ function ChangeOrderStatusButton({ status, orderId, setHistories }: Props) {
         status === 'DENIED' ||
         status === 'DELIVERED' ||
         (isChef && status === 'COOKED') ||
-        (isChef && status === 'DELIVERING')
+        (isChef && status === 'DELIVERING') ||
+        !isCanMakeOrder
       }
       hierarchy={changeStatusToButtonHierarchy(status)}
     >

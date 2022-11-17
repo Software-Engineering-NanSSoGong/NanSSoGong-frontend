@@ -71,6 +71,20 @@ class OrderService extends APIBase {
       .then(APIBase._handleResponse)
       .catch(APIBase._handleError);
   }
+
+  public checkMakeOrder({ orderId }: Pick<RequestChangeOrderStatus, 'orderId'>): Promise<boolean> {
+    return this.baseHTTP
+      .get(`/make/${orderId}`)
+      .then(APIBase._handleResponse)
+      .catch(APIBase._handleError);
+  }
+
+  public makeOrder({ orderId }: Pick<RequestChangeOrderStatus, 'orderId'>): Promise<boolean> {
+    return this.baseHTTP
+      .post(`/make/${orderId}`)
+      .then(APIBase._handleResponse)
+      .catch(APIBase._handleError);
+  }
 }
 
 export default new OrderService();
