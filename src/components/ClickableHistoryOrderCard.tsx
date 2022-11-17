@@ -78,7 +78,7 @@ function ClickableHistoryOrderCard({
               padding: 0,
             },
           }}
-          disabled={orderStatus !== 'ORDERED'}
+          disabled={orderStatus !== 'ORDERED' && orderStatus !== 'RESERVED'}
         >
           <CardList>
             {orderSheetResponseList.map((history, index) => {
