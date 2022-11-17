@@ -34,7 +34,10 @@ function MainPage() {
     // 디너 정보 페이지별로 가져오기
     (async () => {
       setIsLoading(true);
-      const res = await DinnerService.getDinnerList({ page: Number(page) - 1, size: Number(size) });
+      const res = await DinnerService.getDinnerList({
+        page: Number(page) - 1 >= 0 ? Number(page) - 1 : 0,
+        size: Number(size),
+      });
       setTotalCount(res.totalElements);
       setDinnerList(res.content);
       setIsLoading(false);
