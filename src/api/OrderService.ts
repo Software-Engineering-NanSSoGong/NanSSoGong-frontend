@@ -24,19 +24,18 @@ class OrderService extends APIBase {
     return this.baseHTTP
       .post('client', {
         ...orderInfo,
-        orderStatus: 'ORDERED',
-        reservedTime: new Date().toISOString(),
+        reservedTime: orderInfo.reservedTime?.toISOString(),
       })
       .then(APIBase._handleResponse)
       .catch(APIBase._handleError);
   }
 
   public orderGuest({ ...orderInfo }: Order) {
+    console.log(orderInfo);
     return this.baseHTTP
       .post('guest', {
         ...orderInfo,
-        orderStatus: 'ORDERED',
-        reservedTime: new Date().toISOString(),
+        reservedTime: orderInfo.reservedTime?.toISOString(),
       })
       .then(APIBase._handleResponse)
       .catch(APIBase._handleError);
@@ -69,6 +68,20 @@ class OrderService extends APIBase {
         orderId,
         orderStatus,
       })
+      .then(APIBase._handleResponse)
+      .catch(APIBase._handleError);
+  }
+
+  public checkMakeOrder({ orderId }: Pick<RequestChangeOrderStatus, 'orderId'>): Promise<boolean> {
+    return this.baseHTTP
+      .get(`/make/${orderId}`)
+      .then(APIBase._handleResponse)
+      .catch(APIBase._handleError);
+  }
+
+  public makeOrder({ orderId }: Pick<RequestChangeOrderStatus, 'orderId'>): Promise<boolean> {
+    return this.baseHTTP
+      .post(`/make/${orderId}`)
       .then(APIBase._handleResponse)
       .catch(APIBase._handleError);
   }
