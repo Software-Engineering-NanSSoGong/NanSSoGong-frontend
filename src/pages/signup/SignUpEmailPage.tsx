@@ -47,10 +47,9 @@ function SignUpEmailPage() {
     } else if (signUpState.userType === 'employee') {
       res = await ChefService.signUp({ email, password, name });
     }
-    if (res.hasOwnProperty('name')) {
+    if (res === 'ok') {
       navigate('/');
       resetSignUpState();
-      alert(`${name}님 회원가입이 완료되었습니다.`);
     }
   };
 
