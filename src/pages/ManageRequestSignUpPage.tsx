@@ -52,17 +52,22 @@ function ManageRequestSignUpPage() {
             <LoadingGIF src='/loading.gif' alt='loading-component' />
           </LoadingContainer>
         ) : (
-          <>
+          <BoxList>
             {list.map((info) => (
               <RequestInfoBox key={info.loginId}>
                 <StaffInfoBox>
                   <Typography type='h4'>이름: {info.name}</Typography>
                   <Typography type='h4'>아이디: {info.loginId}</Typography>
                 </StaffInfoBox>
-                <Button onClick={() => handleClickAcceptButton(info.type, info.id)}>수락</Button>
+                <Button
+                  onClick={() => handleClickAcceptButton(info.type, info.id)}
+                  style={{ padding: 16 }}
+                >
+                  <Typography type='h5'>수락</Typography>
+                </Button>
               </RequestInfoBox>
             ))}
-          </>
+          </BoxList>
         )}
       </Spacer>
     </Wrapper>
@@ -87,12 +92,20 @@ const LoadingGIF = styled.img`
   height: 100%;
 `;
 
+const BoxList = styled.div`
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
 const RequestInfoBox = styled.article`
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: ${theme.palette.gray300};
   box-sizing: border-box;
+  border-radius: 8px;
   padding: 24px;
 `;
 
