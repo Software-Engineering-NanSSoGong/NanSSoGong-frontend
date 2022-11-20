@@ -1,4 +1,13 @@
-import { Address, Dinner, Food, History, Ingredient, OrderStatus, Style } from './common';
+import {
+  Address,
+  Dinner,
+  Food,
+  History,
+  Ingredient,
+  OrderStatus,
+  RequestSignUpEmployee,
+  Style,
+} from './common';
 import { GRADE } from './User';
 
 export interface BaseAPIResponse<T> {
@@ -95,3 +104,6 @@ export interface UpdateClientInfo {
 }
 // Ingredient Service
 export interface ResponseIngredientList extends BasePageResponse<Ingredient> {}
+
+// Manage Request Signup Service
+export interface ResponseSignUpEmployeeList extends BasePageResponse<RequestSignUpEmployee> {}

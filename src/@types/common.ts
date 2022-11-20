@@ -40,7 +40,7 @@ export interface Dinner {
   dinnerDescription: string;
   dinnerOrderable: boolean;
   dinnerFoodInfoResponseList: (Pick<Food, 'foodId' | 'foodName'> & { foodQuantity: number })[];
-  dinnerImage?: string;
+  dinnerImageAbsolutePath?: string;
   dinnerQuantity?: number;
   excludedStyleInfoResponseList: {
     excludedStyleId: number;
@@ -120,4 +120,11 @@ export interface Ingredient {
   ingredientName: string;
   stockQuantity: number;
   ingredientRecipeInfoList: (Pick<Food, 'foodId' | 'foodName'> & { ingredientQuantity: number })[];
+}
+
+export interface RequestSignUpEmployee {
+  chefSignId: number;
+  riderSignId: number;
+  name: string;
+  loginId: string;
 }

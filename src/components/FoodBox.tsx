@@ -39,7 +39,7 @@ function FoodBox({
 
   return (
     <FoodSection>
-      <FoodImage src={dinner.dinnerImage || '/Dinner.png'} alt='dinner-set image' />
+      <FoodImage src={dinner.dinnerImageAbsolutePath || '/Dinner.png'} alt='dinner-set image' />
       <FoodDescription>
         <TitleWithLine
           title={dinner.dinnerName}

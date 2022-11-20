@@ -21,6 +21,7 @@ import {
   ManageIngredientPage,
   IngredientDetailPage,
   UpdateClientGradePage,
+  ManageRequestSignUpPage,
 } from '../pages';
 import ToastTestPage from '../pages/ToastTestPage';
 import { dinnerNameState } from '../stores';
@@ -69,6 +70,7 @@ function Router() {
       <Route path='/manage-ingredient' element={<ManageIngredientPage />} />
       <Route path='/ingredient/:id' element={<IngredientDetailPage />} />
       <Route path='/update-grade' element={<UpdateClientGradePage />} />
+      <Route path='/manage-request-signup' element={<ManageRequestSignUpPage />} />
       {/* 유저만 갈 수 있는 페이지 example: 내정보페이지 */}
       <Route element={<RequiredAuthGuard />}>
         <Route path='/user' element={<MainPage />} />
