@@ -121,3 +121,10 @@ export interface Ingredient {
   stockQuantity: number;
   ingredientRecipeInfoList: (Pick<Food, 'foodId' | 'foodName'> & { ingredientQuantity: number })[];
 }
+
+export interface RequestSignUpEmployee {
+  chefSignId: number;
+  riderSignId: number;
+  name: string;
+  loginId: string;
+}
