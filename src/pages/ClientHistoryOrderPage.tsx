@@ -42,6 +42,7 @@ function ClientHistoryOrderPage() {
                 orderStatus={history.orderStatus}
                 orderSheetResponseList={history.orderSheetResponseList}
                 date={history.orderTime}
+                reservedTime={history.reservedTime}
                 address={`${history.address?.city} ${history.address?.street} ${history.address?.zipcode}`}
                 setHistories={setHistories}
               />

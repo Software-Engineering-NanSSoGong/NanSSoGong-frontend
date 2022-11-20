@@ -1,13 +1,16 @@
 import styled from '@emotion/styled';
 import { Dispatch, SetStateAction } from 'react';
+import { useRecoilValue } from 'recoil';
 import { History, OrderStatus } from '../@types';
 import { OrderService } from '../api';
+import { userState } from '../stores';
 import { Button, Typography } from './common';
 import { ButtonHierarchy } from './common/Button';
 
 interface Props {
   orderId: number;
   status: OrderStatus;
+  isCanMakeOrder: boolean;
   setHistories: Dispatch<SetStateAction<History[]>>;
 }
 
@@ -67,7 +70,11 @@ const getNextOrderStatus = (status: OrderStatus): OrderStatus => {
   }
 };
 
-function ChangeOrderStatusButton({ status, orderId, setHistories }: Props) {
+function ChangeOrderStatusButton({ status, orderId, isCanMakeOrder, setHistories }: Props) {
+  const me = useRecoilValue(userState);
+  const isRider = me.memberType === 'loginRider';
+  const isChef = me.memberType === 'loginChef';
+
   const handleClickButton = async () => {
     const nextStatus = getNextOrderStatus(status);
     await OrderService.changeOrderStatus({ orderId, orderStatus: nextStatus });
@@ -77,7 +84,12 @@ function ChangeOrderStatusButton({ status, orderId, setHistories }: Props) {
       nextHistories[willUpdateIndex].orderStatus = nextStatus;
       return nextHistories;
     });
-    alert('변경이 완료되었습니다.');
+    if (nextStatus === 'COOKED') {
+      await OrderService.makeOrder({ orderId });
+      alert('디너를 다 만들었습니다.');
+    } else {
+      alert('변경이 완료되었습니다.');
+    }
   };
 
   const handleClickDenyButton = async () => {
@@ -94,17 +106,28 @@ function ChangeOrderStatusButton({ status, orderId, setHistories }: Props) {
 
   return status === 'ORDERED' || status === 'RESERVED' ? (
     <ButtonList>
-      <Wrapper onClick={handleClickButton}>
+      <Wrapper onClick={handleClickButton} disabled={isRider || !isCanMakeOrder}>
         <Typography type='body3'>{changeStatusToButtonText(status)}</Typography>
       </Wrapper>
-      <Wrapper hierarchy={ButtonHierarchy.Danger} onClick={handleClickDenyButton}>
+      <Wrapper
+        hierarchy={ButtonHierarchy.Danger}
+        onClick={handleClickDenyButton}
+        disabled={isRider}
+      >
         <Typography type='body3'>거절하기</Typography>
       </Wrapper>
     </ButtonList>
   ) : (
     <Wrapper
       onClick={handleClickButton}
-      disabled={status === 'CANCEL' || status === 'DENIED' || status === 'DELIVERED'}
+      disabled={
+        status === 'CANCEL' ||
+        status === 'DENIED' ||
+        status === 'DELIVERED' ||
+        (isChef && status === 'COOKED') ||
+        (isChef && status === 'DELIVERING') ||
+        !isCanMakeOrder
+      }
       hierarchy={changeStatusToButtonHierarchy(status)}
     >
       <Typography type='body3'>{changeStatusToButtonText(status)}</Typography>
