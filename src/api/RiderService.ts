@@ -28,7 +28,7 @@ class RiderService extends APIBase {
     size,
   }: BasePageRequest): Promise<ResponseSignUpEmployeeList> {
     return this.baseHTTP
-      .get(`sign-allow-list?page=${page}&size=${size}`)
+      .get(`sign-allow/list?page=${page}&size=${size}`)
       .then(APIBase._handleResponse)
       .catch(APIBase._handleError);
   }
