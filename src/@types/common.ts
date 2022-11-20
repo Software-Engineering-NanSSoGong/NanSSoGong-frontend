@@ -40,7 +40,7 @@ export interface Dinner {
   dinnerDescription: string;
   dinnerOrderable: boolean;
   dinnerFoodInfoResponseList: (Pick<Food, 'foodId' | 'foodName'> & { foodQuantity: number })[];
-  dinnerImage?: string;
+  dinnerImageAbsolutePath?: string;
   dinnerQuantity?: number;
   excludedStyleInfoResponseList: {
     excludedStyleId: number;
