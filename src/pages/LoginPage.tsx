@@ -27,7 +27,7 @@ function LoginPage() {
         }
       }
     } catch (err) {
-      console.error(err);
+      alert('입력하신 정보를 확인해 주세요.');
     }
   };
 
