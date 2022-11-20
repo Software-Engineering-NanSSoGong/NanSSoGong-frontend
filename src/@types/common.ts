@@ -93,7 +93,7 @@ export interface History {
   riderName: string;
   address: Address;
   orderTime: string;
-  reservedTime: string | null;
+  reservedTime?: Date;
   orderStatus: OrderStatus;
   totalPriceAfterSale: number | null;
   orderSheetResponseList: OrderSheet[];
