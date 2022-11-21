@@ -147,7 +147,8 @@ function SignUpEmailPage() {
                 password === '' ||
                 passwordAgain === '' ||
                 passwordAgain !== password ||
-                isAlreadyUsedEmail
+                isAlreadyUsedEmail ||
+                !emailRegex.test(email)
               }
             >
               <Typography type='h4' color={theme.palette.gray50} textAlign='center'>

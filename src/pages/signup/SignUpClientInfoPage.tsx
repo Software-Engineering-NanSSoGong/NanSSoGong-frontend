@@ -90,6 +90,7 @@ function SignUpClientInfoPage() {
             labelColor={theme.colors.background}
             inputBackgroundColor={theme.palette.gray200}
             inputColor={theme.colors.text.bold}
+            disabled={!accept}
             maxLength={4}
             handleChangeInput={handleChangeMultipleInput}
           />
@@ -99,6 +100,7 @@ function SignUpClientInfoPage() {
             type='text'
             values={[address.city, address.street, address.zipcode]}
             placeholders={['city', 'street', 'zipcode']}
+            disabled={!accept}
             labelColor={theme.colors.background}
             inputBackgroundColor={theme.palette.gray200}
             inputColor={theme.colors.text.bold}
