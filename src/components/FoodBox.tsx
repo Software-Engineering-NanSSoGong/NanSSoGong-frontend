@@ -48,7 +48,7 @@ function FoodBox({
           titleFontType='h1'
           titleColor={theme.colors.text.bold}
           borderColor={theme.palette.gray50}
-          type='close'
+          type={type === 'order' ? 'close' : 'normal'}
           onClick={handleClickDeleteIcon}
         />
         <Typography type='body5' color={theme.palette.gray50}>
