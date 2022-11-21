@@ -111,7 +111,10 @@ function OrderPage() {
     } else if (name.includes('city') || name.includes('street') || name.includes('zipcode')) {
       setAddress((prev) => ({ ...prev, [name]: value }));
     } else {
-      setHourAndMinute((prev) => ({ ...prev, [name]: value }));
+      const isHour = name === 'hour';
+      const maxValue = isHour ? 23 : 59;
+      const nextValue = Number(value) < 0 ? 0 : Number(value) > maxValue ? maxValue : Number(value);
+      setHourAndMinute((prev) => ({ ...prev, [name]: nextValue }));
     }
   };
 
