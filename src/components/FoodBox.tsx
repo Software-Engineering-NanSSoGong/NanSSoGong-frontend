@@ -16,6 +16,7 @@ interface Props {
   reducedFoodInfos?: ChangeFoodInfo[];
   setSelectedStyle?: Dispatch<SetStateAction<Style | null>>;
   handleChangeDinnerQuantity?: (quantity: number) => void;
+  handleClickDeleteIcon?: () => void;
 }
 
 function FoodBox({
@@ -26,6 +27,7 @@ function FoodBox({
   reducedFoodInfos,
   setSelectedStyle,
   handleChangeDinnerQuantity,
+  handleClickDeleteIcon,
 }: Props) {
   const isShampain = dinner.dinnerName?.split(' ').join('') === '샴페인축제디너';
 
@@ -46,6 +48,8 @@ function FoodBox({
           titleFontType='h1'
           titleColor={theme.colors.text.bold}
           borderColor={theme.palette.gray50}
+          type='close'
+          onClick={handleClickDeleteIcon}
         />
         <Typography type='body5' color={theme.palette.gray50}>
           {dinner.dinnerDescription || '프렌치 디너는 어쩌구저쩌구 입니다.'}
