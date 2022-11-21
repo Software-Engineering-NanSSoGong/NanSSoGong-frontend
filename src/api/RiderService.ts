@@ -1,4 +1,10 @@
-import { RequestSignUpInfo, ResponseSignUpInfo } from '../@types';
+import {
+  BasePageRequest,
+  BaseRequestId,
+  RequestSignUpInfo,
+  ResponseSignUpEmployeeList,
+  ResponseSignUpInfo,
+} from '../@types';
 import APIBase from './core';
 
 class RiderService extends APIBase {
@@ -13,6 +19,23 @@ class RiderService extends APIBase {
         password,
         name,
       })
+      .then(APIBase._handleResponse)
+      .catch(APIBase._handleError);
+  }
+
+  public getRequestSignUpList({
+    page,
+    size,
+  }: BasePageRequest): Promise<ResponseSignUpEmployeeList> {
+    return this.baseHTTP
+      .get(`sign-allow/list?page=${page}&size=${size}`)
+      .then(APIBase._handleResponse)
+      .catch(APIBase._handleError);
+  }
+
+  public acceptSignUp({ id }: BaseRequestId) {
+    return this.baseHTTP
+      .post(`sign-allow/${id}`)
       .then(APIBase._handleResponse)
       .catch(APIBase._handleError);
   }

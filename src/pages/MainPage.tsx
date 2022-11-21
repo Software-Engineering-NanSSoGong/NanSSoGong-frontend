@@ -93,7 +93,7 @@ function MainPage() {
                 <ClickableDinnerCard
                   key={dinner.dinnerId}
                   title={dinner.dinnerName}
-                  src={dinner.dinnerImage || '/Dinner.png'}
+                  src={dinner.dinnerImageAbsolutePath || '/Dinner.png'}
                   href={`/item/${dinner.dinnerId}`}
                 />
               ))}

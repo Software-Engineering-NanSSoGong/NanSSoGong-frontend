@@ -10,14 +10,17 @@ interface Props {
   onKeyUp?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-function IconInputLine({ icon, value, type = 'text', onChange, onKeyUp }: Props) {
+const IconInputLine = React.forwardRef(function IconInput(
+  { icon, value, type = 'text', onChange, onKeyUp }: Props,
+  forwardedRef: React.LegacyRef<HTMLInputElement>,
+) {
   return (
     <Wrapper>
       <IconWrapper type={icon} color={'FFFFFF'} />
-      <Input value={value} onChange={onChange} type={type} onKeyUp={onKeyUp} />
+      <Input value={value} onChange={onChange} type={type} onKeyUp={onKeyUp} ref={forwardedRef} />
     </Wrapper>
   );
-}
+});
 
 const Wrapper = styled.span`
   width: 100%;

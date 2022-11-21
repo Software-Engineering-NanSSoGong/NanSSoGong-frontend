@@ -50,6 +50,16 @@ function SideMenuListWithEmployee() {
               고객 등급 관리
             </Typography>
           </ButtonWrapper>
+          <ButtonWrapper
+            fullWidth
+            borderRadius={10}
+            hierarchy={ButtonHierarchy.DarkGray}
+            onClick={() => navigate('/manage-request-signup')}
+          >
+            <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
+              가입 요청 관리
+            </Typography>
+          </ButtonWrapper>
         </ButtonList>
         {/* 하단 버튼 리스트 */}
         <ButtonList>

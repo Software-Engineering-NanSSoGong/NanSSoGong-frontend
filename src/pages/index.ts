@@ -12,3 +12,4 @@ export { default as ManageTimePage } from './ManageTimePage';
 export { default as ManageIngredientPage } from './ManageIngredientPage';
 export { default as IngredientDetailPage } from './IngredientDetailPage';
 export { default as UpdateClientGradePage } from './UpdateClientGradePage';
+export { default as ManageRequestSignUpPage } from './ManageRequestSignUpPage';
