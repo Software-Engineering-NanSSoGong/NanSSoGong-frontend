@@ -14,7 +14,7 @@ export interface Card {
 }
 
 export const FOOD_CATEGORY = {
-  WINE: 'WINE',
+  ALCOHOL: 'ALCOHOL',
   BREAD: 'BREAD',
   MEAT: 'MEAT',
   SALAD: 'SALAD',

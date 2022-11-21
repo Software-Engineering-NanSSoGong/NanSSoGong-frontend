@@ -82,7 +82,7 @@ function ItemDetailPage() {
         {Object.keys(FOOD_CATEGORY).map((category) => (
           <FoodQuantityBoxList
             key={category}
-            title={`${category} 추가`}
+            title={category}
             foods={Object.values(foodState).filter((item) => item.foodCategory === category)}
             setFoodState={setFoodState}
           />
