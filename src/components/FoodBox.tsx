@@ -184,7 +184,7 @@ const InfomationLine = styled.span`
 `;
 
 const StyleDescription = styled.div`
-  minheight: 126px;
+  min-height: 126px;
   content: '';
 `;
 
