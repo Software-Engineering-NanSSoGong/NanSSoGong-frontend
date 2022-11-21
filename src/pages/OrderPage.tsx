@@ -267,7 +267,7 @@ function OrderPage() {
                     구매 확정
                   </Typography>
                   <Typography type='body4' color={theme.colors.text.dark} style={{ marginTop: 32 }}>
-                    총 {totalPrice.toLocaleString()} 원입니다.정말로 구매하시겠습니까?
+                    총 {totalPrice.toLocaleString()} 원입니다. 정말로 구매하시겠습니까?
                   </Typography>
                 </ModalBody>
               </Modal.askModal>
