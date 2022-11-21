@@ -50,14 +50,16 @@ function EmployeeHistoryOrderCard({
               <Typography type='h3' color={theme.colors.text.bold}>
                 {history.dinnerName}
               </Typography>
-              {reservedTime && (
+              {index === 0 && reservedTime && (
                 <Typography type='body4'>예약 시간: {reservedTime.toString()}</Typography>
               )}
-              <Chip
-                label={status}
-                type={convertToChipTypeFromOrderStatus(status)}
-                variants='filled'
-              />
+              {index === 0 && (
+                <Chip
+                  label={status}
+                  type={convertToChipTypeFromOrderStatus(status)}
+                  variants='filled'
+                />
+              )}
             </BetweenAlignLine>
             <ButtonWithOrderChangeList>
               <OrderChangeList>
@@ -81,7 +83,9 @@ function EmployeeHistoryOrderCard({
                   <Typography type='body4'>
                     {minusFoods.map(
                       (food, idx) =>
-                        `${food.foodName} 제외${idx !== minusFoods.length - 1 ? ',' : ''}`,
+                        `${food.foodName} ${food.foodQuantity}개 ${
+                          idx !== minusFoods.length - 1 ? ',' : ''
+                        }`,
                     )}
                   </Typography>
                 </OrderChangeLine>
