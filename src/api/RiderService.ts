@@ -42,7 +42,7 @@ class RiderService extends APIBase {
 
   public denySignUp({ id }: BaseRequestId) {
     return this.baseHTTP
-      .post(`sign-deny/${id}`)
+      .delete(`sign-deny/${id}`)
       .then(APIBase._handleResponse)
       .catch(APIBase._handleError);
   }
