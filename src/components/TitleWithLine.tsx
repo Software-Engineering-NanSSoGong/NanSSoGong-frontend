@@ -2,10 +2,11 @@ import styled from '@emotion/styled';
 import { ComponentPropsWithoutRef, CSSProperties, Dispatch, SetStateAction } from 'react';
 import { PalleteValueType } from '../styles/theme/colors';
 import { FontKeyType } from '../styles/theme/fonts';
+import ClickableIcon from './ClickableIcon';
 import ClickableSpeechIcon from './ClickableSpeechIcon';
 import { Typography } from './common';
 
-type Type = 'normal' | 'mic-icon';
+type Type = 'normal' | 'mic-icon' | 'close';
 
 interface Props extends ComponentPropsWithoutRef<'div'> {
   title: string;
@@ -15,6 +16,7 @@ interface Props extends ComponentPropsWithoutRef<'div'> {
   borderColor?: PalleteValueType;
   textAlign?: CSSProperties['textAlign'];
   setValue?: Dispatch<SetStateAction<string>>;
+  handleClickIcon?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 function TitleWithLine({
@@ -25,6 +27,7 @@ function TitleWithLine({
   textAlign,
   borderColor,
   setValue,
+  handleClickIcon,
   ...restProps
 }: Props) {
   return (
@@ -33,6 +36,9 @@ function TitleWithLine({
         {title}
       </Typography>
       {type === 'mic-icon' && <ClickableSpeechIcon setValue={setValue!} />}
+      {type === 'close' && (
+        <ClickableIcon iconProps={{ type: 'close' }} onClick={handleClickIcon!} />
+      )}
     </Wrapper>
   );
 }
@@ -40,9 +46,9 @@ function TitleWithLine({
 type StyleProps = Pick<Props, 'textAlign' | 'borderColor' | 'type'>;
 
 const Wrapper = styled.div<StyleProps>`
-  display: ${({ type }) => (type === 'mic-icon' ? 'flex' : 'block')};
-  justify-content: ${({ type }) => type === 'mic-icon' && 'space-between'};
-  align-items: ${({ type }) => type === 'mic-icon' && 'center'};
+  display: ${({ type }) => (type === 'normal' ? 'block' : 'flex')};
+  justify-content: ${({ type }) => (type === 'normal' ? 'initial' : 'space-between')};
+  align-items: center;
   text-align: ${({ textAlign }) => textAlign};
   border-bottom: 2px solid ${({ borderColor }) => borderColor};
 `;

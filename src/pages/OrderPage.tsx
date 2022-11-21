@@ -44,6 +44,13 @@ function OrderPage() {
     minute: new Date().getMinutes(),
   });
 
+  const handleClickDeleteIcon = (idx: number) => {
+    const nextMyBagList = myBagState.filter((_, i) => idx !== i);
+    storage.set('mybag', nextMyBagList);
+    setMyBagState(nextMyBagList);
+    alert('해당 디너가 삭제되었습니다.');
+  };
+
   const handleClickModalConfirmButton = async () => {
     let res = { uuid: '' };
     const reservedTime = new Date(
@@ -92,6 +99,8 @@ function OrderPage() {
       navigate('/main');
       alert('성공적으로 구매했습니다.');
       setMe((prev) => ({ ...prev, uuid: String(res.uuid) }));
+    } else {
+      alert('주문을 할 수 없습니다.');
     }
   };
 
@@ -126,17 +135,6 @@ function OrderPage() {
       }
     })();
   }, [me.memberId]);
-
-  useEffect(() => {
-    const date = new Date(
-      reservationTime.getFullYear(),
-      reservationTime.getMonth(),
-      reservationTime.getDate(),
-      hourAndMinute.hour,
-      hourAndMinute.minute,
-    );
-    console.log(date);
-  }, [reservationTime, hourAndMinute.hour, hourAndMinute.minute]);
 
   return (
     <Wrapper>
@@ -173,6 +171,7 @@ function OrderPage() {
                 selectedStyle={item.selectedStyle}
                 addedFoodInfos={item.addedFoodInfos}
                 reducedFoodInfos={item.reducedFoodInfos}
+                handleClickDeleteIcon={() => handleClickDeleteIcon(idx)}
               />
             ))}
             <OrderInfomationBox>
