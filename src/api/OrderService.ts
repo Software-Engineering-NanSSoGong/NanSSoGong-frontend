@@ -31,11 +31,11 @@ class OrderService extends APIBase {
   }
 
   public orderGuest({ ...orderInfo }: Order) {
-    console.log(orderInfo);
     return this.baseHTTP
       .post('guest', {
         ...orderInfo,
-        reservedTime: orderInfo.reservedTime?.toISOString(),
+        reservedTime:
+          orderInfo.orderStatus === 'RESERVED' ? orderInfo.reservedTime?.toISOString() : null,
       })
       .then(APIBase._handleResponse)
       .catch(APIBase._handleError);
