@@ -9,3 +9,4 @@ export { default as Left } from './Left';
 export { default as Right } from './Right';
 export { default as DoubleLeft } from './DoubleLeft';
 export { default as DoubleRight } from './DoubleRight';
+export { default as Close } from './Close';
