@@ -74,7 +74,7 @@ function FoodBox({
                   selectedStyle={selectedStyle}
                   handleClickStyle={handleClickStyleBox}
                 />
-                <StyleDescription style={{ minHeight: '80px', content: '' }}>
+                <StyleDescription>
                   {selectedStyle?.styleTablewareInfoResponseList.map((tableware) => (
                     <Typography type='body3' key={tableware.tablewareId}>
                       {tableware.tablewareName}
@@ -183,6 +183,9 @@ const InfomationLine = styled.span`
   justify-content: space-between;
 `;
 
-const StyleDescription = styled.div``;
+const StyleDescription = styled.div`
+  minheight: 126px;
+  content: '';
+`;
 
 export default FoodBox;
