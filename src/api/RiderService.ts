@@ -39,6 +39,13 @@ class RiderService extends APIBase {
       .then(APIBase._handleResponse)
       .catch(APIBase._handleError);
   }
+
+  public denySignUp({ id }: BaseRequestId) {
+    return this.baseHTTP
+      .post(`sign-deny/${id}`)
+      .then(APIBase._handleResponse)
+      .catch(APIBase._handleError);
+  }
 }
 
 export default new RiderService();

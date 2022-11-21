@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { RequestSignUpEmployee } from '../@types';
 import { ChefService, RiderService } from '../api';
 import { Button, SideMenuListWithEmployee, TitleWithLine, Typography } from '../components';
+import { ButtonHierarchy } from '../components/common/Button';
 import { theme } from '../styles';
 
 type Employee = 'rider' | 'chef';
@@ -18,6 +19,15 @@ function ManageRequestSignUpPage() {
       await RiderService.acceptSignUp({ id });
     }
     alert('수락하였습니다.');
+  };
+
+  const handleClickDenyButton = async (type: Employee, id: number) => {
+    if (type === 'chef') {
+      await ChefService.denySignUp({ id });
+    } else if (type === 'rider') {
+      await RiderService.denySignUp({ id });
+    }
+    alert('거절하였습니다.');
   };
 
   useEffect(() => {
@@ -59,12 +69,21 @@ function ManageRequestSignUpPage() {
                   <Typography type='h4'>이름: {info.name}</Typography>
                   <Typography type='h4'>아이디: {info.loginId}</Typography>
                 </StaffInfoBox>
-                <Button
-                  onClick={() => handleClickAcceptButton(info.type, info.id)}
-                  style={{ padding: 16 }}
-                >
-                  <Typography type='h5'>수락</Typography>
-                </Button>
+                <div style={{ display: 'flex', gap: 16 }}>
+                  <Button
+                    onClick={() => handleClickAcceptButton(info.type, info.id)}
+                    style={{ padding: 16 }}
+                  >
+                    <Typography type='h5'>수락</Typography>
+                  </Button>
+                  <Button
+                    hierarchy={ButtonHierarchy.Danger}
+                    onClick={() => handleClickDenyButton(info.type, info.id)}
+                    style={{ padding: 16 }}
+                  >
+                    <Typography type='h5'>거절</Typography>
+                  </Button>
+                </div>
               </RequestInfoBox>
             ))}
           </BoxList>

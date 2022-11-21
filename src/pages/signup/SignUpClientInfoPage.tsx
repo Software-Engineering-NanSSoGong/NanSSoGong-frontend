@@ -35,7 +35,7 @@ function SignUpClientInfoPage() {
       if (res?.id) {
         resetSignUpState();
         navigate('/');
-        alert('회원가입이 완료되었습니다.');
+        alert('회원가입이 신청되었습니다.');
       }
     } catch (err) {
       console.error(err);
