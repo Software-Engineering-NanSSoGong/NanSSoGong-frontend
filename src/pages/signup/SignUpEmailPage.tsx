@@ -61,7 +61,13 @@ function SignUpEmailPage() {
       <SignupBoxLayout>
         <BoxLayout>
           <Title
-            title={signUpState.userType !== 'client' ? '직원으로 가입하기' : '회원으로 가입하기'}
+            title={
+              signUpState.userType !== 'client'
+                ? signUpState.userType === 'employee'
+                  ? '요리사로 가입하기'
+                  : '라이더로 가입하기'
+                : '회원으로 가입하기'
+            }
             titleFontType='h1'
             textAlign='center'
             titleColor={theme.colors.text.dark}

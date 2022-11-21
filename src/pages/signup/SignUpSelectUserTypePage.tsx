@@ -52,7 +52,7 @@ function SignUpSelectUserTypePage() {
             >
               <Line>
                 <Typography type='h3' color={theme.palette.gray50} textAlign='left'>
-                  직원으로 가입하기
+                  요리사로 가입하기
                 </Typography>
                 <Icon type='employee' />
               </Line>
