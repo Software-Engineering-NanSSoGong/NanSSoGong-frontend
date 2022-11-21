@@ -206,14 +206,14 @@ function OrderPage() {
               <Typography type='h3' color={theme.colors.text.bold}>
                 결제 수단
               </Typography>
-              <LabelWithInput>
+              {/* <LabelWithInput>
                 <Typography type='h4' color={theme.colors.text.bold}>
                   카드 회사
                 </Typography>
                 <Inputs>
                   <Input style={{ width: '20%' }} />
                 </Inputs>
-              </LabelWithInput>
+              </LabelWithInput> */}
 
               <LabelWithMultipleInput
                 title='카드 번호'

@@ -1,11 +1,14 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import { History, OrderStatus } from '../@types';
 import { OrderService } from '../api';
 import { EmployeeHistoryOrderCard, SideMenuListWithEmployee, Typography } from '../components';
+import { userState } from '../stores';
 import { theme } from '../styles';
 
 function ManageOrderPage() {
+  const me = useRecoilValue(userState);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [histories, setHistories] = useState<History[]>([]);
   const [filteredHistories, setFilteredHistories] = useState<History[]>([]);
@@ -40,6 +43,16 @@ function ManageOrderPage() {
     })();
   }, []);
 
+  useEffect(() => {
+    if (me.memberType === 'loginRider') {
+      const nextFilteredHistories = filteredHistories.filter(
+        (history) => history.orderStatus === 'COOKED',
+      );
+      setFilteredHistories(nextFilteredHistories);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [me.memberType]);
+
   return (
     <Wrapper>
       <SideMenuListWithEmployee />
@@ -55,7 +68,11 @@ function ManageOrderPage() {
               <SelectStatus onChange={handleChangeSelect}>
                 <option value={'default'}>전체</option>
                 {statusList.map((status) => (
-                  <option key={status} value={status}>
+                  <option
+                    key={status}
+                    value={status}
+                    defaultValue={me.memberType === 'loginRider' ? 'COOKED' : 'ORDERED'}
+                  >
                     {status}
                   </option>
                 ))}
