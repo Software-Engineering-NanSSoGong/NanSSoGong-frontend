@@ -10,6 +10,7 @@ import {
   Right,
   DoubleLeft,
   DoubleRight,
+  Close,
 } from '../../asset/svg';
 
 const ICONS = {
@@ -23,6 +24,7 @@ const ICONS = {
   right: Right,
   doubleLeft: DoubleLeft,
   doubleRight: DoubleRight,
+  close: Close,
 } as const;
 
 type IconValueType = typeof ICONS;
