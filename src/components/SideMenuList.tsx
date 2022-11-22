@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { MemberService } from '../api';
 
-import { isAuth as RecoilIsAuth, userState } from '../stores';
+import { isAuth as RecoilIsAuth, myBagSelector, userState } from '../stores';
 import { theme } from '../styles';
 import { storage } from '../utils';
 import { Button, Typography } from './common';
@@ -13,6 +13,7 @@ function SideMenuList() {
   const navigate = useNavigate();
   const me = useRecoilValue(RecoilIsAuth);
   const resetUserState = useResetRecoilState(userState);
+  const resetMyBagState = useResetRecoilState(myBagSelector);
 
   return (
     <SideMenu>
@@ -71,6 +72,7 @@ function SideMenuList() {
                 resetUserState();
                 navigate('/');
                 storage.removeAll();
+                resetMyBagState();
                 alert('로그아웃이 완료되었습니다.');
               }}
             >
@@ -86,6 +88,7 @@ function SideMenuList() {
               onClick={() => {
                 storage.removeAll();
                 navigate('/');
+                resetMyBagState();
               }}
             >
               <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
