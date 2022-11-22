@@ -92,7 +92,7 @@ export function getDifferenceFoodInfoFromDinner(
       addedFoodInfos.push({
         foodId: food.foodId,
         price: food.foodSellPrice,
-        quantity: foodInfo[food.foodName].foodQuantity,
+        quantity: foodInfo[food.foodName].foodQuantity - basicFoodCount,
         foodName: food.foodName,
       });
     } else if (!isOriginFood && foodInfo[food.foodName].foodQuantity > 0) {
