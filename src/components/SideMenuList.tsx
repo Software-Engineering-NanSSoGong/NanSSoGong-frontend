@@ -1,7 +1,9 @@
 import styled from '@emotion/styled';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { MemberService } from '../api';
+import { GRADE } from '../@types';
+import { ClientService, MemberService } from '../api';
 
 import { isAuth as RecoilIsAuth } from '../stores';
 import { theme } from '../styles';
@@ -11,12 +13,41 @@ import { ButtonHierarchy } from './common/Button';
 function SideMenuList() {
   const navigate = useNavigate();
   const me = useRecoilValue(RecoilIsAuth);
+  const [ordererName, setOrdererName] = useState<string>('');
+  const [grade, setGrade] = useState<GRADE>('BRONZE');
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await ClientService.getClientInfo({ id: me.id as number });
+        if (!res.hasOwnProperty('exceptionType')) {
+          setOrdererName(res.name);
+          setGrade(res.clientGrade);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  }, [me.id]);
 
   return (
     <SideMenu>
       <LogoImg src='/logo.png' alt='mr-daebak logo' />
       <Spacer>
         {/* 상단 버튼 리스트 */}
+
+        {me.isLogin && (
+          <Typography type='h4' color={theme.colors.text.dark}>
+            {ordererName}님 환영합니다!
+          </Typography>
+        )}
+
+        {me.isLogin && (
+          <Typography type='body5' color={theme.colors.text.dark}>
+            {ordererName}님 등급은 {grade} 입니다.
+          </Typography>
+        )}
+
         <ButtonList>
           <ButtonWrapper fullWidth borderRadius={10} onClick={() => navigate('/main')}>
             <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
