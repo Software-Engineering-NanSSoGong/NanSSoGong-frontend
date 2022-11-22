@@ -118,7 +118,9 @@ function ClickableHistoryOrderCard({
                       <Typography type='body4'>
                         {plusFoods.map(
                           (food, idx) =>
-                            `${food.foodName}  ${idx !== plusFoods.length - 1 ? ', ' : ''}`,
+                            `${food.foodName} ${food.foodQuantity}개 ${
+                              idx !== plusFoods.length - 1 ? ', ' : ''
+                            }`,
                         )}
                       </Typography>
                     </OrderChangeLine>
@@ -129,7 +131,9 @@ function ClickableHistoryOrderCard({
                       <Typography type='body4'>
                         {minusFoods.map(
                           (food, idx) =>
-                            `${food.foodName} 제외${idx !== minusFoods.length - 1 ? ',' : ''}`,
+                            `${food.foodName} ${Math.abs(food.foodQuantity)}개${
+                              idx !== minusFoods.length - 1 ? ',' : ''
+                            }`,
                         )}
                       </Typography>
                     </OrderChangeLine>
