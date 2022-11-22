@@ -52,54 +52,56 @@ function OrderPage() {
   };
 
   const handleClickModalConfirmButton = async () => {
-    let res = { uuid: '' };
-    const reservedTime = new Date(
-      reservationTime.getFullYear(),
-      reservationTime.getMonth(),
-      reservationTime.getDate(),
-      hourAndMinute.hour,
-      hourAndMinute.minute,
-    );
-    if (me.memberType === 'loginClient') {
-      res = await OrderService.orderClient({
-        address,
-        totalPriceAfterSale: getPriceAfterSale(totalPrice, GRADE_INFO[grade].saleRate),
-        orderSheetCreateRequestList: myBagState.map((myBag) => ({
-          styleId: myBag.selectedStyle.styleId,
-          dinnerId: myBag.dinner.dinnerId,
-          foodIdAndDifference: {
-            ...transformNameWithQuantity(myBag.addedFoodInfos),
-            ...transformNameWithQuantity(myBag.reducedFoodInfos, 'minus'),
-          },
-        })),
-        orderStatus: checkReservation ? 'RESERVED' : 'ORDERED',
-        reservedTime,
-      });
-    } else if (me.memberType === 'guest') {
-      res = await OrderService.orderGuest({
-        address,
-        totalPriceAfterSale: getPriceAfterSale(totalPrice, GRADE_INFO[grade].saleRate),
-        orderSheetCreateRequestList: myBagState.map((myBag) => ({
-          styleId: myBag.selectedStyle.styleId,
-          dinnerId: myBag.dinner.dinnerId,
-          foodIdAndDifference: {
-            ...transformNameWithQuantity(myBag.addedFoodInfos),
-            ...transformNameWithQuantity(myBag.reducedFoodInfos, 'minus'),
-          },
-        })),
-        name: ordererName,
-        cardNumber: `${cardNumber.card1}${cardNumber.card2}${cardNumber.card3}${cardNumber.card4}`,
-        orderStatus: checkReservation ? 'RESERVED' : 'ORDERED',
-        reservedTime,
-      });
-    }
-    if (res?.hasOwnProperty('orderId')) {
-      storage.removeAll();
-      setMyBagState([]);
-      navigate('/main');
-      alert('성공적으로 구매했습니다.');
-      setMe((prev) => ({ ...prev, uuid: String(res.uuid) }));
-    } else {
+    try {
+      let res = { uuid: '' };
+      const reservedTime = new Date(
+        reservationTime.getFullYear(),
+        reservationTime.getMonth(),
+        reservationTime.getDate(),
+        hourAndMinute.hour,
+        hourAndMinute.minute,
+      );
+      if (me.memberType === 'loginClient') {
+        res = await OrderService.orderClient({
+          address,
+          totalPriceAfterSale: getPriceAfterSale(totalPrice, GRADE_INFO[grade].saleRate),
+          orderSheetCreateRequestList: myBagState.map((myBag) => ({
+            styleId: myBag.selectedStyle.styleId,
+            dinnerId: myBag.dinner.dinnerId,
+            foodIdAndDifference: {
+              ...transformNameWithQuantity(myBag.addedFoodInfos),
+              ...transformNameWithQuantity(myBag.reducedFoodInfos, 'minus'),
+            },
+          })),
+          orderStatus: checkReservation ? 'RESERVED' : 'ORDERED',
+          reservedTime,
+        });
+      } else if (me.memberType === 'guest') {
+        res = await OrderService.orderGuest({
+          address,
+          totalPriceAfterSale: getPriceAfterSale(totalPrice, GRADE_INFO[grade].saleRate),
+          orderSheetCreateRequestList: myBagState.map((myBag) => ({
+            styleId: myBag.selectedStyle.styleId,
+            dinnerId: myBag.dinner.dinnerId,
+            foodIdAndDifference: {
+              ...transformNameWithQuantity(myBag.addedFoodInfos),
+              ...transformNameWithQuantity(myBag.reducedFoodInfos, 'minus'),
+            },
+          })),
+          name: ordererName,
+          cardNumber: `${cardNumber.card1}${cardNumber.card2}${cardNumber.card3}${cardNumber.card4}`,
+          orderStatus: checkReservation ? 'RESERVED' : 'ORDERED',
+          reservedTime,
+        });
+      }
+      if (res?.hasOwnProperty('orderId')) {
+        storage.removeAll();
+        setMyBagState([]);
+        navigate('/main');
+        alert('성공적으로 구매했습니다.');
+        setMe((prev) => ({ ...prev, uuid: String(res.uuid) }));
+      }
+    } catch (err) {
       alert('주문을 할 수 없습니다.');
     }
   };

@@ -5,6 +5,7 @@ import { MemberService } from '../api';
 
 import { isAuth as RecoilIsAuth, userState } from '../stores';
 import { theme } from '../styles';
+import { storage } from '../utils';
 import { Button, Typography } from './common';
 import { ButtonHierarchy } from './common/Button';
 
@@ -69,6 +70,7 @@ function SideMenuList() {
                 await MemberService.logOut();
                 resetUserState();
                 navigate('/');
+                storage.removeAll();
                 alert('로그아웃이 완료되었습니다.');
               }}
             >
