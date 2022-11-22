@@ -83,7 +83,10 @@ function SideMenuList() {
               fullWidth
               borderRadius={10}
               hierarchy={ButtonHierarchy.Success}
-              onClick={() => navigate('/')}
+              onClick={() => {
+                storage.removeAll();
+                navigate('/');
+              }}
             >
               <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
                 로그인
