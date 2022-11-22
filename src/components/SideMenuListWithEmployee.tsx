@@ -70,8 +70,8 @@ function SideMenuListWithEmployee() {
             fullWidth
             borderRadius={10}
             hierarchy={ButtonHierarchy.Gray}
-            onClick={() => {
-              MemberService.logOut();
+            onClick={async () => {
+              await MemberService.logOut();
               resetUserState();
               navigate('/');
               alert('로그아웃이 완료되었습니다.');
