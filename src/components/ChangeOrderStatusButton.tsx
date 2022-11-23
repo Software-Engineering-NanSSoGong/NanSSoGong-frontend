@@ -90,6 +90,10 @@ function ChangeOrderStatusButton({ status, orderId, isCanMakeOrder, setHistories
     } else {
       alert('변경이 완료되었습니다.');
     }
+    if (nextStatus === 'DELIVERING') {
+      await OrderService.setRider({ id: orderId });
+      alert('라이더를 배정했습니다.');
+    }
   };
 
   const handleClickDenyButton = async () => {

@@ -1,5 +1,6 @@
 import {
   BasePageRequest,
+  BaseRequestId,
   History,
   Order,
   RequestChangeOrderStatus,
@@ -86,6 +87,15 @@ class OrderService extends APIBase {
   public makeOrder({ orderId }: Pick<RequestChangeOrderStatus, 'orderId'>): Promise<boolean> {
     return this.baseHTTP
       .post(`/make/${orderId}`)
+      .then(APIBase._handleResponse)
+      .catch(APIBase._handleError);
+  }
+
+  public setRider({ id }: BaseRequestId) {
+    return this.baseHTTP
+      .patch(`rider`, {
+        orderId: id,
+      })
       .then(APIBase._handleResponse)
       .catch(APIBase._handleError);
   }
