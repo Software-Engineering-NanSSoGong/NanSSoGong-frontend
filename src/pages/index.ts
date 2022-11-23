@@ -13,3 +13,5 @@ export { default as ManageIngredientPage } from './ManageIngredientPage';
 export { default as IngredientDetailPage } from './IngredientDetailPage';
 export { default as UpdateClientGradePage } from './UpdateClientGradePage';
 export { default as ManageRequestSignUpPage } from './ManageRequestSignUpPage';
+export { default as DinnerImageUploadPage } from './DinnerImageUploadPage';
+export { default as DinnerImageListPage } from './DinnerImageListPage';

@@ -6,6 +6,8 @@ import axios, { AxiosInstance, AxiosResponse } from 'axios';
 class APIBase {
   readonly baseHTTP: AxiosInstance;
 
+  readonly multipleHTTP: AxiosInstance;
+
   constructor(url?: string) {
     const baseServerURL = import.meta.env.PROD
       ? import.meta.env.VITE_BASE_SERVER_URL
@@ -13,9 +15,18 @@ class APIBase {
 
     this.baseHTTP = axios.create({
       baseURL: `${baseServerURL}/api/${url ?? ''}`,
-      timeout: 10000,
+      timeout: 50000,
       headers: {
         'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+    });
+
+    this.multipleHTTP = axios.create({
+      baseURL: `${baseServerURL}/api/${url ?? ''}`,
+      timeout: 50000,
+      headers: {
+        'Content-Type': 'multipart/form-data',
       },
       withCredentials: true,
     });
