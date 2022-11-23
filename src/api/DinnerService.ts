@@ -25,8 +25,16 @@ class DinnerService extends APIBase {
   }
 
   uploadDinnerImage({ id, file }: BaseRequestId & { file: File }) {
-    return this.multipleHTTP
-      .post(`image/${id}`, { file })
+    return this.baseHTTP
+      .post(
+        `image/${id}`,
+        { file },
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      )
       .then(APIBase._handleResponse)
       .catch(APIBase._handleError);
   }
