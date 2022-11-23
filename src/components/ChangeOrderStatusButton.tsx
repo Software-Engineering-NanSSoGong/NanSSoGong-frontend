@@ -128,8 +128,7 @@ function ChangeOrderStatusButton({ status, orderId, isCanMakeOrder, setHistories
         status === 'DENIED' ||
         status === 'DELIVERED' ||
         (isChef && status === 'COOKED') ||
-        (isChef && status === 'DELIVERING') ||
-        !isCanMakeOrder
+        (isChef && status === 'DELIVERING')
       }
       hierarchy={changeStatusToButtonHierarchy(status)}
     >
