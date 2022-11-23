@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useResetRecoilState } from 'recoil';
-import { MemberService } from '../api';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
+import { ChefService, MemberService, RiderService } from '../api';
 import { userState } from '../stores';
 
 import { theme } from '../styles';
@@ -11,13 +12,37 @@ import { ButtonHierarchy } from './common/Button';
 
 function SideMenuListWithEmployee() {
   const navigate = useNavigate();
+  const me = useRecoilValue(userState);
   const resetUserState = useResetRecoilState(userState);
+  const [name, setName] = useState<string>('');
+
+  useEffect(() => {
+    (async () => {
+      if (me.memberType === 'loginRider') {
+        const res = await RiderService.getInfo();
+        setName(res.name);
+      } else if (me.memberType === 'loginChef') {
+        const res = await ChefService.getInfo();
+        setName(res.name);
+      } else {
+        setName('테스트');
+      }
+    })();
+  }, [me.memberType]);
 
   return (
     <SideMenu>
       <LogoImg src='/logo.png' alt='mr-daebak logo' />
       <Spacer>
         {/* 상단 버튼 리스트 */}
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          <Typography type='h6' color={theme.colors.text.dark}>
+            {me.memberType === 'loginChef' ? '쉐프' : '라이더'}
+          </Typography>
+          <Typography type='h6' color={theme.colors.primary.blue} style={{ fontWeight: 700 }}>
+            {name}님 안녕하세요
+          </Typography>
+        </div>
         <ButtonList>
           <ButtonWrapper fullWidth borderRadius={10} onClick={() => navigate('/manage-order')}>
             <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>

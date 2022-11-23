@@ -120,9 +120,14 @@ function ProfilePage() {
               </Typography>
             </AcceptButton>
           </Lines>
-
+    
           <Lines>
-            <Button fullWidth style={{ padding: '12px' }} onClick={handleClickButton}>
+            <Button
+              fullWidth
+              style={{ padding: '12px' }}
+              onClick={handleClickButton}
+              disabled={accept === false}
+            >
               <Typography type='h4' color={theme.palette.gray50} textAlign='center'>
                 수정하기
               </Typography>

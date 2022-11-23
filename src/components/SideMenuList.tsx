@@ -1,7 +1,9 @@
 import styled from '@emotion/styled';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
-import { MemberService } from '../api';
+import { ResponseClientInfo } from '../@types';
+import { ClientService, MemberService } from '../api';
 
 import { isAuth as RecoilIsAuth, myBagSelector, userState } from '../stores';
 import { theme } from '../styles';
@@ -12,6 +14,18 @@ import { ButtonHierarchy } from './common/Button';
 function SideMenuList() {
   const navigate = useNavigate();
   const me = useRecoilValue(RecoilIsAuth);
+  const [clientInfo, setClientInfo] = useState<ResponseClientInfo>({} as ResponseClientInfo);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await ClientService.getClientInfo({ id: me.id as number });
+        setClientInfo(res);
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  }, [me.id]);
   const resetUserState = useResetRecoilState(userState);
   const resetMyBagState = useResetRecoilState(myBagSelector);
 
@@ -20,6 +34,27 @@ function SideMenuList() {
       <LogoImg src='/logo.png' alt='mr-daebak logo' />
       <Spacer>
         {/* 상단 버튼 리스트 */}
+
+        {me.isLogin && (
+          <>
+            <Typography type='h4' color={theme.colors.text.dark}>
+              {clientInfo.name}님 환영합니다!
+            </Typography>
+            <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+              <Typography type='body5' color={theme.colors.text.dark}>
+                고객님의 등급은
+              </Typography>
+              <Typography
+                type='body5'
+                color={theme.colors.primary.blue}
+                style={{ fontWeight: 700 }}
+              >
+                {clientInfo.clientGrade}
+              </Typography>
+            </div>
+          </>
+        )}
+
         <ButtonList>
           <ButtonWrapper fullWidth borderRadius={10} onClick={() => navigate('/main')}>
             <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
