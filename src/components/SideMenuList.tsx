@@ -1,12 +1,13 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { GRADE } from '../@types';
 import { ClientService, MemberService } from '../api';
 
-import { isAuth as RecoilIsAuth } from '../stores';
+import { isAuth as RecoilIsAuth, myBagSelector, userState } from '../stores';
 import { theme } from '../styles';
+import { storage } from '../utils';
 import { Button, Typography } from './common';
 import { ButtonHierarchy } from './common/Button';
 
@@ -29,6 +30,8 @@ function SideMenuList() {
       }
     })();
   }, [me.id]);
+  const resetUserState = useResetRecoilState(userState);
+  const resetMyBagState = useResetRecoilState(myBagSelector);
 
   return (
     <SideMenu>
@@ -95,9 +98,12 @@ function SideMenuList() {
               fullWidth
               borderRadius={10}
               hierarchy={ButtonHierarchy.Gray}
-              onClick={() => {
-                MemberService.logOut();
+              onClick={async () => {
+                await MemberService.logOut();
+                resetUserState();
                 navigate('/');
+                storage.removeAll();
+                resetMyBagState();
                 alert('로그아웃이 완료되었습니다.');
               }}
             >
@@ -110,7 +116,11 @@ function SideMenuList() {
               fullWidth
               borderRadius={10}
               hierarchy={ButtonHierarchy.Success}
-              onClick={() => navigate('/')}
+              onClick={() => {
+                storage.removeAll();
+                navigate('/');
+                resetMyBagState();
+              }}
             >
               <Typography type='body5' color={theme.colors.text.bold} textAlign='center'>
                 로그인

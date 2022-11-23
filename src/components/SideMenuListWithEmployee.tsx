@@ -1,13 +1,17 @@
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
+import { useResetRecoilState } from 'recoil';
 import { MemberService } from '../api';
+import { userState } from '../stores';
 
 import { theme } from '../styles';
+import { storage } from '../utils';
 import { Button, Typography } from './common';
 import { ButtonHierarchy } from './common/Button';
 
 function SideMenuListWithEmployee() {
   const navigate = useNavigate();
+  const resetUserState = useResetRecoilState(userState);
 
   return (
     <SideMenu>
@@ -67,9 +71,11 @@ function SideMenuListWithEmployee() {
             fullWidth
             borderRadius={10}
             hierarchy={ButtonHierarchy.Gray}
-            onClick={() => {
-              MemberService.logOut();
+            onClick={async () => {
+              await MemberService.logOut();
+              resetUserState();
               navigate('/');
+              storage.removeAll();
               alert('로그아웃이 완료되었습니다.');
             }}
           >

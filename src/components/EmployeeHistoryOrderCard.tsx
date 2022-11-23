@@ -83,7 +83,7 @@ function EmployeeHistoryOrderCard({
                   <Typography type='body4'>
                     {minusFoods.map(
                       (food, idx) =>
-                        `${food.foodName} ${food.foodQuantity}개 ${
+                        `${food.foodName} ${Math.abs(food.foodQuantity)}개${
                           idx !== minusFoods.length - 1 ? ',' : ''
                         }`,
                     )}
@@ -99,10 +99,12 @@ function EmployeeHistoryOrderCard({
                 />
               )}
             </ButtonWithOrderChangeList>
-            <BetweenAlignLine>
-              <Typography type='body4'>{address}</Typography>
-              <Typography type='body5'>{formatDateToYYYYMMDD(new Date(orderTime))}</Typography>
-            </BetweenAlignLine>
+            {index === 0 && (
+              <BetweenAlignLine>
+                <Typography type='body4'>{address}</Typography>
+                <Typography type='body5'>{formatDateToYYYYMMDD(new Date(orderTime))}</Typography>
+              </BetweenAlignLine>
+            )}
             {index !== orderSheetResponseList.length - 1 && <Divider />}
           </CardList>
         );

@@ -53,7 +53,7 @@ function SignUpEmailPage() {
     if (res === 'ok') {
       navigate('/');
       resetSignUpState();
-      alert('회원가입이 완료되었습니다.');
+      alert('회원가입이 신청되었습니다.');
     }
   };
 
@@ -148,7 +148,8 @@ function SignUpEmailPage() {
                 password === '' ||
                 passwordAgain === '' ||
                 passwordAgain !== password ||
-                isAlreadyUsedEmail
+                isAlreadyUsedEmail ||
+                !emailRegex.test(email)
               }
             >
               <Typography type='h4' color={theme.palette.gray50} textAlign='center'>

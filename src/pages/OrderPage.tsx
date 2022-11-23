@@ -52,54 +52,56 @@ function OrderPage() {
   };
 
   const handleClickModalConfirmButton = async () => {
-    let res = { uuid: '' };
-    const reservedTime = new Date(
-      reservationTime.getFullYear(),
-      reservationTime.getMonth(),
-      reservationTime.getDate(),
-      hourAndMinute.hour,
-      hourAndMinute.minute,
-    );
-    if (me.memberType === 'loginClient') {
-      res = await OrderService.orderClient({
-        address,
-        totalPriceAfterSale: getPriceAfterSale(totalPrice, GRADE_INFO[grade].saleRate),
-        orderSheetCreateRequestList: myBagState.map((myBag) => ({
-          styleId: myBag.selectedStyle.styleId,
-          dinnerId: myBag.dinner.dinnerId,
-          foodIdAndDifference: {
-            ...transformNameWithQuantity(myBag.addedFoodInfos),
-            ...transformNameWithQuantity(myBag.reducedFoodInfos, 'minus'),
-          },
-        })),
-        orderStatus: checkReservation ? 'RESERVED' : 'ORDERED',
-        reservedTime,
-      });
-    } else if (me.memberType === 'guest') {
-      res = await OrderService.orderGuest({
-        address,
-        totalPriceAfterSale: getPriceAfterSale(totalPrice, GRADE_INFO[grade].saleRate),
-        orderSheetCreateRequestList: myBagState.map((myBag) => ({
-          styleId: myBag.selectedStyle.styleId,
-          dinnerId: myBag.dinner.dinnerId,
-          foodIdAndDifference: {
-            ...transformNameWithQuantity(myBag.addedFoodInfos),
-            ...transformNameWithQuantity(myBag.reducedFoodInfos, 'minus'),
-          },
-        })),
-        name: ordererName,
-        cardNumber: `${cardNumber.card1}${cardNumber.card2}${cardNumber.card3}${cardNumber.card4}`,
-        orderStatus: checkReservation ? 'RESERVED' : 'ORDERED',
-        reservedTime,
-      });
-    }
-    if (res?.hasOwnProperty('orderId')) {
-      storage.removeAll();
-      setMyBagState([]);
-      navigate('/main');
-      alert('성공적으로 구매했습니다.');
-      setMe((prev) => ({ ...prev, uuid: String(res.uuid) }));
-    } else {
+    try {
+      let res = { uuid: '' };
+      const reservedTime = new Date(
+        reservationTime.getFullYear(),
+        reservationTime.getMonth(),
+        reservationTime.getDate(),
+        hourAndMinute.hour,
+        hourAndMinute.minute,
+      );
+      if (me.memberType === 'loginClient') {
+        res = await OrderService.orderClient({
+          address,
+          totalPriceAfterSale: getPriceAfterSale(totalPrice, GRADE_INFO[grade].saleRate),
+          orderSheetCreateRequestList: myBagState.map((myBag) => ({
+            styleId: myBag.selectedStyle.styleId,
+            dinnerId: myBag.dinner.dinnerId,
+            foodIdAndDifference: {
+              ...transformNameWithQuantity(myBag.addedFoodInfos),
+              ...transformNameWithQuantity(myBag.reducedFoodInfos, 'minus'),
+            },
+          })),
+          orderStatus: checkReservation ? 'RESERVED' : 'ORDERED',
+          reservedTime,
+        });
+      } else if (me.memberType === 'guest') {
+        res = await OrderService.orderGuest({
+          address,
+          totalPriceAfterSale: getPriceAfterSale(totalPrice, GRADE_INFO[grade].saleRate),
+          orderSheetCreateRequestList: myBagState.map((myBag) => ({
+            styleId: myBag.selectedStyle.styleId,
+            dinnerId: myBag.dinner.dinnerId,
+            foodIdAndDifference: {
+              ...transformNameWithQuantity(myBag.addedFoodInfos),
+              ...transformNameWithQuantity(myBag.reducedFoodInfos, 'minus'),
+            },
+          })),
+          name: ordererName,
+          cardNumber: `${cardNumber.card1}${cardNumber.card2}${cardNumber.card3}${cardNumber.card4}`,
+          orderStatus: checkReservation ? 'RESERVED' : 'ORDERED',
+          reservedTime,
+        });
+      }
+      if (res?.hasOwnProperty('orderId')) {
+        storage.removeAll();
+        setMyBagState([]);
+        navigate('/main');
+        alert('성공적으로 구매했습니다.');
+        setMe((prev) => ({ ...prev, uuid: String(res.uuid) }));
+      }
+    } catch (err) {
       alert('주문을 할 수 없습니다.');
     }
   };
@@ -111,7 +113,10 @@ function OrderPage() {
     } else if (name.includes('city') || name.includes('street') || name.includes('zipcode')) {
       setAddress((prev) => ({ ...prev, [name]: value }));
     } else {
-      setHourAndMinute((prev) => ({ ...prev, [name]: value }));
+      const isHour = name === 'hour';
+      const maxValue = isHour ? 23 : 59;
+      const nextValue = Number(value) < 0 ? 0 : Number(value) > maxValue ? maxValue : Number(value);
+      setHourAndMinute((prev) => ({ ...prev, [name]: nextValue }));
     }
   };
 
@@ -206,14 +211,14 @@ function OrderPage() {
               <Typography type='h3' color={theme.colors.text.bold}>
                 결제 수단
               </Typography>
-              <LabelWithInput>
+              {/* <LabelWithInput>
                 <Typography type='h4' color={theme.colors.text.bold}>
                   카드 회사
                 </Typography>
                 <Inputs>
                   <Input style={{ width: '20%' }} />
                 </Inputs>
-              </LabelWithInput>
+              </LabelWithInput> */}
 
               <LabelWithMultipleInput
                 title='카드 번호'
@@ -267,7 +272,7 @@ function OrderPage() {
                     구매 확정
                   </Typography>
                   <Typography type='body4' color={theme.colors.text.dark} style={{ marginTop: 32 }}>
-                    총 {totalPrice.toLocaleString()} 원입니다.정말로 구매하시겠습니까?
+                    총 {totalPrice.toLocaleString()} 원입니다. 정말로 구매하시겠습니까?
                   </Typography>
                 </ModalBody>
               </Modal.askModal>

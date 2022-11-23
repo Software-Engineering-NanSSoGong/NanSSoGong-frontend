@@ -14,6 +14,7 @@ interface Props {
   values: any[];
   pattern?: React.InputHTMLAttributes<HTMLInputElement>['pattern'];
   maxLength?: number;
+  disabled?: boolean;
   handleChangeInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -27,6 +28,7 @@ function LabelWithMultipleInput({
   inputBackgroundColor,
   inputColor,
   values,
+  disabled = false,
   pattern = '',
   maxLength = STRING_MAX_LENGTH,
   handleChangeInput,
@@ -49,6 +51,7 @@ function LabelWithMultipleInput({
               value={values[idx] ?? ''}
               inputBackgroundColor={inputBackgroundColor}
               inputColor={inputColor}
+              disabled={disabled}
               onChange={(e) => {
                 handleChangeInput(e);
                 if (e.target.value.length === maxLength && idx !== placeholders.length - 1) {

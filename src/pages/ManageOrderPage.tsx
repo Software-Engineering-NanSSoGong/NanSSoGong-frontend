@@ -1,14 +1,18 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import { History, OrderStatus } from '../@types';
 import { OrderService } from '../api';
 import { EmployeeHistoryOrderCard, SideMenuListWithEmployee, Typography } from '../components';
+import { userState } from '../stores';
 import { theme } from '../styles';
 
 function ManageOrderPage() {
+  const me = useRecoilValue(userState);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [histories, setHistories] = useState<History[]>([]);
   const [filteredHistories, setFilteredHistories] = useState<History[]>([]);
+  const [filterOrderStatus, setFilterOrderStatus] = useState<OrderStatus | 'default'>('default');
   const statusList: OrderStatus[] = [
     'ACCEPTED',
     'CANCEL',
@@ -27,6 +31,7 @@ function ManageOrderPage() {
         ? [...histories].filter((history) => history.orderStatus === filterStatus)
         : [...histories];
     setFilteredHistories(nextFilteredHistories);
+    setFilterOrderStatus(filterStatus as OrderStatus | 'default');
   };
 
   useEffect(() => {
@@ -35,10 +40,18 @@ function ManageOrderPage() {
       setIsLoading(true);
       const res = await OrderService.getList({ page: 0, size: 50 });
       setHistories(res.content);
-      setFilteredHistories(res.content);
+      if (me.memberType === 'loginRider') {
+        const nextFilteredHistories = res.content.filter(
+          (history) => history.orderStatus === 'COOKED',
+        );
+        setFilteredHistories(nextFilteredHistories);
+        setFilterOrderStatus('COOKED');
+      } else {
+        setFilteredHistories(res.content);
+      }
       setIsLoading(false);
     })();
-  }, []);
+  }, [me.memberType]);
 
   return (
     <Wrapper>
@@ -52,10 +65,16 @@ function ManageOrderPage() {
         ) : (
           <>
             <SelectStatusSection>
-              <SelectStatus onChange={handleChangeSelect}>
-                <option value={'default'}>전체</option>
+              <SelectStatus value={filterOrderStatus} onChange={handleChangeSelect}>
+                <option value={'default'} defaultChecked={me.memberType !== 'loginRider'}>
+                  전체
+                </option>
                 {statusList.map((status) => (
-                  <option key={status} value={status}>
+                  <option
+                    key={status}
+                    value={status}
+                    defaultChecked={me.memberType === 'loginRider' && status === 'COOKED'}
+                  >
                     {status}
                   </option>
                 ))}

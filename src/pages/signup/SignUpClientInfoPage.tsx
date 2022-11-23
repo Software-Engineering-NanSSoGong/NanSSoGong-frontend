@@ -35,7 +35,7 @@ function SignUpClientInfoPage() {
       if (res?.id) {
         resetSignUpState();
         navigate('/');
-        alert('회원가입이 신청되었습니다.');
+        alert('회원가입이 완료되었습니다.');
       }
     } catch (err) {
       console.error(err);
@@ -90,6 +90,7 @@ function SignUpClientInfoPage() {
             labelColor={theme.colors.background}
             inputBackgroundColor={theme.palette.gray200}
             inputColor={theme.colors.text.bold}
+            disabled={!accept}
             maxLength={4}
             handleChangeInput={handleChangeMultipleInput}
           />
@@ -99,6 +100,7 @@ function SignUpClientInfoPage() {
             type='text'
             values={[address.city, address.street, address.zipcode]}
             placeholders={['city', 'street', 'zipcode']}
+            disabled={!accept}
             labelColor={theme.colors.background}
             inputBackgroundColor={theme.palette.gray200}
             inputColor={theme.colors.text.bold}
