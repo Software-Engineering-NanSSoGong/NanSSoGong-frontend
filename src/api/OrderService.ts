@@ -1,11 +1,13 @@
 import {
   BasePageRequest,
+  BaseRequestId,
   History,
   Order,
   RequestChangeOrderStatus,
   RequestModifyOrderInfo,
   ResponseOrderHistoryList,
 } from '../@types';
+import { DemandOrderInfo } from '../components/EmployeeHistoryOrderCard';
 import APIBase from './core';
 
 class OrderService extends APIBase {
@@ -72,7 +74,10 @@ class OrderService extends APIBase {
       .catch(APIBase._handleError);
   }
 
-  public checkMakeOrder({ orderId }: Pick<RequestChangeOrderStatus, 'orderId'>): Promise<boolean> {
+  public checkMakeOrder({ orderId }: Pick<RequestChangeOrderStatus, 'orderId'>): Promise<{
+    ingredientDemandAndStockInfoList: DemandOrderInfo[];
+    makeable: boolean;
+  }> {
     return this.baseHTTP
       .get(`/make/${orderId}`)
       .then(APIBase._handleResponse)
@@ -82,6 +87,15 @@ class OrderService extends APIBase {
   public makeOrder({ orderId }: Pick<RequestChangeOrderStatus, 'orderId'>): Promise<boolean> {
     return this.baseHTTP
       .post(`/make/${orderId}`)
+      .then(APIBase._handleResponse)
+      .catch(APIBase._handleError);
+  }
+
+  public setRider({ id }: BaseRequestId) {
+    return this.baseHTTP
+      .patch(`rider`, {
+        orderId: id,
+      })
       .then(APIBase._handleResponse)
       .catch(APIBase._handleError);
   }

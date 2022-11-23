@@ -23,6 +23,21 @@ class DinnerService extends APIBase {
   getDinnerItem({ id }: BaseRequestId): Promise<ResponseDinnerItem> {
     return this.baseHTTP.get(`${id}`).then(APIBase._handleResponse).catch(APIBase._handleError);
   }
+
+  uploadDinnerImage({ id, file }: BaseRequestId & { file: File }) {
+    return this.baseHTTP
+      .post(
+        `image/${id}`,
+        { file },
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      )
+      .then(APIBase._handleResponse)
+      .catch(APIBase._handleError);
+  }
 }
 
 export default new DinnerService();
