@@ -14,6 +14,7 @@ interface Props {
   orderId: number;
   address: string;
   reservedTime?: Date;
+  riderName?: string;
   setHistories: Dispatch<SetStateAction<History[]>>;
 }
 
@@ -24,6 +25,7 @@ function EmployeeHistoryOrderCard({
   address,
   orderId,
   reservedTime,
+  riderName,
   setHistories,
 }: Props) {
   const [isCanMakeOrder, setIsCanMakeOrder] = useState<boolean>(true);
@@ -31,7 +33,7 @@ function EmployeeHistoryOrderCard({
   useEffect(() => {
     (async () => {
       const res = await OrderService.checkMakeOrder({ orderId });
-      setIsCanMakeOrder(res);
+      setIsCanMakeOrder(res.makeable);
     })();
   }, [orderId]);
 
@@ -88,6 +90,12 @@ function EmployeeHistoryOrderCard({
                         }`,
                     )}
                   </Typography>
+                </OrderChangeLine>
+                <OrderChangeLine>
+                  <Typography type='h5' color={theme.colors.text.bold}>
+                    라이더 :
+                  </Typography>
+                  <Typography type='body4'>{riderName}</Typography>
                 </OrderChangeLine>
               </OrderChangeList>
               {index === 0 && (

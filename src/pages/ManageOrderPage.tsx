@@ -90,6 +90,7 @@ function ManageOrderPage() {
                     orderSheetResponseList={history.orderSheetResponseList}
                     orderTime={history.orderTime}
                     reservedTime={history.reservedTime}
+                    riderName={history.riderName}
                     address={`${history.address.city} ${history.address.street} ${history.address.zipcode}`}
                     setHistories={setHistories}
                   />
