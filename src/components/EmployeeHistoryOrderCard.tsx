@@ -7,6 +7,13 @@ import { convertToChipTypeFromOrderStatus, formatDateToYYYYMMDD } from '../utils
 import ChangeOrderStatusButton from './ChangeOrderStatusButton';
 import { Chip, Typography } from './common';
 
+export interface DemandOrderInfo {
+  ingredientId: string;
+  ingredientName: string;
+  demandQuantity: number;
+  stockQuantity: number;
+}
+
 interface Props {
   status: OrderStatus;
   orderSheetResponseList: OrderSheet[];
@@ -28,12 +35,14 @@ function EmployeeHistoryOrderCard({
   riderName,
   setHistories,
 }: Props) {
+  const [demandOrderInfo, setDemandOrderInfo] = useState<DemandOrderInfo[]>([]);
   const [isCanMakeOrder, setIsCanMakeOrder] = useState<boolean>(true);
 
   useEffect(() => {
     (async () => {
       const res = await OrderService.checkMakeOrder({ orderId });
       setIsCanMakeOrder(res.makeable);
+      setDemandOrderInfo(res.ingredientDemandAndStockInfoList);
     })();
   }, [orderId]);
 
@@ -112,6 +121,30 @@ function EmployeeHistoryOrderCard({
                 <Typography type='body4'>{address}</Typography>
                 <Typography type='body5'>{formatDateToYYYYMMDD(new Date(orderTime))}</Typography>
               </BetweenAlignLine>
+            )}
+            {index === 0 && (status === 'ORDERED' || status === 'RESERVED') && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: 32 }}>
+                {demandOrderInfo.map((v) => (
+                  <span key={v.ingredientId} style={{ display: 'flex', gap: 12 }}>
+                    <Typography type='body4' color={theme.colors.primary.yellow}>
+                      필요 재료: {v.ingredientName}
+                    </Typography>
+                    <Typography type='body4' color={theme.colors.primary.green}>
+                      필요 수량: {v.demandQuantity}
+                    </Typography>
+                    <Typography
+                      type='body4'
+                      color={
+                        v.demandQuantity > v.stockQuantity
+                          ? theme.colors.primary.red
+                          : theme.colors.primary.blue
+                      }
+                    >
+                      현재 수량: {v.stockQuantity}
+                    </Typography>
+                  </span>
+                ))}
+              </div>
             )}
             {index !== orderSheetResponseList.length - 1 && <Divider />}
           </CardList>

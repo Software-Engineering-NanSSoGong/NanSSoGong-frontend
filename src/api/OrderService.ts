@@ -6,6 +6,7 @@ import {
   RequestModifyOrderInfo,
   ResponseOrderHistoryList,
 } from '../@types';
+import { DemandOrderInfo } from '../components/EmployeeHistoryOrderCard';
 import APIBase from './core';
 
 class OrderService extends APIBase {
@@ -72,7 +73,10 @@ class OrderService extends APIBase {
       .catch(APIBase._handleError);
   }
 
-  public checkMakeOrder({ orderId }: Pick<RequestChangeOrderStatus, 'orderId'>): Promise<boolean> {
+  public checkMakeOrder({ orderId }: Pick<RequestChangeOrderStatus, 'orderId'>): Promise<{
+    ingredientDemandAndStockInfoList: DemandOrderInfo[];
+    makeable: boolean;
+  }> {
     return this.baseHTTP
       .get(`/make/${orderId}`)
       .then(APIBase._handleResponse)
