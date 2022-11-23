@@ -21,7 +21,15 @@ function ClickableSpeechIcon({ setValue }: Props) {
 
   useDebouncedEffect(
     () => {
-      setValue(transcript);
+      if (transcript.includes('트렌치')) {
+        setValue('프렌치디너');
+      } else {
+        let nextTranscript = transcript;
+        nextTranscript = nextTranscript.replace(/티노/g, '디너');
+        nextTranscript = nextTranscript.replace(/티너/g, '디너');
+        nextTranscript = nextTranscript.replace(/디노/g, '디너');
+        setValue(nextTranscript);
+      }
     },
     [setValue, transcript],
     2000,
