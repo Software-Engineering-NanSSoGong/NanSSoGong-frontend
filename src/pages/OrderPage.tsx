@@ -103,6 +103,8 @@ function OrderPage() {
       }
     } catch (err) {
       alert('주문을 할 수 없습니다.');
+    } finally {
+      return;
     }
   };
 
