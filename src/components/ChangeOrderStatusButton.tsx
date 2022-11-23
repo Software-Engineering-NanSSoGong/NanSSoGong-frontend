@@ -84,15 +84,14 @@ function ChangeOrderStatusButton({ status, orderId, isCanMakeOrder, setHistories
       nextHistories[willUpdateIndex].orderStatus = nextStatus;
       return nextHistories;
     });
-    if (nextStatus === 'COOKED') {
+    if (nextStatus === 'DELIVERING') {
+      await OrderService.setRider({ id: orderId });
+      alert('라이더를 배정했습니다.');
+    } else if (nextStatus === 'ACCEPTED') {
       await OrderService.makeOrder({ orderId });
       alert('디너를 다 만들었습니다.');
     } else {
       alert('변경이 완료되었습니다.');
-    }
-    if (nextStatus === 'DELIVERING') {
-      await OrderService.setRider({ id: orderId });
-      alert('라이더를 배정했습니다.');
     }
   };
 
