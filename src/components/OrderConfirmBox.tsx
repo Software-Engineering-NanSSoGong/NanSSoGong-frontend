@@ -3,11 +3,7 @@ import { useRecoilValue } from 'recoil';
 import { Dinner, FoodWithQuantity, Style } from '../@types';
 import { foodState } from '../stores/Food';
 import { theme } from '../styles';
-import {
-  getBasicFoodCountInDinner,
-  getDifferenceFoodInfoFromDinner,
-  getTotalPrice,
-} from '../utils';
+import { getDifferenceFoodInfoFromDinner, getTotalPrice } from '../utils';
 import { Typography } from './common';
 
 interface Props {
@@ -63,7 +59,7 @@ function OrderConfirmBox({ dinner, orderedFoodInfo, selectedStyle }: Props) {
               {food.foodName} 추가
             </Typography>
             <Typography type='body5' color={theme.colors.primary.green}>
-              {food.quantity - getBasicFoodCountInDinner(dinner, food)}개
+              {food.quantity}개
             </Typography>
           </Line>
         ))}

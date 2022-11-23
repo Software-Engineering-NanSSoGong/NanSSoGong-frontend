@@ -119,7 +119,7 @@ function FoodBox({
                     <InfomationLine key={item.foodId}>
                       <Typography type='body4'>• {item.foodName}</Typography>
                       <Typography type='body4' color={theme.colors.primary.blue}>
-                        {item.quantity - getBasicFoodCountInDinner(dinner, item)}개 추가
+                        {item.quantity}개 추가
                       </Typography>
                     </InfomationLine>
                   ))}

@@ -4,12 +4,7 @@ import { GRADE, GRADE_INFO } from '../@types';
 import { myBagSelector } from '../stores';
 import { foodState } from '../stores/Food';
 import { theme } from '../styles';
-import {
-  getBasicDinnerPrice,
-  getBasicFoodCountInDinner,
-  getPriceAfterSale,
-  guardDinnerQuantity,
-} from '../utils';
+import { getBasicDinnerPrice, getPriceAfterSale, guardDinnerQuantity } from '../utils';
 import { Typography } from './common';
 
 interface Props {
@@ -58,16 +53,11 @@ function PriceBox({ totalPrice, clientGrade }: Props) {
                   {food.foodName}
                 </Typography>
                 <Typography type='h5' color={theme.colors.primary.red}>
-                  ({food.quantity - getBasicFoodCountInDinner(item.dinner, food)} 개 추가)
+                  ({food.quantity} 개 추가)
                 </Typography>
               </NameWithQuantity>
               <Typography type='body4' color={theme.colors.primary.yellow}>
-                +{' '}
-                {(
-                  (food.quantity - getBasicFoodCountInDinner(item.dinner, food)) *
-                  food.price
-                ).toLocaleString()}
-                원
+                + {(food.quantity * food.price).toLocaleString()}원
               </Typography>
             </BetweenLine>
           ))}

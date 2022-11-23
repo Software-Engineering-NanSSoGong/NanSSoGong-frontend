@@ -40,18 +40,13 @@ function ItemDetailPage() {
   const [foodState, setFoodState] = useState<Record<string, FoodWithQuantity>>({});
   const [selectedStyle, setSelectedStyle] = useState<Style | null>(null);
 
-  const handleChangeDinnerQuantity = (quantity: number) => {
-    const nextDinnerItem = { ...dinner, dinnerQuantity: quantity };
-    setDinner(nextDinnerItem);
-    setFoodState(transformToNameWithInfoObject(foods, nextDinnerItem));
-  };
-
   const handleClickModalConfirmButton = () => {
     const { addedFoodInfos, reducedFoodInfos } = getDifferenceFoodInfoFromDinner(
       dinner,
       foodState,
       foods,
     );
+
     setMyBagState((prev) => [
       ...prev,
       { dinner, selectedStyle: selectedStyle as Style, addedFoodInfos, reducedFoodInfos },
@@ -75,7 +70,6 @@ function ItemDetailPage() {
         <FoodBox
           type='beforeOrder'
           dinner={dinner}
-          handleChangeDinnerQuantity={handleChangeDinnerQuantity}
           selectedStyle={selectedStyle}
           setSelectedStyle={setSelectedStyle}
         />
