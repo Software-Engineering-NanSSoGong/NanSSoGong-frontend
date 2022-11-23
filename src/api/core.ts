@@ -7,7 +7,7 @@ class APIBase {
   readonly baseHTTP: AxiosInstance;
 
   constructor(url?: string) {
-    const baseServerURL = import.meta.env.PROD
+    const baseServerURL = import.meta.env.DEV
       ? import.meta.env.VITE_BASE_SERVER_URL
       : 'http://localhost:8080';
 

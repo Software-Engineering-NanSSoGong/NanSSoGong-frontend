@@ -46,6 +46,10 @@ class RiderService extends APIBase {
       .then(APIBase._handleResponse)
       .catch(APIBase._handleError);
   }
+
+  public getInfo(): Promise<{ name: string }> {
+    return this.baseHTTP.get('').then(APIBase._handleResponse).catch(APIBase._handleError);
+  }
 }
 
 export default new RiderService();
