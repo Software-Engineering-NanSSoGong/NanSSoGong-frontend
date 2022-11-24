@@ -5,7 +5,7 @@ import { Dinner } from '../@types';
 import { DinnerService } from '../api';
 import { Button, Typography } from '../components';
 
-function ItemDetailPage() {
+function DinnerImageUploadPage() {
   const params = useParams();
   const [dinner, setDinner] = useState<Dinner>({} as Dinner);
   const [file, setFile] = useState<File>({} as File);
@@ -60,4 +60,4 @@ const Spacer = styled.div`
   text-align: center;
 `;
 
-export default ItemDetailPage;
+export default DinnerImageUploadPage;
