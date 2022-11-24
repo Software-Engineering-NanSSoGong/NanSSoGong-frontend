@@ -25,7 +25,6 @@ import {
   DinnerImageListPage,
   DinnerImageUploadPage,
 } from '../pages';
-import ToastTestPage from '../pages/ToastTestPage';
 import { dinnerNameState } from '../stores';
 import { foodState } from '../stores/Food';
 import { styleState } from '../stores/Style';
@@ -57,7 +56,6 @@ function Router() {
     <Routes>
       <Route path='/' element={<LoginPage />} />
       <Route path='/modal' element={<ModalTestPage />} />
-      <Route path='/toast' element={<ToastTestPage />} />
       <Route path='/main' element={<MainPage />} />
       <Route path='/signup-type' element={<SignUpSelectUserTypePage />} />
       <Route path='/signup-email' element={<SignUpEmailPage />} />
