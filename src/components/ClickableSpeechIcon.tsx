@@ -21,13 +21,25 @@ function ClickableSpeechIcon({ setValue }: Props) {
 
   useDebouncedEffect(
     () => {
-      if (transcript.includes('트렌치')) {
+      if (transcript.includes('샴페인') || transcript.includes('삼페인')) {
+        setValue('샴페인축제디너');
+      } else if (transcript.includes('트렌치') || transcript.includes('프렌치')) {
         setValue('프렌치디너');
+      } else if (transcript.includes('발렌타인') || transcript.includes('벌렌타인')) {
+        setValue('발렌타인디너');
+      } else if (
+        transcript.includes('잉글리시') ||
+        transcript.includes('인글리시') ||
+        transcript.includes('잉글리쉬') ||
+        transcript.includes('인글리쉬')
+      ) {
+        setValue('잉글리시디너');
       } else {
         let nextTranscript = transcript;
         nextTranscript = nextTranscript.replace(/티노/g, '디너');
         nextTranscript = nextTranscript.replace(/티너/g, '디너');
         nextTranscript = nextTranscript.replace(/디노/g, '디너');
+        nextTranscript = nextTranscript.replace(/기능/g, '디너');
         setValue(nextTranscript);
       }
     },
